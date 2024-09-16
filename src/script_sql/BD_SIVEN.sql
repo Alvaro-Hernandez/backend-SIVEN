@@ -50,7 +50,7 @@ CREATE TABLE Persona (
 CREATE TABLE EventoSalud(
   id_evento_salud INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(255)
-)
+);
 
 -- Tabla Catalogo Maternidad
 CREATE TABLE Maternidad (
@@ -84,7 +84,7 @@ CREATE TABLE PaisOcurrenciaEventoSalud(
   id_pais_ocurrencia_evento_salud INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(255),
   codigo_postal VARCHAR(50)
-)
+);
 
 
 
@@ -123,7 +123,7 @@ CREATE TABLE Diagnostico (
 CREATE TABLE ResultadoDiagnostico(
     id_resultado_diagnostico INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255)
-)
+);
 
 -- Creación de la tabla DatosPaciente
 CREATE TABLE Captacion (
@@ -208,7 +208,7 @@ CREATE TABLE ViaAdministracion (
 CREATE TABLE UnidadMedidaFrecuencia(
     id_unidad_medida_frecuencia INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255)
-)
+);
 
 -- Tratamientos de Seguimiento
 CREATE TABLE TratamientosSeguimiento(
@@ -256,3 +256,159 @@ CREATE TABLE DatosSeguimiento (
     id_sintomas INT,
     observaciones_del_seguimiento TEXT
 );
+
+
+-- Relaciones entre las tablas 
+
+-- EstablecimientoSalud referencia a SILAIS
+ALTER TABLE EstablecimientoSalud
+ADD CONSTRAINT FK_EstablecimientoSalud_SILAIS
+FOREIGN KEY (id_silais) REFERENCES SILAIS(id_silais);
+
+-- Sintomas referencia a EventoSalud
+ALTER TABLE Sintomas
+ADD CONSTRAINT FK_Sintomas_EventoSalud
+FOREIGN KEY (id_evento_salud) REFERENCES EventoSalud(id_evento_salud);
+
+-- Captacion referencias
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_EventoSalud
+FOREIGN KEY (id_eventoSalud) REFERENCES EventoSalud(id_evento_salud);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Persona
+FOREIGN KEY (id_persona) REFERENCES Persona(id_persona);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Maternidad
+FOREIGN KEY (id_maternidad) REFERENCES Maternidad(id_maternidad);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_SILAIS_Trabajador
+FOREIGN KEY (id_silais_trabajador) REFERENCES SILAIS(id_silais);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Establecimiento_Trabajador
+FOREIGN KEY (id_establecimiento_trabajador) REFERENCES EstablecimientoSalud(id_establecimiento);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Comorbilidades
+FOREIGN KEY (id_comorbilidades) REFERENCES Comorbilidades(id_comorbilidades);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_LugarCaptacion
+FOREIGN KEY (id_lugarCaptacion) REFERENCES LugarCaptacion(id_lugar_captacion);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_CondicionPersona
+FOREIGN KEY (id_condicionPersona) REFERENCES CondicionPersona(id_condicion_persona);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_SILAIS_Captacion
+FOREIGN KEY (id_silais_captacion) REFERENCES SILAIS(id_silais);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Establecimiento_Captacion
+FOREIGN KEY (id_establecimiento_captacion) REFERENCES EstablecimientoSalud(id_establecimiento);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Persona_Captacion
+FOREIGN KEY (id_persona_captacion) REFERENCES Persona(id_persona);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_SitioExposicion
+FOREIGN KEY (id_sitioExposicion) REFERENCES SitioExposicion(id_sitioExposicion);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Sintomas
+FOREIGN KEY (id_sintomas) REFERENCES Sintomas(id_sintomas);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_SILAIS_Traslado
+FOREIGN KEY (id_silais_traslado) REFERENCES SILAIS(id_silais);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Establecimiento_Traslado
+FOREIGN KEY (id_establecimiento_traslado) REFERENCES EstablecimientoSalud(id_establecimiento);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_LugarIngresoPais
+FOREIGN KEY (id_lugar_ingreso_pais) REFERENCES LugarIngresoPais(id_lugar_ingreso_pais);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_PuestoNotificacion
+FOREIGN KEY (id_puesto_notificacion) REFERENCES PuestoNotificacion(id_puesto_notificacion);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Diagnostico
+FOREIGN KEY (id_diagnostico) REFERENCES Diagnostico(id_diagnostico);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_ResultadoDiagnostico
+FOREIGN KEY (id_resultado_diagnostico) REFERENCES ResultadoDiagnostico(id_resultado_diagnostico);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_SILAIS_Diagnostico
+FOREIGN KEY (id_silais_diagnostico) REFERENCES SILAIS(id_silais);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_Establecimiento_Diagnostico
+FOREIGN KEY (id_establecimiento_diagnostico) REFERENCES EstablecimientoSalud(id_establecimiento);
+
+ALTER TABLE Captacion
+ADD CONSTRAINT FK_Captacion_PaisOcurrenciaEventoSalud
+FOREIGN KEY (id_pais_ocurrencia_evento_salud) REFERENCES PaisOcurrenciaEventoSalud(id_pais_ocurrencia_evento_salud);
+
+-- TratamientosSeguimiento referencias
+ALTER TABLE TratamientosSeguimiento
+ADD CONSTRAINT FK_TratamientosSeguimiento_Persona
+FOREIGN KEY (id_persona) REFERENCES Persona(id_persona);
+
+ALTER TABLE TratamientosSeguimiento
+ADD CONSTRAINT FK_TratamientosSeguimiento_Captacion
+FOREIGN KEY (id_captacion) REFERENCES Captacion(id_captacion);
+
+ALTER TABLE TratamientosSeguimiento
+ADD CONSTRAINT FK_TratamientosSeguimiento_Medicamento
+FOREIGN KEY (id_medicamento) REFERENCES MedicamentosSeguimiento(id_medicamento);
+
+ALTER TABLE TratamientosSeguimiento
+ADD CONSTRAINT FK_TratamientosSeguimiento_UnidadMedidaDosis
+FOREIGN KEY (id_unidad_medida_dosis) REFERENCES UnidadMedidaDosis(id_unidad_medida_dosis);
+
+ALTER TABLE TratamientosSeguimiento
+ADD CONSTRAINT FK_TratamientosSeguimiento_UnidadMedidaFrecuencia
+FOREIGN KEY (id_unidad_medida_frecuencia) REFERENCES UnidadMedidaFrecuencia(id_unidad_medida_frecuencia);
+
+ALTER TABLE TratamientosSeguimiento
+ADD CONSTRAINT FK_TratamientosSeguimiento_ViaAdministracion
+FOREIGN KEY (id_via_administracion) REFERENCES ViaAdministracion(id_via_administracion);
+
+-- DatosSeguimiento referencias
+ALTER TABLE DatosSeguimiento
+ADD CONSTRAINT FK_DatosSeguimiento_Paciente
+FOREIGN KEY (id_paciente) REFERENCES Persona(id_persona);
+
+ALTER TABLE DatosSeguimiento
+ADD CONSTRAINT FK_DatosSeguimiento_Captacion
+FOREIGN KEY (id_captacion) REFERENCES Captacion(id_captacion);
+
+ALTER TABLE DatosSeguimiento
+ADD CONSTRAINT FK_DatosSeguimiento_Tratamiento
+FOREIGN KEY (id_tratamiento) REFERENCES TratamientosSeguimiento(id_tratamiento);
+
+ALTER TABLE DatosSeguimiento
+ADD CONSTRAINT FK_DatosSeguimiento_TipoSeguimiento
+FOREIGN KEY (id_tipo_seguimiento) REFERENCES TipoSeguimiento(id_tipo_seguimiento);
+
+ALTER TABLE DatosSeguimiento
+ADD CONSTRAINT FK_DatosSeguimiento_PersonaSeguimiento
+FOREIGN KEY (id_persona) REFERENCES Persona(id_persona);
+
+ALTER TABLE DatosSeguimiento
+ADD CONSTRAINT FK_DatosSeguimiento_TipoDeAlta
+FOREIGN KEY (id_tipo_de_alta) REFERENCES TipoDeAlta(id_tipo_de_alta);
+
+ALTER TABLE DatosSeguimiento
+ADD CONSTRAINT FK_DatosSeguimiento_Sintomas
+FOREIGN KEY (id_sintomas) REFERENCES Sintomas(id_sintomas);
