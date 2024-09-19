@@ -53,9 +53,9 @@ public class SilaisServiceJPA implements SilaisService {
     @Override
     public Optional<Silais> deleteSilais(int id_silais) {
         Optional<Silais> silaisOptional = silaisRepository.findById(id_silais);
-        silaisOptional.ifPresent(silaisDb -> {
-            silaisRepository.delete(silaisDb);
-        });
+        if (silaisOptional.isPresent()) {
+            silaisRepository.deleteById(id_silais);
+        }
         return silaisOptional;
     }
 

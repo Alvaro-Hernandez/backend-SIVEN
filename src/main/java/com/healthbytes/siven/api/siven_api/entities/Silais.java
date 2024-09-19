@@ -17,7 +17,7 @@ public class Silais {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_silais;
 
-    @NotBlank(message = "{NotBlank.silais.name}")
+    @NotBlank(message = "{NotBlank.silais.nombre}")
     private String nombre;
 
     @NotBlank(message = "{NotBlank.silais.direccion}")

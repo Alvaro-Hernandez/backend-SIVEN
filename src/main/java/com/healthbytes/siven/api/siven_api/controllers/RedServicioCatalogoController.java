@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/v1/catalogo/red-servicio")
-@Tag(name = "Catalogo de Red de Servicio", description = "CRUD Catalogo de Red de Servicios SIVEN")
+@Tag(name = "Catalogo de Red de Servicio", description = "Catalogo de Red de Servicios SIVEN")
 public class RedServicioCatalogoController {
 
     @Autowired
