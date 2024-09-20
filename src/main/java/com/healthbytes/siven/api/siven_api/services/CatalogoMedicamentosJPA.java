@@ -8,13 +8,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.healthbytes.siven.api.siven_api.entities.MedicamentosSeguimiento;
+import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaDosis;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.MedicamentoSeguimientoRepositoty;
+import com.healthbytes.siven.api.siven_api.repositories.medicacion.UnidadMedidaDosisRepository;
 
 @Service
 public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
 
     @Autowired
     private MedicamentoSeguimientoRepositoty medicamentosSeguimientoRepository;
+
+    @Autowired
+    private UnidadMedidaDosisRepository unidadMedidaDosisRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -58,6 +63,56 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
             medicamentosSeguimientoRepository.deleteById(id_medicamento);
         }
         return medicOptional;
+    }
+
+    // Unidad de medida de dosis
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<UnidadMedidaDosis> listAllUnidadMedidaDosis() {
+        return (List<UnidadMedidaDosis>) unidadMedidaDosisRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<UnidadMedidaDosis> getUnidadMedidaDosisById(int id_unidad_medida_dosis) {
+        return unidadMedidaDosisRepository.findById(id_unidad_medida_dosis);
+    }
+
+    @Transactional
+    @Override
+    public UnidadMedidaDosis saveUnidadMedidaDosis(UnidadMedidaDosis unidadmedidadosis) {
+        return unidadMedidaDosisRepository.save(unidadmedidadosis);
+    }
+
+    @Transactional
+    @Override
+    public Optional<UnidadMedidaDosis> updateUnidadMedidaDosis(int id_unidad_medida_dosis,
+            UnidadMedidaDosis unidadmedidadosis) {
+
+        Optional<UnidadMedidaDosis> unidadMedidaDosisOptional = unidadMedidaDosisRepository
+                .findById(id_unidad_medida_dosis);
+
+        if (unidadMedidaDosisOptional.isPresent()) {
+            UnidadMedidaDosis unidadMedidaDosisDb = unidadMedidaDosisOptional.orElseThrow();
+            unidadMedidaDosisDb.setNombre(unidadmedidadosis.getNombre());
+            return Optional.of(unidadMedidaDosisRepository.save(unidadMedidaDosisDb));
+        }
+
+        return unidadMedidaDosisOptional;
+
+    }
+
+    @Transactional
+    @Override
+    public Optional<UnidadMedidaDosis> deleteUnidadMedidaDosis(int id_unidad_medida_dosis) {
+        Optional<UnidadMedidaDosis> unidadMedidaDosisOptional = unidadMedidaDosisRepository
+                .findById(id_unidad_medida_dosis);
+        if (unidadMedidaDosisOptional.isPresent()) {
+            unidadMedidaDosisRepository.deleteById(id_unidad_medida_dosis);
+        }
+
+        return unidadMedidaDosisOptional;
     }
 
 }
