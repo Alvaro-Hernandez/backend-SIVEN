@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
+import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.ComorbilidadesCaptacionRepository;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.CondicionPersonaCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.EventoSaludCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarCaptacionCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.MaternidadCaptacionRepository;
@@ -30,6 +32,9 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private LugarCaptacionCaptacionRepository lugarCaptacionCaptacionRepository;
+
+    @Autowired
+    private CondicionPersonaCaptacionRepository condicionPersonaCaptacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -201,6 +206,53 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         }
         return lugarCaptacionOptional;
 
+    }
+
+    // Persistencia de datos Condicion Persona
+    @Transactional(readOnly = true)
+    @Override
+    public List<CondicionPersona> listAllCondicionPersona() {
+        return (List<CondicionPersona>) condicionPersonaCaptacionRepository.findAll();
+
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<CondicionPersona> getCondicionPersonaById(int id_condicion_persona) {
+        return condicionPersonaCaptacionRepository.findById(id_condicion_persona);
+
+    }
+
+    @Transactional
+    @Override
+    public CondicionPersona saveCondicionPersona(CondicionPersona condicionpersona) {
+        return condicionPersonaCaptacionRepository.save(condicionpersona);
+
+    }
+
+    @Transactional
+    @Override
+    public Optional<CondicionPersona> updateCondicionPersona(int id_condicion_persona,
+            CondicionPersona condicionpersona) {
+        Optional<CondicionPersona> condicionPersonaOptional = condicionPersonaCaptacionRepository
+                .findById(id_condicion_persona);
+        if (condicionPersonaOptional.isPresent()) {
+            CondicionPersona condicionPersonaDb = condicionPersonaOptional.orElseThrow();
+            condicionPersonaDb.setNombre(condicionpersona.getNombre());
+            return Optional.of(condicionPersonaCaptacionRepository.save(condicionPersonaDb));
+        }
+        return condicionPersonaOptional;
+
+    }
+
+    @Override
+    public Optional<CondicionPersona> deleteCondicionPersona(int id_condicion_persona) {
+        Optional<CondicionPersona> condicionPersonaOptional = condicionPersonaCaptacionRepository
+                .findById(id_condicion_persona);
+        if (condicionPersonaOptional.isPresent()) {
+            condicionPersonaCaptacionRepository.deleteById(id_condicion_persona);
+        }
+        return condicionPersonaOptional;
     }
 
 }
