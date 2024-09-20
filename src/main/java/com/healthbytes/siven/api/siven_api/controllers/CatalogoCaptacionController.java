@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -137,6 +137,64 @@ public class CatalogoCaptacionController {
             return ResponseEntity.ok(maternidadOptional.orElseThrow());
         }
 
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE COMORBILIDADES
+
+    @Operation(summary = "Optener todas las operaciones de comorbilidades")
+    @PostMapping("/list-comorbilidades")
+    public List<Comorbilidades> listAllComorbilidades() {
+        return catalogoCaptacionService.listAllComorbilidades();
+    }
+
+    @Operation(summary = "Actualizar una opcion de comorbilidades")
+    @PutMapping("/update-comorbilidades/{id_comorbilidades}")
+    public ResponseEntity<?> updateComorbilidades(@PathVariable int id_comorbilidades,
+            @Valid @RequestBody Comorbilidades comorbilidades, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<Comorbilidades> comorbilidadesOptional = catalogoCaptacionService
+                .updateComorbilidades(id_comorbilidades, comorbilidades);
+        if (comorbilidadesOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(comorbilidadesOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+
+    }
+
+    @Operation(summary = "Optener una opcion de comorbilidades")
+    @GetMapping("/comorbilidades/{id_comorbilidades}")
+    public ResponseEntity<?> getComorbilidadesById(@PathVariable int id_comorbilidades) {
+        Optional<Comorbilidades> comorbilidades = catalogoCaptacionService.getComorbilidadesById(id_comorbilidades);
+        if (comorbilidades.isPresent()) {
+            return ResponseEntity.ok(comorbilidades.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear una opcion de comorbilidades")
+    @PostMapping("/create-comorbilidades")
+    public ResponseEntity<?> createComorbilidades(@Valid @RequestBody Comorbilidades comorbilidades,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveComorbilidades(comorbilidades));
+    }
+
+    @Operation(summary = "Eliminar una opcion de comorbilidades")
+    @DeleteMapping("/delete-comorbilidades/{id_comorbilidades}")
+    public ResponseEntity<?> deleteComorbilidades(@PathVariable int id_comorbilidades) {
+        Optional<Comorbilidades> comorbilidadesOptional = catalogoCaptacionService
+                .deleteComorbilidades(id_comorbilidades);
+        if (comorbilidadesOptional.isPresent()) {
+            return ResponseEntity.ok(comorbilidadesOptional.orElseThrow());
+        }
         return ResponseEntity.notFound().build();
     }
 
