@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthbytes.siven.api.siven_api.entities.MedicamentosSeguimiento;
 import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaDosis;
+import com.healthbytes.siven.api.siven_api.entities.ViaAdministracion;
 import com.healthbytes.siven.api.siven_api.services.CatalogoMedicamentosService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -93,7 +94,7 @@ public class CatalogoMedicamentoController {
         return ResponseEntity.notFound().build();
     }
 
-    // CONTROLADOR DE UNIDAD DE MEDIDA
+    // CONTROLADORES DE UNIDAD DE MEDIDA
     @Operation(summary = "Listar todas las Unidades de Medida")
     @GetMapping("/list-unidad-medida")
     public List<UnidadMedidaDosis> listAllUnidadMedidaDosis() {
@@ -155,6 +156,69 @@ public class CatalogoMedicamentoController {
 
         return ResponseEntity.notFound().build();
 
+    }
+
+    // CONTROLADORES DE VIAS DE ADMINISTRACION
+    @Operation(summary = "Listar todas las vias de administracion")
+    @GetMapping("/list-vias-administracion")
+    public List<ViaAdministracion> listAllViaAdministracion() {
+        return catalogoMedicamentosService.listAllViaAdministracion();
+    }
+
+    @Operation(summary = "Obtener una via de administracion")
+    @GetMapping("/via-administracion/{id_via_administracion}")
+    public ResponseEntity<?> getViaAdministracionById(@PathVariable int id_via_administracion) {
+        Optional<ViaAdministracion> viaAdministracionOptional = catalogoMedicamentosService
+                .getViaAdministracionById(id_via_administracion);
+
+        if (viaAdministracionOptional.isPresent()) {
+            return ResponseEntity.ok(viaAdministracionOptional.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear una nueva via de administracion")
+    @PostMapping("/create-via-administracion")
+    public ResponseEntity<?> createViaAdministracion(@Valid @RequestBody ViaAdministracion viaadministracion,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoMedicamentosService.saveViaAdministracion(viaadministracion));
+    }
+
+    @Operation(summary = "Actualizar una via de administracion")
+    @PutMapping("/update-via-administracion/{id_via_administracion}")
+    public ResponseEntity<?> updateViaAdministracion(@PathVariable int id_via_administracion,
+            @Valid @RequestBody ViaAdministracion viaadministracion, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<ViaAdministracion> viaAdministracionOptional = catalogoMedicamentosService
+                .updateViaAdministracion(id_via_administracion, viaadministracion);
+
+        if (viaAdministracionOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(viaAdministracionOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una via de administracion")
+    @DeleteMapping("/delete-via-administracion/{id_via_administracion}")
+    public ResponseEntity<?> deleteViaAdministracion(@PathVariable int id_via_administracion) {
+        Optional<ViaAdministracion> viaAdministracionOptional = catalogoMedicamentosService
+                .deleteViaAdministracion(id_via_administracion);
+
+        if (viaAdministracionOptional.isPresent()) {
+            return ResponseEntity.ok(viaAdministracionOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     private ResponseEntity<?> validationBadRequest(BindingResult result) {

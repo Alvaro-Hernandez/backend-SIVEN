@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.healthbytes.siven.api.siven_api.entities.MedicamentosSeguimiento;
 import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaDosis;
+import com.healthbytes.siven.api.siven_api.entities.ViaAdministracion;
 
 public interface CatalogoMedicamentosService {
 
@@ -43,4 +44,22 @@ public interface CatalogoMedicamentosService {
 
     // Metodo para borrar una unidad de dosis
     Optional<UnidadMedidaDosis> deleteUnidadMedidaDosis(int id_unidad_medida_dosis);
+
+    // PERSISTENCIA DE VIAS DE ADMINISTRACION
+
+    // Metodo para obtener todas las vias de administracion
+    List<ViaAdministracion> listAllViaAdministracion();
+
+    // Metodo para buscar una via de administracion
+    Optional<ViaAdministracion> getViaAdministracionById(int id_via_administracion);
+
+    // Metodo para crear una via de administracion
+    ViaAdministracion saveViaAdministracion(ViaAdministracion viaadministracion);
+
+    // Metodo para actualizar una via de administracion
+    Optional<ViaAdministracion> updateViaAdministracion(int id_via_administracion,
+            ViaAdministracion viaadministracion);
+
+    // Metodo para borrar una via de administracion
+    Optional<ViaAdministracion> deleteViaAdministracion(int id_via_administracion);
 }
