@@ -12,11 +12,13 @@ import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
+import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.ComorbilidadesCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.CondicionPersonaCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.EventoSaludCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarCaptacionCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.MaternidadCaptacionRepository;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.PaisOcurrenciaEventoSaludCaptacionRepository;
 
 @Service
 public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
@@ -35,6 +37,9 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private CondicionPersonaCaptacionRepository condicionPersonaCaptacionRepository;
+
+    @Autowired
+    private PaisOcurrenciaEventoSaludCaptacionRepository paisOcurrenciaEventoSaludCaptacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -253,6 +258,52 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
             condicionPersonaCaptacionRepository.deleteById(id_condicion_persona);
         }
         return condicionPersonaOptional;
+    }
+
+    // Persistencia de datos Pais Ocurrencia Evento Salud
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<PaisOcurrenciaEventoSalud> listAllPaisOcurrenciaEventoSalud() {
+        return (List<PaisOcurrenciaEventoSalud>) paisOcurrenciaEventoSaludCaptacionRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<PaisOcurrenciaEventoSalud> getPaisOcurrenciaEventoSaludById(int id_pais_ocurrencia_evento_salud) {
+        return paisOcurrenciaEventoSaludCaptacionRepository.findById(id_pais_ocurrencia_evento_salud);
+    }
+
+    @Transactional
+    @Override
+    public PaisOcurrenciaEventoSalud savePaisOcurrenciaEventoSalud(
+            PaisOcurrenciaEventoSalud paisocurrenciaeventosalud) {
+        return paisOcurrenciaEventoSaludCaptacionRepository.save(paisocurrenciaeventosalud);
+    }
+
+    @Transactional
+    @Override
+    public Optional<PaisOcurrenciaEventoSalud> updatePaisOcurrenciaEventoSalud(int id_pais_ocurrencia_evento_salud,
+            PaisOcurrenciaEventoSalud paisocurrenciaeventosalud) {
+        Optional<PaisOcurrenciaEventoSalud> paisocurrenciaeventosaludOptional = paisOcurrenciaEventoSaludCaptacionRepository
+                .findById(id_pais_ocurrencia_evento_salud);
+        if (paisocurrenciaeventosaludOptional.isPresent()) {
+            PaisOcurrenciaEventoSalud paisOcurrenciaDb = paisocurrenciaeventosaludOptional.orElseThrow();
+            paisOcurrenciaDb.setNombre(paisocurrenciaeventosalud.getNombre());
+            paisOcurrenciaDb.setCodigo_postal(paisocurrenciaeventosalud.getCodigo_postal());
+            return Optional.of(paisOcurrenciaEventoSaludCaptacionRepository.save(paisOcurrenciaDb));
+        }
+        return paisocurrenciaeventosaludOptional;
+    }
+
+    @Override
+    public Optional<PaisOcurrenciaEventoSalud> deletePaisOcurrenciaEventoSalud(int id_pais_ocurrencia_evento_salud) {
+        Optional<PaisOcurrenciaEventoSalud> paisocurrenciaeventosaludOptional = paisOcurrenciaEventoSaludCaptacionRepository
+                .findById(id_pais_ocurrencia_evento_salud);
+        if (paisocurrenciaeventosaludOptional.isPresent()) {
+            paisOcurrenciaEventoSaludCaptacionRepository.deleteById(id_pais_ocurrencia_evento_salud);
+        }
+        return paisocurrenciaeventosaludOptional;
     }
 
 }

@@ -22,6 +22,7 @@ import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
+import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -313,6 +314,66 @@ public class CatalogoCaptacionController {
                 .deleteCondicionPersona(id_condicion_persona);
         if (condicionpersonaOptional.isPresent()) {
             return ResponseEntity.ok(condicionpersonaOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE Pais de ocurrencia de evento de salud
+
+    @Operation(summary = "Crear una opcion de pais de ocurrencia de evento de salud")
+    @PostMapping("/create-pais-ocurrencia-evento-salud")
+    public ResponseEntity<?> createPaisOcurrenciaEventoSalud(
+            @Valid @RequestBody PaisOcurrenciaEventoSalud paisocurrenciaeventosalud,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.savePaisOcurrenciaEventoSalud(paisocurrenciaeventosalud));
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Pais de ocurrencia de evento de salud")
+    @GetMapping("/list-pais-ocurrencia-evento-salud")
+    public List<PaisOcurrenciaEventoSalud> listAllPaisOcurrenciaEventoSalud() {
+        return catalogoCaptacionService.listAllPaisOcurrenciaEventoSalud();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Pais de ocurrencia de evento de salud")
+    @PutMapping("/update-pais-ocurrencia-evento-salud/{id_pais_ocurrencia_evento_salud}")
+    public ResponseEntity<?> updatePaisOcurrenciaEventoSalud(@PathVariable int id_pais_ocurrencia_evento_salud,
+            @Valid @RequestBody PaisOcurrenciaEventoSalud paisocurrenciaeventosalud, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<PaisOcurrenciaEventoSalud> paisocurrenciaeventosaludOptional = catalogoCaptacionService
+                .updatePaisOcurrenciaEventoSalud(id_pais_ocurrencia_evento_salud, paisocurrenciaeventosalud);
+        if (paisocurrenciaeventosaludOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(paisocurrenciaeventosaludOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+
+    }
+
+    @Operation(summary = "Optener una opcion de Pais de ocurrencia de evento de salud")
+    @GetMapping("/pais-ocurrencia-evento-salud/{id_pais_ocurrencia_evento_salud}")
+    public ResponseEntity<?> getPaisOcurrenciaEventoSalud(@PathVariable int id_pais_ocurrencia_evento_salud) {
+        Optional<PaisOcurrenciaEventoSalud> paisocurrenciaeventosalud = catalogoCaptacionService
+                .getPaisOcurrenciaEventoSaludById(id_pais_ocurrencia_evento_salud);
+        if (paisocurrenciaeventosalud.isPresent()) {
+            return ResponseEntity.ok(paisocurrenciaeventosalud.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Eliminar una opcion de Pais de ocurrencia de evento de salud")
+    @DeleteMapping("/delete-pais-ocurrencia-evento-salud/{id_pais_ocurrencia_evento_salud}")
+    public ResponseEntity<?> deletePaisOcurrenciaEventoSalud(@PathVariable int id_pais_ocurrencia_evento_salud) {
+        Optional<PaisOcurrenciaEventoSalud> paisocurrenciaeventosalud = catalogoCaptacionService
+                .deletePaisOcurrenciaEventoSalud(id_pais_ocurrencia_evento_salud);
+        if (paisocurrenciaeventosalud.isPresent()) {
+            return ResponseEntity.ok(paisocurrenciaeventosalud.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
