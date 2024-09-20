@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthbytes.siven.api.siven_api.entities.MedicamentosSeguimiento;
 import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaDosis;
+import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaFrecuencia;
 import com.healthbytes.siven.api.siven_api.entities.ViaAdministracion;
 import com.healthbytes.siven.api.siven_api.services.CatalogoMedicamentosService;
 
@@ -216,6 +217,70 @@ public class CatalogoMedicamentoController {
 
         if (viaAdministracionOptional.isPresent()) {
             return ResponseEntity.ok(viaAdministracionOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    // CONTROLADORES DE UNIDAD DE FRECUENCIA
+    @Operation(summary = "Listar todas las Unidades de Frecuencia")
+    @GetMapping("/list-unidad-medida-frecuencia")
+    public List<UnidadMedidaFrecuencia> listAllUnidadMedidaFrecuencia() {
+        return catalogoMedicamentosService.listAllUnidadMedidaFrecuencia();
+    }
+
+    @Operation(summary = "Obtener una Unidad de Frecuencia")
+    @GetMapping("/unidad-medida-frecuencia/{id_unidad_medida_frecuencia}")
+    public ResponseEntity<?> getUnidadMedidaFrecuenciaById(@PathVariable int id_unidad_medida_frecuencia) {
+        Optional<UnidadMedidaFrecuencia> unidadMedidaFrecuenciaOptional = catalogoMedicamentosService
+                .getUnidadMedidaFrecuenciaById(id_unidad_medida_frecuencia);
+
+        if (unidadMedidaFrecuenciaOptional.isPresent()) {
+            return ResponseEntity.ok(unidadMedidaFrecuenciaOptional.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear una nueva Unidad de Frecuencia")
+    @PostMapping("/create-unidad-medida-frecuencia")
+    public ResponseEntity<?> createUnidadMedidaFrecuencia(
+            @Valid @RequestBody UnidadMedidaFrecuencia unidadmedidafrecuencia,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoMedicamentosService.saveUnidadMedidaFrecuencia(unidadmedidafrecuencia));
+    }
+
+    @Operation(summary = "Actualizar una Unidad de Frecuencia")
+    @PutMapping("/update-unidad-medida-frecuencia/{id_unidad_medida_frecuencia}")
+    public ResponseEntity<?> updateUnidadMedidaFrecuencia(@PathVariable int id_unidad_medida_frecuencia,
+            @Valid @RequestBody UnidadMedidaFrecuencia unidadmedidafrecuencia, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<UnidadMedidaFrecuencia> unidadMedidaFrecuenciaOptional = catalogoMedicamentosService
+                .updateUnidadMedidaFrecuencia(id_unidad_medida_frecuencia, unidadmedidafrecuencia);
+
+        if (unidadMedidaFrecuenciaOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(unidadMedidaFrecuenciaOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una Unidad de Frecuencia")
+    @DeleteMapping("/delete-unidad-medida-frecuencia/{id_unidad_medida_frecuencia}")
+    public ResponseEntity<?> deleteUnidadMedidaFrecuencia(@PathVariable int id_unidad_medida_frecuencia) {
+        Optional<UnidadMedidaFrecuencia> unidadMedidaFrecuenciaOptional = catalogoMedicamentosService
+                .deleteUnidadMedidaFrecuencia(id_unidad_medida_frecuencia);
+
+        if (unidadMedidaFrecuenciaOptional.isPresent()) {
+            return ResponseEntity.ok(unidadMedidaFrecuenciaOptional.orElseThrow());
         }
 
         return ResponseEntity.notFound().build();
