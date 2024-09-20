@@ -8,6 +8,7 @@ import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
+import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 
 public interface CatalogoCaptacionService {
 
@@ -93,5 +94,22 @@ public interface CatalogoCaptacionService {
 
     // Metodo para borrar una condicion de persona
     Optional<CondicionPersona> deleteCondicionPersona(int id_condicion_persona);
+
+    // PaisOcurrenciaEventoSalud
+    // Metodo para obtener el catalogo de pais de ocurrencia de evento de salud
+    List<PaisOcurrenciaEventoSalud> listAllPaisOcurrenciaEventoSalud();
+
+    // Metodo para buscar un pais de ocurrencia de evento de salud
+    Optional<PaisOcurrenciaEventoSalud> getPaisOcurrenciaEventoSaludById(int id_pais_ocurrencia_evento_salud);
+
+    // Metodo para crear un pais de ocurrencia de evento de salud
+    PaisOcurrenciaEventoSalud savePaisOcurrenciaEventoSalud(PaisOcurrenciaEventoSalud paisocurrenciaeventosalud);
+
+    // Metodo para actualizar un pais de ocurrencia de evento de salud
+    Optional<PaisOcurrenciaEventoSalud> updatePaisOcurrenciaEventoSalud(int id_pais_ocurrencia_evento_salud,
+            PaisOcurrenciaEventoSalud paisocurrenciaeventosalud);
+
+    // Metodo para borrar un pais de ocurrencia de evento de salud
+    Optional<PaisOcurrenciaEventoSalud> deletePaisOcurrenciaEventoSalud(int id_pais_ocurrencia_evento_salud);
 
 }
