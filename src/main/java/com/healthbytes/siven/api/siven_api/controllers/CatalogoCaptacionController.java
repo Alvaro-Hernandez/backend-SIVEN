@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -81,6 +82,61 @@ public class CatalogoCaptacionController {
         if (eventosaludOptional.isPresent()) {
             return ResponseEntity.ok(eventosaludOptional.orElseThrow());
         }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE MATERNIDAD
+
+    @Operation(summary = "Obtener todas las opciones de maternidad")
+    @GetMapping("/list-maternidad")
+    public List<Maternidad> listAllMaternidad() {
+        return catalogoCaptacionService.listAllMaternidad();
+    }
+
+    @Operation(summary = "Obtener una opcion de maternidad")
+    @GetMapping("/maternidad/{id_maternidad}")
+    public ResponseEntity<?> getMaternidadById(@PathVariable int id_maternidad) {
+        Optional<Maternidad> maternidad = catalogoCaptacionService.getMaternidadById(id_maternidad);
+        if (maternidad.isPresent()) {
+            return ResponseEntity.ok(maternidad.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear una opcion de maternidad")
+    @PostMapping("/create-maternidad")
+    public ResponseEntity<?> createMaternidad(@Valid @RequestBody Maternidad maternidad, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(catalogoCaptacionService.saveMaternidad(maternidad));
+    }
+
+    @Operation(summary = "Actualizar una opcion de maternidad")
+    @PutMapping("/update-maternidad/{id_maternidad}")
+    public ResponseEntity<?> updateMaternidad(@PathVariable int id_maternidad,
+            @Valid @RequestBody Maternidad maternidad, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<Maternidad> maternidadOptional = catalogoCaptacionService.updateMaternidad(id_maternidad, maternidad);
+        if (maternidadOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(maternidadOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Borrar una opcion de maternidad")
+    @DeleteMapping("/delete-maternidad/{id_maternidad}")
+    public ResponseEntity<?> deleteMaternidad(@PathVariable int id_maternidad) {
+        Optional<Maternidad> maternidadOptional = catalogoCaptacionService.deleteMaternidad(id_maternidad);
+        if (maternidadOptional.isPresent()) {
+            return ResponseEntity.ok(maternidadOptional.orElseThrow());
+        }
+
         return ResponseEntity.notFound().build();
     }
 
