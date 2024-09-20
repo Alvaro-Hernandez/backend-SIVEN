@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 
 public interface CatalogoCaptacionService {
@@ -58,5 +59,21 @@ public interface CatalogoCaptacionService {
 
     // Metodo para borrar una comorbilidad
     Optional<Comorbilidades> deleteComorbilidades(int id_comorbilidades);
+
+    // LugarCaptacion
+    // Metodo para obtener el catalogo de lugar de captacion
+    List<LugarCaptacion> listAllLugarCaptacion();
+
+    // Metodo para buscar un lugar de captacion
+    Optional<LugarCaptacion> getLugarCaptacionById(int id_lugar_captacion);
+
+    // Metodo para crear un lugar de captacion
+    LugarCaptacion saveLugarCaptacion(LugarCaptacion lugarcaptacion);
+
+    // Metodo para actualizar un lugar de captacion
+    Optional<LugarCaptacion> updateLugarCaptacion(int id_lugar_captacion, LugarCaptacion lugarcaptacion);
+
+    // Metodo para borrar un lugar de captacion
+    Optional<LugarCaptacion> deleteLugarCaptacion(int id_lugar_captacion);
 
 }

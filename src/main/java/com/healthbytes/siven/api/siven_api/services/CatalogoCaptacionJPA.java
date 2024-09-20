@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.ComorbilidadesCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.EventoSaludCaptacionRepository;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarCaptacionCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.MaternidadCaptacionRepository;
 
 @Service
@@ -25,6 +27,9 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private ComorbilidadesCaptacionRepository comorbilidadesCaptacionRepository;
+
+    @Autowired
+    private LugarCaptacionCaptacionRepository lugarCaptacionCaptacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -149,6 +154,52 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
             comorbilidadesCaptacionRepository.deleteById(id_comorbilidades);
         }
         return comorbilidadesOptional;
+
+    }
+
+    // PERSISTENCIA DE DATOS LUGAR DE CAPTACION
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<LugarCaptacion> listAllLugarCaptacion() {
+        return (List<LugarCaptacion>) lugarCaptacionCaptacionRepository.findAll();
+
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<LugarCaptacion> getLugarCaptacionById(int id_lugar_captacion) {
+        return lugarCaptacionCaptacionRepository.findById(id_lugar_captacion);
+    }
+
+    @Transactional
+    @Override
+    public LugarCaptacion saveLugarCaptacion(LugarCaptacion lugarcaptacion) {
+        return lugarCaptacionCaptacionRepository.save(lugarcaptacion);
+    }
+
+    @Transactional
+    @Override
+    public Optional<LugarCaptacion> updateLugarCaptacion(int id_lugar_captacion, LugarCaptacion lugarcaptacion) {
+        Optional<LugarCaptacion> lugarCaptacionOptional = lugarCaptacionCaptacionRepository
+                .findById(id_lugar_captacion);
+        if (lugarCaptacionOptional.isPresent()) {
+            LugarCaptacion lugarCaptacionDb = lugarCaptacionOptional.orElseThrow();
+            lugarCaptacionDb.setNombre(lugarcaptacion.getNombre());
+            return Optional.of(lugarCaptacionCaptacionRepository.save(lugarCaptacionDb));
+        }
+        return lugarCaptacionOptional;
+
+    }
+
+    @Override
+    public Optional<LugarCaptacion> deleteLugarCaptacion(int id_lugar_captacion) {
+        Optional<LugarCaptacion> lugarCaptacionOptional = lugarCaptacionCaptacionRepository
+                .findById(id_lugar_captacion);
+        if (lugarCaptacionOptional.isPresent()) {
+            lugarCaptacionCaptacionRepository.deleteById(id_lugar_captacion);
+        }
+        return lugarCaptacionOptional;
 
     }
 
