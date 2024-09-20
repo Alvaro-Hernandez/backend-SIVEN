@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -194,6 +195,64 @@ public class CatalogoCaptacionController {
                 .deleteComorbilidades(id_comorbilidades);
         if (comorbilidadesOptional.isPresent()) {
             return ResponseEntity.ok(comorbilidadesOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE LUGAR DE CAPTACION
+
+    @Operation(summary = "Crear una opcion de Lugar de Captacion")
+    @PostMapping("/create-lugar-captacion")
+    public ResponseEntity<?> createLugarCaptacion(@Valid @RequestBody LugarCaptacion lugarCaptacion,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveLugarCaptacion(lugarCaptacion));
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Lugar de Captacion")
+    @GetMapping("/list-comorbilidades")
+    public List<LugarCaptacion> listAllLugarCaptacions() {
+        return catalogoCaptacionService.listAllLugarCaptacion();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Lugar de Captacion")
+    @PutMapping("/update-lugar-captacion/{id_lugar_captacion}")
+    public ResponseEntity<?> updateLugarCaptacion(@PathVariable int id_lugar_captacion,
+            @Valid @RequestBody LugarCaptacion lugarCaptacion, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<LugarCaptacion> lugarCaptacionOptional = catalogoCaptacionService
+                .updateLugarCaptacion(id_lugar_captacion, lugarCaptacion);
+        if (lugarCaptacionOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(lugarCaptacionOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+
+    }
+
+    @Operation(summary = "Optener una opcion de Lugar de Captacion")
+    @GetMapping("/lugar-captacion/{id_lugar_captacion}")
+    public ResponseEntity<?> getLugarCaptacionById(@PathVariable int id_lugar_captacion) {
+        Optional<LugarCaptacion> lugarcaptacion = catalogoCaptacionService.getLugarCaptacionById(id_lugar_captacion);
+        if (lugarcaptacion.isPresent()) {
+            return ResponseEntity.ok(lugarcaptacion.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Eliminar una opcion de Lugar de Captacion")
+    @DeleteMapping("/delete-lugar-captacion/{id_lugar_captacion}")
+    public ResponseEntity<?> deleteLugarCaptacion(@PathVariable int id_lugar_captacion) {
+        Optional<LugarCaptacion> lugarcaptacionOptional = catalogoCaptacionService
+                .deleteLugarCaptacion(id_lugar_captacion);
+        if (lugarcaptacionOptional.isPresent()) {
+            return ResponseEntity.ok(lugarcaptacionOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
