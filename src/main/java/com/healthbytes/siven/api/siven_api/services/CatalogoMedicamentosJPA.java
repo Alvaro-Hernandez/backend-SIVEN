@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.healthbytes.siven.api.siven_api.entities.MedicamentosSeguimiento;
 import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaDosis;
+import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaFrecuencia;
 import com.healthbytes.siven.api.siven_api.entities.ViaAdministracion;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.MedicamentoSeguimientoRepositoty;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.UnidadMedidaDosisRepository;
+import com.healthbytes.siven.api.siven_api.repositories.medicacion.UnidadMedidaFrecuenciaRepository;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.ViaAdministracionRepository;
 
 @Service
@@ -25,6 +27,9 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
 
     @Autowired
     private ViaAdministracionRepository viaAdministracionRepository;
+
+    @Autowired
+    private UnidadMedidaFrecuenciaRepository unidadMedidaFrecuenciaRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -167,6 +172,54 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
         }
 
         return viaAdministracionOptional;
+    }
+
+    // Unidad de medida de frecuencia
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<UnidadMedidaFrecuencia> listAllUnidadMedidaFrecuencia() {
+        return (List<UnidadMedidaFrecuencia>) unidadMedidaFrecuenciaRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<UnidadMedidaFrecuencia> getUnidadMedidaFrecuenciaById(int id_unidad_medida_frecuencia) {
+        return unidadMedidaFrecuenciaRepository.findById(id_unidad_medida_frecuencia);
+    }
+
+    @Transactional
+    @Override
+    public UnidadMedidaFrecuencia saveUnidadMedidaFrecuencia(UnidadMedidaFrecuencia unidadmedidafrecuencia) {
+        return unidadMedidaFrecuenciaRepository.save(unidadmedidafrecuencia);
+    }
+
+    @Transactional
+    @Override
+    public Optional<UnidadMedidaFrecuencia> updateUnidadMedidaFrecuencia(int id_unidad_medida_frecuencia,
+            UnidadMedidaFrecuencia unidadmedidafrecuencia) {
+        Optional<UnidadMedidaFrecuencia> unidadMedidaFrecuenciaOptional = unidadMedidaFrecuenciaRepository
+                .findById(id_unidad_medida_frecuencia);
+        if (unidadMedidaFrecuenciaOptional.isPresent()) {
+            UnidadMedidaFrecuencia unidadMedidaFrecuenciaDb = unidadMedidaFrecuenciaOptional.orElseThrow();
+            unidadMedidaFrecuenciaDb.setNombre(unidadmedidafrecuencia.getNombre());
+            return Optional.of(unidadMedidaFrecuenciaRepository.save(unidadMedidaFrecuenciaDb));
+        }
+
+        return unidadMedidaFrecuenciaOptional;
+
+    }
+
+    @Transactional
+    @Override
+    public Optional<UnidadMedidaFrecuencia> deleteUnidadMedidaFrecuencia(int id_unidad_medida_frecuencia) {
+        Optional<UnidadMedidaFrecuencia> unidadMedidaFrecuenciaOptional = unidadMedidaFrecuenciaRepository
+                .findById(id_unidad_medida_frecuencia);
+        if (unidadMedidaFrecuenciaOptional.isPresent()) {
+            unidadMedidaFrecuenciaRepository.deleteById(id_unidad_medida_frecuencia);
+        }
+
+        return unidadMedidaFrecuenciaOptional;
     }
 
 }
