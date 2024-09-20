@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.ComorbilidadesCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.EventoSaludCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.MaternidadCaptacionRepository;
 
@@ -20,6 +22,9 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private MaternidadCaptacionRepository maternidadCaptacionRepository;
+
+    @Autowired
+    private ComorbilidadesCaptacionRepository comorbilidadesCaptacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -101,6 +106,50 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         }
 
         return maternidadOptional;
+    }
+
+    // PERSISTENCIA DE DATOS COMORBILIDADES
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Comorbilidades> listAllComorbilidades() {
+        return (List<Comorbilidades>) comorbilidadesCaptacionRepository.findAll();
+
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<Comorbilidades> getComorbilidadesById(int id_comorbilidades) {
+        return comorbilidadesCaptacionRepository.findById(id_comorbilidades);
+
+    }
+
+    @Transactional
+    @Override
+    public Comorbilidades saveComorbilidades(Comorbilidades comorbilidades) {
+        return comorbilidadesCaptacionRepository.save(comorbilidades);
+    }
+
+    @Transactional
+    @Override
+    public Optional<Comorbilidades> updateComorbilidades(int id_comorbilidades, Comorbilidades comorbilidades) {
+        Optional<Comorbilidades> comorbilidadesOptional = comorbilidadesCaptacionRepository.findById(id_comorbilidades);
+        if (comorbilidadesOptional.isPresent()) {
+            Comorbilidades comorbilidadesDb = comorbilidadesOptional.orElseThrow();
+            comorbilidadesDb.setNombre(comorbilidades.getNombre());
+            return Optional.of(comorbilidadesCaptacionRepository.save(comorbilidadesDb));
+        }
+        return comorbilidadesOptional;
+    }
+
+    @Override
+    public Optional<Comorbilidades> deleteComorbilidades(int id_comorbilidades) {
+        Optional<Comorbilidades> comorbilidadesOptional = comorbilidadesCaptacionRepository.findById(id_comorbilidades);
+        if (comorbilidadesOptional.isPresent()) {
+            comorbilidadesCaptacionRepository.deleteById(id_comorbilidades);
+        }
+        return comorbilidadesOptional;
+
     }
 
 }

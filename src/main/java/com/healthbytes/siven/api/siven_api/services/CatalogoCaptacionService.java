@@ -2,6 +2,8 @@ package com.healthbytes.siven.api.siven_api.services;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 
@@ -40,4 +42,21 @@ public interface CatalogoCaptacionService {
 
     // Metodo para borrar una maternidad
     Optional<Maternidad> deleteMaternidad(int id_maternidad);
+
+    // Comorbilidades
+    // Metodo para obtener el catalogo de comorbilidades
+    List<Comorbilidades> listAllComorbilidades();
+
+    // Metodo para buscar una comorbilidad
+    Optional<Comorbilidades> getComorbilidadesById(int id_comorbilidades);
+
+    // Metodo para crear una comorbilidad
+    Comorbilidades saveComorbilidades(Comorbilidades comorbilidades);
+
+    // Metodo para actualizar una comorbilidad
+    Optional<Comorbilidades> updateComorbilidades(int id_comorbilidades, Comorbilidades comorbilidades);
+
+    // Metodo para borrar una comorbilidad
+    Optional<Comorbilidades> deleteComorbilidades(int id_comorbilidades);
+
 }
