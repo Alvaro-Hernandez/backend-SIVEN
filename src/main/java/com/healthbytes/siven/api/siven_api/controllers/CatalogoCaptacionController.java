@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
+import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
@@ -253,6 +254,65 @@ public class CatalogoCaptacionController {
                 .deleteLugarCaptacion(id_lugar_captacion);
         if (lugarcaptacionOptional.isPresent()) {
             return ResponseEntity.ok(lugarcaptacionOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE CONDICION PERSONA
+
+    @Operation(summary = "Crear una opcion de condicion persona")
+    @PostMapping("/create-condicion-persona")
+    public ResponseEntity<?> createCondicionPersona(@Valid @RequestBody CondicionPersona condicionPersona,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveCondicionPersona(condicionPersona));
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Condicion Persona")
+    @GetMapping("/list-condicion-persona")
+    public List<CondicionPersona> listAllCondicionPersonas() {
+        return catalogoCaptacionService.listAllCondicionPersona();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Condicion Persona")
+    @PutMapping("/update-condicion-persona/{id_condicion_persona}")
+    public ResponseEntity<?> updateCondicionPersona(@PathVariable int id_condicion_persona,
+            @Valid @RequestBody CondicionPersona condicionPersona, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<CondicionPersona> condicionpersonaOptional = catalogoCaptacionService
+                .updateCondicionPersona(id_condicion_persona, condicionPersona);
+        if (condicionpersonaOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(condicionpersonaOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+
+    }
+
+    @Operation(summary = "Optener una opcion de Condicion Persona")
+    @GetMapping("/condicion-persona/{id_condicion_persona}")
+    public ResponseEntity<?> getCondicionPersona(@PathVariable int id_condicion_persona) {
+        Optional<CondicionPersona> condicionpersona = catalogoCaptacionService
+                .getCondicionPersonaById(id_condicion_persona);
+        if (condicionpersona.isPresent()) {
+            return ResponseEntity.ok(condicionpersona.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Eliminar una opcion de Condicion Persona")
+    @DeleteMapping("/delete-condicion-persona/{id_condicion_persona}")
+    public ResponseEntity<?> deleteCondicionPersona(@PathVariable int id_condicion_persona) {
+        Optional<CondicionPersona> condicionpersonaOptional = catalogoCaptacionService
+                .deleteCondicionPersona(id_condicion_persona);
+        if (condicionpersonaOptional.isPresent()) {
+            return ResponseEntity.ok(condicionpersonaOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }

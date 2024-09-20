@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
+import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
@@ -75,5 +76,22 @@ public interface CatalogoCaptacionService {
 
     // Metodo para borrar un lugar de captacion
     Optional<LugarCaptacion> deleteLugarCaptacion(int id_lugar_captacion);
+
+    // CondicionPersona
+
+    // Metodo para obtener el catalogo de condicion de persona
+    List<CondicionPersona> listAllCondicionPersona();
+
+    // Metodo para buscar una condicion de persona
+    Optional<CondicionPersona> getCondicionPersonaById(int id_condicion_persona);
+
+    // Metodo para crear una condicion de persona
+    CondicionPersona saveCondicionPersona(CondicionPersona condicionpersona);
+
+    // Metodo para actualizar una condicion de persona
+    Optional<CondicionPersona> updateCondicionPersona(int id_condicion_persona, CondicionPersona condicionpersona);
+
+    // Metodo para borrar una condicion de persona
+    Optional<CondicionPersona> deleteCondicionPersona(int id_condicion_persona);
 
 }
