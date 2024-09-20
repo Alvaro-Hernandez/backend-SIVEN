@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthbytes.siven.api.siven_api.entities.MedicamentosSeguimiento;
+import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaDosis;
 import com.healthbytes.siven.api.siven_api.services.CatalogoMedicamentosService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -90,6 +91,70 @@ public class CatalogoMedicamentoController {
             return ResponseEntity.ok(medicOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // CONTROLADOR DE UNIDAD DE MEDIDA
+    @Operation(summary = "Listar todas las Unidades de Medida")
+    @GetMapping("/list-unidad-medida")
+    public List<UnidadMedidaDosis> listAllUnidadMedidaDosis() {
+        return catalogoMedicamentosService.listAllUnidadMedidaDosis();
+    }
+
+    @Operation(summary = "Obtener una Unidad de Medida")
+    @GetMapping("/unidad-medida/{id_unidad_medida_dosis}")
+    public ResponseEntity<?> getUnidadMedidaById(@PathVariable int id_unidad_medida_dosis) {
+        Optional<UnidadMedidaDosis> unidadMedidaDosisOptional = catalogoMedicamentosService
+                .getUnidadMedidaDosisById(id_unidad_medida_dosis);
+
+        if (unidadMedidaDosisOptional.isPresent()) {
+            return ResponseEntity.ok(unidadMedidaDosisOptional.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear una nueva Unidad de Medida")
+    @PostMapping("/create-unidad-medida")
+    public ResponseEntity<?> createUnidadMedida(@Valid @RequestBody UnidadMedidaDosis unidadmedidadosis,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoMedicamentosService.saveUnidadMedidaDosis(unidadmedidadosis));
+    }
+
+    @Operation(summary = "Actualizar una Unidad de Medida")
+    @PutMapping("/update-unidad-medida/{id_unidad_medida_dosis}")
+    public ResponseEntity<?> updateUnidadMedida(@PathVariable int id_unidad_medida_dosis,
+            @Valid @RequestBody UnidadMedidaDosis unidadmedidadosis, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<UnidadMedidaDosis> unidadMedidaDosisOptional = catalogoMedicamentosService
+                .updateUnidadMedidaDosis(id_unidad_medida_dosis, unidadmedidadosis);
+
+        if (unidadMedidaDosisOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(unidadMedidaDosisOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una Unidad de Medida")
+    @DeleteMapping("/delete-unidad-medida/{id_unidad_medida_dosis}")
+    public ResponseEntity<?> deleteUnidadMedida(@PathVariable int id_unidad_medida_dosis) {
+        Optional<UnidadMedidaDosis> unidadMedidaDosisOptional = catalogoMedicamentosService
+                .deleteUnidadMedidaDosis(id_unidad_medida_dosis);
+
+        if (unidadMedidaDosisOptional.isPresent()) {
+            return ResponseEntity.ok(unidadMedidaDosisOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
+
     }
 
     private ResponseEntity<?> validationBadRequest(BindingResult result) {
