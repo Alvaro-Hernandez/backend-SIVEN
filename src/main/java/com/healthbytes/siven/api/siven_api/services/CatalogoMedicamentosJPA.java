@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.healthbytes.siven.api.siven_api.entities.MedicamentosSeguimiento;
 import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaDosis;
+import com.healthbytes.siven.api.siven_api.entities.ViaAdministracion;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.MedicamentoSeguimientoRepositoty;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.UnidadMedidaDosisRepository;
+import com.healthbytes.siven.api.siven_api.repositories.medicacion.ViaAdministracionRepository;
 
 @Service
 public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
@@ -20,6 +22,9 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
 
     @Autowired
     private UnidadMedidaDosisRepository unidadMedidaDosisRepository;
+
+    @Autowired
+    private ViaAdministracionRepository viaAdministracionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -113,6 +118,55 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
         }
 
         return unidadMedidaDosisOptional;
+    }
+
+    // Via de administracion
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ViaAdministracion> listAllViaAdministracion() {
+        return (List<ViaAdministracion>) viaAdministracionRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<ViaAdministracion> getViaAdministracionById(int id_via_administracion) {
+        return viaAdministracionRepository.findById(id_via_administracion);
+    }
+
+    @Transactional
+    @Override
+    public ViaAdministracion saveViaAdministracion(ViaAdministracion viaadministracion) {
+        return viaAdministracionRepository.save(viaadministracion);
+    }
+
+    @Transactional
+    @Override
+    public Optional<ViaAdministracion> updateViaAdministracion(int id_via_administracion,
+            ViaAdministracion viaadministracion) {
+
+        Optional<ViaAdministracion> viaAdministracionOptional = viaAdministracionRepository
+                .findById(id_via_administracion);
+
+        if (viaAdministracionOptional.isPresent()) {
+            ViaAdministracion viaAdministracionDb = viaAdministracionOptional.orElseThrow();
+            viaAdministracionDb.setNombre(viaadministracion.getNombre());
+            return Optional.of(viaAdministracionRepository.save(viaAdministracionDb));
+        }
+
+        return viaAdministracionOptional;
+    }
+
+    @Transactional
+    @Override
+    public Optional<ViaAdministracion> deleteViaAdministracion(int id_via_administracion) {
+        Optional<ViaAdministracion> viaAdministracionOptional = viaAdministracionRepository
+                .findById(id_via_administracion);
+        if (viaAdministracionOptional.isPresent()) {
+            viaAdministracionRepository.deleteById(id_via_administracion);
+        }
+
+        return viaAdministracionOptional;
     }
 
 }
