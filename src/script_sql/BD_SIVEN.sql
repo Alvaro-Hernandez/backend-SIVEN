@@ -90,7 +90,7 @@ CREATE TABLE PaisOcurrenciaEventoSalud(
 
 -- Creación de la tabla Sitio de Exposición
 CREATE TABLE SitioExposicion (
-    id_sitioExposicion INT AUTO_INCREMENT PRIMARY KEY,
+    id_sitio_exposicion INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255)
 );
 
@@ -148,7 +148,7 @@ CREATE TABLE Captacion (
     id_silais_captacion INT,
     id_establecimiento_captacion INT,
     id_persona_captacion INT,
-    id_sitioExposicion INT,
+    id_sitio_exposicion INT,
     latitud_ocurrencia DECIMAL(9,6),
     longitud_ocurrencia DECIMAL(9,6),
     presenta_sintomas BOOLEAN,
@@ -317,7 +317,7 @@ FOREIGN KEY (id_persona_captacion) REFERENCES Persona(id_persona);
 
 ALTER TABLE Captacion
 ADD CONSTRAINT FK_Captacion_SitioExposicion
-FOREIGN KEY (id_sitioExposicion) REFERENCES SitioExposicion(id_sitioExposicion);
+FOREIGN KEY (id_sitio_exposicion) REFERENCES SitioExposicion(id_sitio_exposicion);
 
 ALTER TABLE Captacion
 ADD CONSTRAINT FK_Captacion_Sintomas
@@ -505,7 +505,7 @@ CREATE TABLE PaisOcurrenciaEventoSalud(
 
 -- Creación de la tabla Sitio de Exposición
 CREATE TABLE SitioExposicion (
-    id_sitioExposicion INT AUTO_INCREMENT PRIMARY KEY,
+    id_sitio_exposicion INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255)
 );
 
@@ -563,7 +563,7 @@ CREATE TABLE Captacion (
     id_silais_captacion INT,
     id_establecimiento_captacion INT,
     id_persona_captacion INT,
-    id_sitioExposicion INT,
+    id_sitio_exposicion INT,
     latitud_ocurrencia DECIMAL(9,6),
     longitud_ocurrencia DECIMAL(9,6),
     presenta_sintomas BOOLEAN,
@@ -729,7 +729,7 @@ FOREIGN KEY (id_persona_captacion) REFERENCES Persona(id_persona);
 
 ALTER TABLE Captacion
 ADD CONSTRAINT FK_Captacion_SitioExposicion
-FOREIGN KEY (id_sitioExposicion) REFERENCES SitioExposicion(id_sitioExposicion);
+FOREIGN KEY (id_sitio_exposicion) REFERENCES SitioExposicion(id_sitio_exposicion);
 
 ALTER TABLE Captacion
 ADD CONSTRAINT FK_Captacion_Sintomas
