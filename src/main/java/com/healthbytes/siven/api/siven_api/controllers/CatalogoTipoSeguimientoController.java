@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.healthbytes.siven.api.siven_api.entities.TipoDeAlta;
 import com.healthbytes.siven.api.siven_api.entities.TipoSeguimiento;
 import com.healthbytes.siven.api.siven_api.services.CatalogoSeguimientoService;
 
@@ -91,6 +92,67 @@ public class CatalogoTipoSeguimientoController {
 
         if (tiposeguimientoOptional.isPresent()) {
             return ResponseEntity.ok(tiposeguimientoOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    // CONTROLADORES DE TIPO ALTA
+
+    @Operation(summary = "Obtener todos los Tipos de Alta")
+    @GetMapping("/list-tipos-alta")
+    public List<TipoDeAlta> listAllTipoAlta() {
+        return catalogoSeguimientoService.listAllTipoAlta();
+    }
+
+    @Operation(summary = "Obtener un Tipo de Alta")
+    @GetMapping("/tipo-alta/{id_tipo_de_alta}")
+    public ResponseEntity<?> getTipoAltaById(@PathVariable int id_tipo_de_alta) {
+        Optional<TipoDeAlta> tipodealtaOptinal = catalogoSeguimientoService.getTipoAltaById(id_tipo_de_alta);
+
+        if (tipodealtaOptinal.isPresent()) {
+            return ResponseEntity.ok(tipodealtaOptinal.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear un Tipo de Alta")
+    @PostMapping("/create-tipo-alta")
+    public ResponseEntity<?> createTipoAlta(@Valid @RequestBody TipoDeAlta tipodealta, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(catalogoSeguimientoService.saveTipoAlta(tipodealta));
+    }
+
+    @Operation(summary = "Actualizar un Tipo de Alta")
+    @PutMapping("/update-tipo-alta/{id_tipo_de_alta}")
+    public ResponseEntity<?> updateTipoAlta(@PathVariable int id_tipo_de_alta,
+            @Valid @RequestBody TipoDeAlta tipodealta,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<TipoDeAlta> tipodealtaOptional = catalogoSeguimientoService.updateTipoAlta(id_tipo_de_alta,
+                tipodealta);
+
+        if (tipodealtaOptional.isPresent()) {
+            return ResponseEntity.ok(tipodealtaOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar un Tipo de Alta")
+    @DeleteMapping("/delete-tipo-alta/{id_tipo_de_alta}")
+    public ResponseEntity<?> deleteTipoAlta(@PathVariable int id_tipo_de_alta) {
+        Optional<TipoDeAlta> tipodealtaOptional = catalogoSeguimientoService.deleteTipoAlta(id_tipo_de_alta);
+
+        if (tipodealtaOptional.isPresent()) {
+            return ResponseEntity.ok(tipodealtaOptional.orElseThrow());
         }
 
         return ResponseEntity.notFound().build();
