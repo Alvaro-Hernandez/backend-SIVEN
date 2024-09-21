@@ -23,6 +23,7 @@ import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -374,6 +375,63 @@ public class CatalogoCaptacionController {
                 .deletePaisOcurrenciaEventoSalud(id_pais_ocurrencia_evento_salud);
         if (paisocurrenciaeventosalud.isPresent()) {
             return ResponseEntity.ok(paisocurrenciaeventosalud.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE Sitio de Exposicion
+
+    @Operation(summary = "Crear una opcion de Sitio de Exposicion")
+    @PostMapping("/create-sitio-exposicion")
+    public ResponseEntity<?> createSitioExposicion(@Valid @RequestBody SitioExposicion sitioexposicion,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveSitioExposicion(sitioexposicion));
+    }
+
+    @Operation(summary = "Optener una opcion de Sitio de Exposicion")
+    @GetMapping("/sitio-exposicion/{id_sitio_exposicion}")
+    public ResponseEntity<?> getSitioExposicionById(@PathVariable int id_sitio_exposicion) {
+        Optional<SitioExposicion> sitioexposicion = catalogoCaptacionService
+                .getSitioExposicionById(id_sitio_exposicion);
+        if (sitioexposicion.isPresent()) {
+            return ResponseEntity.ok(sitioexposicion.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Sitio de Exposicion")
+    @GetMapping("/list-sitio-exposicion")
+    public List<SitioExposicion> listAllSitioExposicions() {
+        return catalogoCaptacionService.listAllSitioExposicion();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Sitio de Exposicion")
+    @PutMapping("/update-sitio-exposicion/{id_sitio_exposicion}")
+    public ResponseEntity<?> updateSitioExposicion(@PathVariable int id_sitio_exposicion,
+            @Valid @RequestBody SitioExposicion sitioexposicion, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<SitioExposicion> sitioexposicionOptional = catalogoCaptacionService
+                .updateSitioExposicion(id_sitio_exposicion, sitioexposicion);
+        if (sitioexposicionOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(sitioexposicionOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Sitio de Exposicion")
+    @DeleteMapping("/delete-sitio-exposicion/{id_sitio_exposicion}")
+    public ResponseEntity<?> deleteSitioExposicion(@PathVariable int id_sitio_exposicion) {
+        Optional<SitioExposicion> sitioexposicion = catalogoCaptacionService
+                .deleteSitioExposicion(id_sitio_exposicion);
+        if (sitioexposicion.isPresent()) {
+            return ResponseEntity.ok(sitioexposicion.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
