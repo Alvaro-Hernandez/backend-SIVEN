@@ -13,12 +13,14 @@ import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.ComorbilidadesCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.CondicionPersonaCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.EventoSaludCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarCaptacionCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.MaternidadCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.PaisOcurrenciaEventoSaludCaptacionRepository;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.SitioExposicionCaptacionRepository;
 
 @Service
 public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
@@ -40,6 +42,9 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private PaisOcurrenciaEventoSaludCaptacionRepository paisOcurrenciaEventoSaludCaptacionRepository;
+
+    @Autowired
+    private SitioExposicionCaptacionRepository sitioexposicionCaptacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -304,6 +309,51 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
             paisOcurrenciaEventoSaludCaptacionRepository.deleteById(id_pais_ocurrencia_evento_salud);
         }
         return paisocurrenciaeventosaludOptional;
+    }
+
+    // Persistencia de datos Sitio Exposicion
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<SitioExposicion> listAllSitioExposicion() {
+        return (List<SitioExposicion>) sitioexposicionCaptacionRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<SitioExposicion> getSitioExposicionById(int id_sitio_exposicion) {
+        return sitioexposicionCaptacionRepository.findById(id_sitio_exposicion);
+    }
+
+    @Transactional
+    @Override
+    public SitioExposicion saveSitioExposicion(SitioExposicion sitioExposicion) {
+        return sitioexposicionCaptacionRepository.save(sitioExposicion);
+    }
+
+    @Transactional
+    @Override
+    public Optional<SitioExposicion> updateSitioExposicion(int id_sitio_exposicion, SitioExposicion sitioExposicion) {
+        Optional<SitioExposicion> sitioExposicionOptional = sitioexposicionCaptacionRepository
+                .findById(id_sitio_exposicion);
+        if (sitioExposicionOptional.isPresent()) {
+            SitioExposicion sitioExposicionDb = sitioExposicionOptional.orElseThrow();
+            sitioExposicionDb.setNombre(sitioExposicion.getNombre());
+            return Optional.of(sitioexposicionCaptacionRepository.save(sitioExposicionDb));
+        }
+        return sitioExposicionOptional;
+
+    }
+
+    @Override
+    public Optional<SitioExposicion> deleteSitioExposicion(int id_sitio_exposicion) {
+        Optional<SitioExposicion> sitioExposicionOptional = sitioexposicionCaptacionRepository
+                .findById(id_sitio_exposicion);
+        if (sitioExposicionOptional.isPresent()) {
+            sitioexposicionCaptacionRepository.deleteById(id_sitio_exposicion);
+        }
+        return sitioExposicionOptional;
+
     }
 
 }
