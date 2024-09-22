@@ -870,7 +870,7 @@ FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio);
 -- MODULO DE JORNADAS DE VIGILANCIA
 CREATE TABLE Tipo_Jornada (
     id_tipo_jornada INT AUTO_INCREMENT PRIMARY KEY,
-    descripcion VARCHAR(255)
+    nombre VARCHAR(255)
 );
 
 CREATE TABLE Recurso (
@@ -883,7 +883,7 @@ CREATE TABLE Recurso (
 
 CREATE TABLE Catalogo_Actividad (
     id_actividad INT AUTO_INCREMENT PRIMARY KEY,
-    descripcion VARCHAR(255)
+    nombre VARCHAR(255)
 );
 
 
