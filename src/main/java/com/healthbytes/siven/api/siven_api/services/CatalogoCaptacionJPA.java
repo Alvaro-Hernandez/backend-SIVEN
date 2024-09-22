@@ -14,6 +14,7 @@ import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.ComorbilidadesCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.CondicionPersonaCaptacionRepository;
@@ -22,6 +23,7 @@ import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarCaptacion
 import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarIngresoPaisCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.MaternidadCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.PaisOcurrenciaEventoSaludCaptacionRepository;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.PuestoNotificacionCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.SitioExposicionCaptacionRepository;
 
 @Service
@@ -50,6 +52,9 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private LugarIngresoPaisCaptacionRepository lugarIngresoPaisCaptacionRepository;
+
+    @Autowired
+    private PuestoNotificacionCaptacionRepository puestoonotificacionCaptacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -404,6 +409,52 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
             lugarIngresoPaisCaptacionRepository.deleteById(id_lugar_ingreso_pais);
         }
         return lugaringresopaisOptional;
+    }
+
+    // Persistencia de datos Puesto Notificacion
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<PuestoNotificacion> listAllPuestoNotificacion() {
+        return (List<PuestoNotificacion>) puestoonotificacionCaptacionRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<PuestoNotificacion> getPuestoNotificacionById(int id_puesto_notificacion) {
+        return puestoonotificacionCaptacionRepository.findById(id_puesto_notificacion);
+    }
+
+    @Transactional
+    @Override
+    public PuestoNotificacion savePuestoNotificacion(PuestoNotificacion puestonotificacion) {
+        return puestoonotificacionCaptacionRepository.save(puestonotificacion);
+    }
+
+    @Transactional
+    @Override
+    public Optional<PuestoNotificacion> updatePuestoNotificacion(int id_puesto_notificacion,
+            PuestoNotificacion puestonotificacion) {
+        Optional<PuestoNotificacion> puestonotificacionOptional = puestoonotificacionCaptacionRepository
+                .findById(id_puesto_notificacion);
+        if (puestonotificacionOptional.isPresent()) {
+            PuestoNotificacion puestonotificacionDb = puestonotificacionOptional.orElseThrow();
+            puestonotificacionDb.setNombre(puestonotificacion.getNombre());
+            return Optional.of(puestoonotificacionCaptacionRepository.save(puestonotificacionDb));
+        }
+        return puestonotificacionOptional;
+
+    }
+
+    @Override
+    public Optional<PuestoNotificacion> deletePuestoNotificacion(int id_puesto_notificacion) {
+        Optional<PuestoNotificacion> puestonotificacionOptional = puestoonotificacionCaptacionRepository
+                .findById(id_puesto_notificacion);
+        if (puestonotificacionOptional.isPresent()) {
+            puestoonotificacionCaptacionRepository.deleteById(id_puesto_notificacion);
+        }
+        return puestonotificacionOptional;
+
     }
 
 }

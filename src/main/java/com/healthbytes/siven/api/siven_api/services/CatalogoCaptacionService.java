@@ -10,6 +10,7 @@ import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 
 public interface CatalogoCaptacionService {
@@ -146,5 +147,23 @@ public interface CatalogoCaptacionService {
 
         // Metodo para borrar un lugar de ingreso por pais
         Optional<LugarIngresoPais> deleteLugarIngresoPais(int id_lugar_ingreso_pais);
+
+        // Puesto notificacion
+
+        // Metodo para obtener el catalogo de puestos de notificacion
+        List<PuestoNotificacion> listAllPuestoNotificacion();
+
+        // Metodo para buscar un puesto de notificacion
+        Optional<PuestoNotificacion> getPuestoNotificacionById(int id_puesto_notificacion);
+
+        // Metodo para crear un puesto de notificacion
+        PuestoNotificacion savePuestoNotificacion(PuestoNotificacion puestonotificacion);
+
+        // Metodo para actualizar un puesto de notificacion
+        Optional<PuestoNotificacion> updatePuestoNotificacion(int id_puesto_notificacion,
+                        PuestoNotificacion puestonotificacion);
+
+        // Metodo para borrar un puesto de notificacion
+        Optional<PuestoNotificacion> deletePuestoNotificacion(int id_puesto_notificacion);
 
 }

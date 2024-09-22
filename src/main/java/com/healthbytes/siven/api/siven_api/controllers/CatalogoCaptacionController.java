@@ -24,6 +24,7 @@ import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -490,6 +491,63 @@ public class CatalogoCaptacionController {
                 .deleteLugarIngresoPais(id_lugar_ingreso_pais);
         if (lugaringresopais.isPresent()) {
             return ResponseEntity.ok(lugaringresopais.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE PUESTO DE NOTIFICACION
+
+    @Operation(summary = "Crear una opcion de Puesto de Notificacion")
+    @PostMapping("/create-puesto-notificacion")
+    public ResponseEntity<?> createPuestoNotificacion(@Valid @RequestBody PuestoNotificacion puestonotificacion,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.savePuestoNotificacion(puestonotificacion));
+    }
+
+    @Operation(summary = "Optener una opcion de Puesto de Notificacion")
+    @GetMapping("/puesto-notificacion/{id_puesto_notificacion}")
+    public ResponseEntity<?> getPuestoNotificacionById(@PathVariable int id_puesto_notificacion) {
+        Optional<PuestoNotificacion> puestonotificacion = catalogoCaptacionService
+                .getPuestoNotificacionById(id_puesto_notificacion);
+        if (puestonotificacion.isPresent()) {
+            return ResponseEntity.ok(puestonotificacion.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Puesto de Notificacion")
+    @GetMapping("/list-puesto-notificacion")
+    public List<PuestoNotificacion> listAllPuestonotificacion() {
+        return catalogoCaptacionService.listAllPuestoNotificacion();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Puesto de Notificacion")
+    @PutMapping("/update-puesto-notificacion/{id_puesto_notificacion}")
+    public ResponseEntity<?> updatePuestoNotificacion(@PathVariable int id_puesto_notificacion,
+            @Valid @RequestBody PuestoNotificacion puestonotificacion, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<PuestoNotificacion> puestonotificacionOptional = catalogoCaptacionService
+                .updatePuestoNotificacion(id_puesto_notificacion, puestonotificacion);
+        if (puestonotificacionOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(puestonotificacionOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Puesto de Notificacion")
+    @DeleteMapping("/delete-puesto-notificacion/{id_puesto_notificacion}")
+    public ResponseEntity<?> deletePuestoNotificacion(@PathVariable int id_puesto_notificacion) {
+        Optional<PuestoNotificacion> puestonotificacion = catalogoCaptacionService
+                .deletePuestoNotificacion(id_puesto_notificacion);
+        if (puestonotificacion.isPresent()) {
+            return ResponseEntity.ok(puestonotificacion.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
