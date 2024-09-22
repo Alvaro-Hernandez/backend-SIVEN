@@ -16,6 +16,7 @@ import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
+import com.healthbytes.siven.api.siven_api.entities.ResultadoDiagnostico;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.ComorbilidadesCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.CondicionPersonaCaptacionRepository;
@@ -26,6 +27,7 @@ import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarIngresoPa
 import com.healthbytes.siven.api.siven_api.repositories.captacion.MaternidadCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.PaisOcurrenciaEventoSaludCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.PuestoNotificacionCaptacionRepository;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.ResultadoDiagnosticoCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.SitioExposicionCaptacionRepository;
 
 @Service
@@ -60,6 +62,9 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private DiagnosticoCaptacionRepository diagnosticoCaptacionRepository;
+
+    @Autowired
+    private ResultadoDiagnosticoCaptacionRepository resultadodiagnosticoCaptacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -503,6 +508,49 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
             diagnosticoCaptacionRepository.deleteById(id_diagnostico);
         }
         return diagnosticoOptional;
+    }
+
+    // Persistencia de datos Resultado Diagnostico
+    @Transactional(readOnly = true)
+    @Override
+    public List<ResultadoDiagnostico> listAllResultadoDiagnostico() {
+        return (List<ResultadoDiagnostico>) resultadodiagnosticoCaptacionRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<ResultadoDiagnostico> getResultadoDiagnosticoById(int id_resultado_diagnostico) {
+        return resultadodiagnosticoCaptacionRepository.findById(id_resultado_diagnostico);
+    }
+
+    @Transactional
+    @Override
+    public ResultadoDiagnostico saveResultadoDiagnostico(ResultadoDiagnostico resultadiagnostico) {
+        return resultadodiagnosticoCaptacionRepository.save(resultadiagnostico);
+    }
+
+    @Transactional
+    @Override
+    public Optional<ResultadoDiagnostico> updateResultadoDiagnostico(int id_resultado_diagnostico,
+            ResultadoDiagnostico resultadiagnostico) {
+        Optional<ResultadoDiagnostico> resultadiagnosticoOptional = resultadodiagnosticoCaptacionRepository
+                .findById(id_resultado_diagnostico);
+        if (resultadiagnosticoOptional.isPresent()) {
+            ResultadoDiagnostico resultadiagnosticoDb = resultadiagnosticoOptional.orElseThrow();
+            resultadiagnosticoDb.setNombre(resultadiagnostico.getNombre());
+            return Optional.of(resultadodiagnosticoCaptacionRepository.save(resultadiagnosticoDb));
+        }
+        return resultadiagnosticoOptional;
+    }
+
+    @Override
+    public Optional<ResultadoDiagnostico> deleteResultadoDiagnostico(int id_resultado_diagnostico) {
+        Optional<ResultadoDiagnostico> resultadiagnosticoOptional = resultadodiagnosticoCaptacionRepository
+                .findById(id_resultado_diagnostico);
+        if (resultadiagnosticoOptional.isPresent()) {
+            resultadodiagnosticoCaptacionRepository.deleteById(id_resultado_diagnostico);
+        }
+        return resultadiagnosticoOptional;
     }
 
 }

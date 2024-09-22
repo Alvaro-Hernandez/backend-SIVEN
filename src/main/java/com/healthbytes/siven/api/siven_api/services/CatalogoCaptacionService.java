@@ -12,6 +12,7 @@ import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
+import com.healthbytes.siven.api.siven_api.entities.ResultadoDiagnostico;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 
 public interface CatalogoCaptacionService {
@@ -182,4 +183,21 @@ public interface CatalogoCaptacionService {
 
         // Metodo para borrar un diagnostico
         Optional<Diagnostico> deleteDiagnostico(int id_diagnostico);
+
+        // Resultado diagnostico
+        // Metodo para obtener el catalogo de resultado diagnostico
+        List<ResultadoDiagnostico> listAllResultadoDiagnostico();
+
+        // Metodo para buscar un resultado diagnostico
+        Optional<ResultadoDiagnostico> getResultadoDiagnosticoById(int id_resultado_diagnostico);
+
+        // Metodo para crear un resultado diagnostico
+        ResultadoDiagnostico saveResultadoDiagnostico(ResultadoDiagnostico resultadiagnostico);
+
+        // Metodo para actualizar un resultado diagnostico
+        Optional<ResultadoDiagnostico> updateResultadoDiagnostico(int id_resultado_diagnostico,
+                        ResultadoDiagnostico resultadiagnostico);
+
+        // Metodo para borrar un resultado diagnostico
+        Optional<ResultadoDiagnostico> deleteResultadoDiagnostico(int id_resultado_diagnostico);
 }

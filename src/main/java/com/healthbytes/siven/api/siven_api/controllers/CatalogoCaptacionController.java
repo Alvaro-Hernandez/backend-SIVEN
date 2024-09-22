@@ -26,6 +26,7 @@ import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
+import com.healthbytes.siven.api.siven_api.entities.ResultadoDiagnostico;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -603,6 +604,63 @@ public class CatalogoCaptacionController {
         Optional<Diagnostico> diagnostico = catalogoCaptacionService.deleteDiagnostico(id_diagnostico);
         if (diagnostico.isPresent()) {
             return ResponseEntity.ok(diagnostico.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE RESULTADOS DE DIAGNOSTICOS
+
+    @Operation(summary = "Crear una opcion de Resultado de Diagnostico")
+    @PostMapping("/create-resultados-diagnostico")
+    public ResponseEntity<?> createResultadoDiagnostico(@Valid @RequestBody ResultadoDiagnostico resultadoDiagnostico,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveResultadoDiagnostico(resultadoDiagnostico));
+    }
+
+    @Operation(summary = "Optener una opcion de Resultado de Diagnostico")
+    @GetMapping("/resultados-diagnostico/{id_resultado_diagnostico}")
+    public ResponseEntity<?> getResultadoDiagnosticoById(@PathVariable int id_resultado_diagnostico) {
+        Optional<ResultadoDiagnostico> resultadodiagnostico = catalogoCaptacionService
+                .getResultadoDiagnosticoById(id_resultado_diagnostico);
+        if (resultadodiagnostico.isPresent()) {
+            return ResponseEntity.ok(resultadodiagnostico.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Resultado de Diagnostico")
+    @GetMapping("/list-resultados-diagnostico")
+    public List<ResultadoDiagnostico> listAllResultadoDiagnostico() {
+        return catalogoCaptacionService.listAllResultadoDiagnostico();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Resultado de Diagnostico")
+    @PutMapping("/update-resultados-diagnostico/{id_resultado_diagnostico}")
+    public ResponseEntity<?> updateResultadoDiagnostico(@PathVariable int id_resultado_diagnostico,
+            @Valid @RequestBody ResultadoDiagnostico resultadodiagnostico, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<ResultadoDiagnostico> resultadodiagnosticoOptional = catalogoCaptacionService
+                .updateResultadoDiagnostico(id_resultado_diagnostico, resultadodiagnostico);
+        if (resultadodiagnosticoOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(resultadodiagnosticoOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Resultado de Diagnostico")
+    @DeleteMapping("/delete-resultados-diagnostico/{id_resultado_diagnostico}")
+    public ResponseEntity<?> deleteResultadoDiagnostico(@PathVariable int id_resultado_diagnostico) {
+        Optional<ResultadoDiagnostico> resultadodiagnostico = catalogoCaptacionService
+                .deleteResultadoDiagnostico(id_resultado_diagnostico);
+        if (resultadodiagnostico.isPresent()) {
+            return ResponseEntity.ok(resultadodiagnostico.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
