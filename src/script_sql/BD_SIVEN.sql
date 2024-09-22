@@ -570,3 +570,67 @@ FOREIGN KEY (id_recurso) REFERENCES Recurso(id_recurso);
 ALTER TABLE Monitoreo_Jornada
 ADD CONSTRAINT FK_MonitoreoJornada_Jornada
 FOREIGN KEY (id_jornada) REFERENCES Jornada(id_jornada);
+
+
+-- MODULO ESCOLAR
+CREATE TABLE TipoEscuela(
+	id_tipo_colegio INT AUTO_INCREMENT PRIMARY KEY,
+	nombre VARCHAR(255),
+	esTipEscuela ENUM ('PRIVADA', 'SEMI-PRIVADA', 'PUBLICA')
+);
+
+CREATE TABLE Colegio(
+	id_colegio INT AUTO_INCREMENT PRIMARY KEY,
+	nombre VARCHAR(255),
+	id_tipo_colegio INT,
+	direccion TEXT,
+	numero_telefono VARCHAR(12),
+	latitud DECIMAL(10, 8),
+	longitud DECIMAL(11, 8)
+);
+
+CREATE TABLE CaptacionColegio(
+	id_captacion_colegio INT AUTO_INCREMENT PRIMARY KEY,
+	id_colegio INT,
+	id_evento_salud INT,
+	id_sintomas INT,
+	fecha_captacion DATE,
+	semana_epidemiologica INT,
+	nombres_estudiante VARCHAR(255),
+	apellidos_estudiante VARCHAR (255),
+	fecha_nacimiento DATE,
+	edad INT,
+	observacion TEXT,
+	es_necesario_trasladar BOOLEAN,
+	id_silais_traslado INT,
+	id_unidad_salud_traslado INT,
+	tipo_urgencia ENUM('URGENTE', 'NO URGENTE', 'NECESITA ESPECIALISTA'),
+	estado_caso ENUM('Reportado', 'Confirmado', 'Descartado')
+);
+
+
+-- Relaciones para la tabla TipoEscuela
+ALTER TABLE Colegio
+ADD CONSTRAINT FK_Colegio_TipoEscuela
+FOREIGN KEY (id_tipo_colegio) REFERENCES TipoEscuela(id_tipo_colegio);
+
+-- Relaciones para la tabla CaptacionColegio
+ALTER TABLE CaptacionColegio
+ADD CONSTRAINT FK_CaptacionColegio_Colegio
+FOREIGN KEY (id_colegio) REFERENCES Colegio(id_colegio);
+
+ALTER TABLE CaptacionColegio
+ADD CONSTRAINT FK_CaptacionColegio_EventoSalud
+FOREIGN KEY (id_evento_salud) REFERENCES EventoSalud(id_evento_salud);
+
+ALTER TABLE CaptacionColegio
+ADD CONSTRAINT FK_CaptacionColegio_Sintomas
+FOREIGN KEY (id_sintomas) REFERENCES Sintomas(id_sintomas);
+
+ALTER TABLE CaptacionColegio
+ADD CONSTRAINT FK_CaptacionColegio_SILAISTraslado
+FOREIGN KEY (id_silais_traslado) REFERENCES SILAIS(id_silais);
+
+ALTER TABLE CaptacionColegio
+ADD CONSTRAINT FK_CaptacionColegio_EstablecimientoSaludTraslado
+FOREIGN KEY (id_unidad_salud_traslado) REFERENCES EstablecimientoSalud(id_establecimiento);
