@@ -11,6 +11,7 @@ import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
+import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
@@ -18,6 +19,7 @@ import com.healthbytes.siven.api.siven_api.repositories.captacion.Comorbilidades
 import com.healthbytes.siven.api.siven_api.repositories.captacion.CondicionPersonaCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.EventoSaludCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarCaptacionCaptacionRepository;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarIngresoPaisCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.MaternidadCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.PaisOcurrenciaEventoSaludCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.SitioExposicionCaptacionRepository;
@@ -45,6 +47,9 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private SitioExposicionCaptacionRepository sitioexposicionCaptacionRepository;
+
+    @Autowired
+    private LugarIngresoPaisCaptacionRepository lugarIngresoPaisCaptacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -354,6 +359,47 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         }
         return sitioExposicionOptional;
 
+    }
+
+    // Persistencia de datos Lugar Ingreso Pais
+
+    @Override
+    public List<LugarIngresoPais> listAllLugarIngresoPais() {
+        return (List<LugarIngresoPais>) lugarIngresoPaisCaptacionRepository.findAll();
+
+    }
+
+    @Override
+    public Optional<LugarIngresoPais> getLugarIngresoPaisById(int id_lugar_ingreso_pais) {
+        return lugarIngresoPaisCaptacionRepository.findById(id_lugar_ingreso_pais);
+    }
+
+    @Override
+    public LugarIngresoPais saveLugarIngresoPais(LugarIngresoPais lugaringresopais) {
+        return lugarIngresoPaisCaptacionRepository.save(lugaringresopais);
+    }
+
+    @Override
+    public Optional<LugarIngresoPais> updateLugarIngresoPais(int id_lugar_ingreso_pais,
+            LugarIngresoPais lugaringresopais) {
+        Optional<LugarIngresoPais> lugaringresopaisOptional = lugarIngresoPaisCaptacionRepository
+                .findById(id_lugar_ingreso_pais);
+        if (lugaringresopaisOptional.isPresent()) {
+            LugarIngresoPais lugaringresopaisDb = lugaringresopaisOptional.orElseThrow();
+            lugaringresopaisDb.setNombre(lugaringresopais.getNombre());
+            return Optional.of(lugarIngresoPaisCaptacionRepository.save(lugaringresopaisDb));
+        }
+        return lugaringresopaisOptional;
+    }
+
+    @Override
+    public Optional<LugarIngresoPais> deleteLugarIngresoPais(int id_lugar_ingreso_pais) {
+        Optional<LugarIngresoPais> lugaringresopaisOptional = lugarIngresoPaisCaptacionRepository
+                .findById(id_lugar_ingreso_pais);
+        if (lugaringresopaisOptional.isPresent()) {
+            lugarIngresoPaisCaptacionRepository.deleteById(id_lugar_ingreso_pais);
+        }
+        return lugaringresopaisOptional;
     }
 
 }

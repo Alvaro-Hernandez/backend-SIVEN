@@ -21,6 +21,7 @@ import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
+import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
@@ -432,6 +433,63 @@ public class CatalogoCaptacionController {
                 .deleteSitioExposicion(id_sitio_exposicion);
         if (sitioexposicion.isPresent()) {
             return ResponseEntity.ok(sitioexposicion.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE Lugar de ingreso pais
+
+    @Operation(summary = "Crear una opcion de Lugar de Ingreso")
+    @PostMapping("/create-lugar-ingreso")
+    public ResponseEntity<?> createLugarIngreso(@Valid @RequestBody LugarIngresoPais lugaringresopais,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveLugarIngresoPais(lugaringresopais));
+    }
+
+    @Operation(summary = "Optener una opcion de Lugar de Ingreso")
+    @GetMapping("/lugar-ingreso/{id_lugar_ingreso_pais}")
+    public ResponseEntity<?> getLugarIngresoPaisById(@PathVariable int id_lugar_ingreso_pais) {
+        Optional<LugarIngresoPais> lugaringresopais = catalogoCaptacionService
+                .getLugarIngresoPaisById(id_lugar_ingreso_pais);
+        if (lugaringresopais.isPresent()) {
+            return ResponseEntity.ok(lugaringresopais.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Lugar de Ingreso")
+    @GetMapping("/list-lugar-ingreso-pais")
+    public List<LugarIngresoPais> listAlllugaringresopais() {
+        return catalogoCaptacionService.listAllLugarIngresoPais();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Lugar de Ingreso")
+    @PutMapping("/update-lugar-ingreso-pais/{id_lugar_ingreso_pais}")
+    public ResponseEntity<?> updateLugarIngresoPais(@PathVariable int id_lugar_ingreso_pais,
+            @Valid @RequestBody LugarIngresoPais lugaringresopais, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<LugarIngresoPais> lugaringresopaisOptional = catalogoCaptacionService
+                .updateLugarIngresoPais(id_lugar_ingreso_pais, lugaringresopais);
+        if (lugaringresopaisOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(lugaringresopaisOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Lugar de Ingreso de Pais")
+    @DeleteMapping("/delete-lugar-ingreso-pais/{id_lugar_ingreso_pais}")
+    public ResponseEntity<?> deleteLugarIngresoPais(@PathVariable int id_lugar_ingreso_pais) {
+        Optional<LugarIngresoPais> lugaringresopais = catalogoCaptacionService
+                .deleteLugarIngresoPais(id_lugar_ingreso_pais);
+        if (lugaringresopais.isPresent()) {
+            return ResponseEntity.ok(lugaringresopais.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }

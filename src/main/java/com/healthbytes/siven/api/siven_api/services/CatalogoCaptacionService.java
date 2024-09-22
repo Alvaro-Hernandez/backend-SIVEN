@@ -7,6 +7,7 @@ import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
+import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
@@ -129,5 +130,21 @@ public interface CatalogoCaptacionService {
 
         // Metodo para borrar un sitio de exposicion
         Optional<SitioExposicion> deleteSitioExposicion(int id_sitio_exposicion);
+
+        // LugarIngresoPais
+        // Metodo para obtener el catalogo de lugar de ingreso por pais
+        List<LugarIngresoPais> listAllLugarIngresoPais();
+
+        // Metodo para buscar un lugar de ingreso por pais
+        Optional<LugarIngresoPais> getLugarIngresoPaisById(int id_lugar_ingreso_pais);
+
+        // Metodo para crear un lugar de ingreso por pais
+        LugarIngresoPais saveLugarIngresoPais(LugarIngresoPais lugaringresopais);
+
+        // Metodo para actualizar un lugar de ingreso por pais
+        Optional<LugarIngresoPais> updateLugarIngresoPais(int id_lugar_ingreso_pais, LugarIngresoPais lugaringresopais);
+
+        // Metodo para borrar un lugar de ingreso por pais
+        Optional<LugarIngresoPais> deleteLugarIngresoPais(int id_lugar_ingreso_pais);
 
 }
