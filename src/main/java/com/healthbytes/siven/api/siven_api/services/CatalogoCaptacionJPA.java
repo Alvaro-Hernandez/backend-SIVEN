@@ -363,22 +363,26 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     // Persistencia de datos Lugar Ingreso Pais
 
+    @Transactional(readOnly = true)
     @Override
     public List<LugarIngresoPais> listAllLugarIngresoPais() {
         return (List<LugarIngresoPais>) lugarIngresoPaisCaptacionRepository.findAll();
 
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<LugarIngresoPais> getLugarIngresoPaisById(int id_lugar_ingreso_pais) {
         return lugarIngresoPaisCaptacionRepository.findById(id_lugar_ingreso_pais);
     }
 
+    @Transactional
     @Override
     public LugarIngresoPais saveLugarIngresoPais(LugarIngresoPais lugaringresopais) {
         return lugarIngresoPaisCaptacionRepository.save(lugaringresopais);
     }
 
+    @Transactional
     @Override
     public Optional<LugarIngresoPais> updateLugarIngresoPais(int id_lugar_ingreso_pais,
             LugarIngresoPais lugaringresopais) {
