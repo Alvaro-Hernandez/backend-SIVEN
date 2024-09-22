@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
+import com.healthbytes.siven.api.siven_api.entities.Diagnostico;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
@@ -18,6 +19,7 @@ import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.ComorbilidadesCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.CondicionPersonaCaptacionRepository;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.DiagnosticoCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.EventoSaludCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarCaptacionCaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.captacion.LugarIngresoPaisCaptacionRepository;
@@ -55,6 +57,9 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private PuestoNotificacionCaptacionRepository puestoonotificacionCaptacionRepository;
+
+    @Autowired
+    private DiagnosticoCaptacionRepository diagnosticoCaptacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -446,6 +451,7 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<PuestoNotificacion> deletePuestoNotificacion(int id_puesto_notificacion) {
         Optional<PuestoNotificacion> puestonotificacionOptional = puestoonotificacionCaptacionRepository
@@ -455,6 +461,48 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         }
         return puestonotificacionOptional;
 
+    }
+
+    // Persistencia de datos Diagnostico
+    @Transactional(readOnly = true)
+    @Override
+    public List<Diagnostico> listAllDiagnostico() {
+        return (List<Diagnostico>) diagnosticoCaptacionRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<Diagnostico> getDiagnosticoById(int id_diagnostico) {
+        return diagnosticoCaptacionRepository.findById(id_diagnostico);
+    }
+
+    @Transactional
+    @Override
+    public Diagnostico saveDiagnostico(Diagnostico diagnostico) {
+        return diagnosticoCaptacionRepository.save(diagnostico);
+    }
+
+    @Transactional
+    @Override
+    public Optional<Diagnostico> updateDiagnostico(int id_diagnostico, Diagnostico diagnostico) {
+        Optional<Diagnostico> diagnosticoOptional = diagnosticoCaptacionRepository
+                .findById(id_diagnostico);
+        if (diagnosticoOptional.isPresent()) {
+            Diagnostico diagnosticoDb = diagnosticoOptional.orElseThrow();
+            diagnosticoDb.setNombre(diagnostico.getNombre());
+            return Optional.of(diagnosticoCaptacionRepository.save(diagnosticoDb));
+        }
+        return diagnosticoOptional;
+    }
+
+    @Override
+    public Optional<Diagnostico> deleteDiagnostico(int id_diagnostico) {
+        Optional<Diagnostico> diagnosticoOptional = diagnosticoCaptacionRepository
+                .findById(id_diagnostico);
+        if (diagnosticoOptional.isPresent()) {
+            diagnosticoCaptacionRepository.deleteById(id_diagnostico);
+        }
+        return diagnosticoOptional;
     }
 
 }

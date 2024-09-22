@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
+import com.healthbytes.siven.api.siven_api.entities.Diagnostico;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
@@ -166,4 +167,19 @@ public interface CatalogoCaptacionService {
         // Metodo para borrar un puesto de notificacion
         Optional<PuestoNotificacion> deletePuestoNotificacion(int id_puesto_notificacion);
 
+        // Diagnostico
+        // Metodo para obtener el catalogo de diagnostico
+        List<Diagnostico> listAllDiagnostico();
+
+        // Metodo para buscar un diagnostico
+        Optional<Diagnostico> getDiagnosticoById(int id_diagnostico);
+
+        // Metodo para crear un diagnostico
+        Diagnostico saveDiagnostico(Diagnostico diagnostico);
+
+        // Metodo para actualizar un diagnostico
+        Optional<Diagnostico> updateDiagnostico(int id_diagnostico, Diagnostico diagnostico);
+
+        // Metodo para borrar un diagnostico
+        Optional<Diagnostico> deleteDiagnostico(int id_diagnostico);
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
+import com.healthbytes.siven.api.siven_api.entities.Diagnostico;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
 import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
@@ -548,6 +549,60 @@ public class CatalogoCaptacionController {
                 .deletePuestoNotificacion(id_puesto_notificacion);
         if (puestonotificacion.isPresent()) {
             return ResponseEntity.ok(puestonotificacion.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE DIAGNOSTICOS
+
+    @Operation(summary = "Crear una opcion de Diagnostico")
+    @PostMapping("/create-diagnostico")
+    public ResponseEntity<?> createDiagnostico(@Valid @RequestBody Diagnostico diagnostico, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveDiagnostico(diagnostico));
+    }
+
+    @Operation(summary = "Optener una opcion de Diagnostico")
+    @GetMapping("/diagnostico/{id_diagnostico}")
+    public ResponseEntity<?> getDiagnosticoById(@PathVariable int id_diagnostico) {
+        Optional<Diagnostico> diagnostico = catalogoCaptacionService.getDiagnosticoById(id_diagnostico);
+        if (diagnostico.isPresent()) {
+            return ResponseEntity.ok(diagnostico.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Diagnostico")
+    @GetMapping("/list-diagnostico")
+    public List<Diagnostico> listAllDiagnostico() {
+        return catalogoCaptacionService.listAllDiagnostico();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Diagnostico")
+    @PutMapping("/update-diagnostico/{id_diagnostico}")
+    public ResponseEntity<?> updateDiagnostico(@PathVariable int id_diagnostico,
+            @Valid @RequestBody Diagnostico diagnostico, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<Diagnostico> diagnosticoOptional = catalogoCaptacionService
+                .updateDiagnostico(id_diagnostico, diagnostico);
+        if (diagnosticoOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(diagnosticoOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Diagnostico")
+    @DeleteMapping("/delete-diagnostico/{id_diagnostico}")
+    public ResponseEntity<?> deleteDiagnostico(@PathVariable int id_diagnostico) {
+        Optional<Diagnostico> diagnostico = catalogoCaptacionService.deleteDiagnostico(id_diagnostico);
+        if (diagnostico.isPresent()) {
+            return ResponseEntity.ok(diagnostico.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
