@@ -797,8 +797,7 @@ FOREIGN KEY (id_jornada) REFERENCES Jornada(id_jornada);
 -- MODULO ESCOLAR
 CREATE TABLE TipoEscuela(
 	id_tipo_colegio INT AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR(255),
-	esTipEscuela ENUM ('PRIVADA', 'SEMI-PRIVADA', 'PUBLICA'),
+	es_tip_escuela ENUM ('PRIVADA', 'SEMI_PRIVADA', 'PUBLICA'),
     
     usuario_creacion VARCHAR(255),
     fecha_creacion TIMESTAMP,
