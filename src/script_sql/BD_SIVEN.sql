@@ -874,3 +874,57 @@ FOREIGN KEY (id_silais_traslado) REFERENCES SILAIS(id_silais);
 ALTER TABLE CaptacionColegio
 ADD CONSTRAINT FK_CaptacionColegio_EstablecimientoSaludTraslado
 FOREIGN KEY (id_unidad_salud_traslado) REFERENCES EstablecimientoSalud(id_establecimiento);
+
+
+
+
+
+-- Módulo de gestión de usuario y parametrización
+-- Usuario y parametrizacion
+
+CREATE TABLE Roles (
+    id_rol INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_rol VARCHAR(255) UNIQUE,
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT
+);
+
+CREATE TABLE Usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_usuario VARCHAR(255) UNIQUE,
+    contraseña VARCHAR(255),
+    correo_electronico VARCHAR(255) UNIQUE,
+	
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT
+);
+
+CREATE TABLE Usuarios_Roles (
+    id_usuario INT,
+    id_rol INT,
+    PRIMARY KEY (id_usuario, id_rol),
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT
+);
+
+-- Añadir clave foránea para id_usuario
+ALTER TABLE Usuarios_Roles
+ADD CONSTRAINT fk_usuarios_roles_usuario
+FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario);
+
+
+-- Añadir clave foránea para id_rol
+ALTER TABLE Usuarios_Roles
+ADD CONSTRAINT fk_usuarios_roles_rol
+FOREIGN KEY (id_rol) REFERENCES Roles(id_rol);
