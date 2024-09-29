@@ -47,6 +47,10 @@ public class CatalogoSeguimientoJPA implements CatalogoSeguimientoService {
         if (tiposeguimientoOptional.isPresent()) {
             TipoSeguimiento tipoSeguimientoDb = tiposeguimientoOptional.orElseThrow();
             tipoSeguimientoDb.setNombre(tiposeguimiento.getNombre());
+
+            tipoSeguimientoDb.setUsuario_modificacion(tiposeguimiento.getUsuario_modificacion());
+            tipoSeguimientoDb.setFecha_modificacion(tiposeguimiento.getFecha_modificacion());
+            tipoSeguimientoDb.setActivo(tiposeguimiento.getActivo());
             return Optional.of(tipoSeguimientoRepository.save(tipoSeguimientoDb));
         }
 
@@ -93,6 +97,10 @@ public class CatalogoSeguimientoJPA implements CatalogoSeguimientoService {
         if (tipoAltaOptional.isPresent()) {
             TipoDeAlta tipoAltaDb = tipoAltaOptional.orElseThrow();
             tipoAltaDb.setNombre(tipodealta.getNombre());
+
+            tipoAltaDb.setUsuario_modificacion(tipodealta.getUsuario_modificacion());
+            tipoAltaDb.setFecha_modificacion(tipodealta.getFecha_modificacion());
+            tipoAltaDb.setActivo(tipodealta.getActivo());
             return Optional.of(tipoAltaRepository.save(tipoAltaDb));
         }
 

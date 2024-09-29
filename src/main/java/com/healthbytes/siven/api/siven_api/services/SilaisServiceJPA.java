@@ -44,6 +44,11 @@ public class SilaisServiceJPA implements SilaisService {
             silaisDb.setDireccion(silais.getDireccion());
             silaisDb.setLatitud(silais.getLatitud());
             silaisDb.setLongitud(silais.getLongitud());
+
+            silaisDb.setUsuario_modificacion(silais.getUsuario_modificacion());
+            silaisDb.setFecha_modificacion(silais.getFecha_modificacion());
+            silaisDb.setActivo(silais.getActivo());
+
             return Optional.of(silaisRepository.save(silaisDb));
         }
         return silaisOptional;

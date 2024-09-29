@@ -47,6 +47,10 @@ public class CatalogoJornadasJPA implements CatalogoJornadaService {
         if (tipoJornadaOptional.isPresent()) {
             TipoJornada tipoJornadaDb = tipoJornadaOptional.orElseThrow();
             tipoJornadaDb.setNombre(tipo_jornada.getNombre());
+
+            tipoJornadaDb.setUsuario_modificacion(tipo_jornada.getUsuario_modificacion());
+            tipoJornadaDb.setFecha_modificacion(tipo_jornada.getFecha_modificacion());
+            tipoJornadaDb.setActivo(tipo_jornada.getActivo());
             return Optional.of(tipoJornadaRepository.save(tipo_jornada));
         }
 
@@ -97,6 +101,10 @@ public class CatalogoJornadasJPA implements CatalogoJornadaService {
         if (catalogoActividadOptional.isPresent()) {
             Catalogo_Actividad catalogoActividadDb = catalogoActividadOptional.orElseThrow();
             catalogoActividadDb.setNombre(catalogo_actividad.getNombre());
+
+            catalogoActividadDb.setUsuario_modificacion(catalogo_actividad.getUsuario_modificacion());
+            catalogoActividadDb.setFecha_modificacion(catalogo_actividad.getFecha_modificacion());
+            catalogoActividadDb.setActivo(catalogo_actividad.getActivo());
             return Optional.of(catalogoActividadJornadaRepositoy.save(catalogoActividadDb));
         }
 

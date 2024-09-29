@@ -91,6 +91,11 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (eventoSaludOptional.isPresent()) {
             EventoSalud eventoSaludDb = eventoSaludOptional.orElseThrow();
             eventoSaludDb.setNombre(eventosalud.getNombre());
+
+            eventoSaludDb.setUsuario_modificacion(eventosalud.getUsuario_modificacion());
+            eventoSaludDb.setFecha_modificacion(eventosalud.getFecha_modificacion());
+            eventoSaludDb.setActivo(eventosalud.getActivo());
+
             return Optional.of(eventoSaludCaptacionRepository.save(eventoSaludDb));
         }
         return eventoSaludOptional;
@@ -132,6 +137,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (maternidadOptional.isPresent()) {
             Maternidad maternidadDb = maternidadOptional.orElseThrow();
             maternidadDb.setNombre(maternidad.getNombre());
+
+            maternidadDb.setUsuario_modificacion(maternidad.getUsuario_modificacion());
+            maternidadDb.setFecha_modificacion(maternidad.getFecha_modificacion());
+            maternidadDb.setActivo(maternidad.getActivo());
             return Optional.of(maternidadCaptacionRepository.save(maternidadDb));
         }
         return maternidadOptional;
@@ -177,6 +186,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (comorbilidadesOptional.isPresent()) {
             Comorbilidades comorbilidadesDb = comorbilidadesOptional.orElseThrow();
             comorbilidadesDb.setNombre(comorbilidades.getNombre());
+
+            comorbilidadesDb.setUsuario_modificacion(comorbilidades.getUsuario_modificacion());
+            comorbilidadesDb.setFecha_modificacion(comorbilidades.getFecha_modificacion());
+            comorbilidadesDb.setActivo(comorbilidades.getActivo());
             return Optional.of(comorbilidadesCaptacionRepository.save(comorbilidadesDb));
         }
         return comorbilidadesOptional;
@@ -221,6 +234,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (lugarCaptacionOptional.isPresent()) {
             LugarCaptacion lugarCaptacionDb = lugarCaptacionOptional.orElseThrow();
             lugarCaptacionDb.setNombre(lugarcaptacion.getNombre());
+
+            lugarCaptacionDb.setUsuario_modificacion(lugarcaptacion.getUsuario_modificacion());
+            lugarCaptacionDb.setFecha_modificacion(lugarcaptacion.getFecha_modificacion());
+            lugarCaptacionDb.setActivo(lugarcaptacion.getActivo());
             return Optional.of(lugarCaptacionCaptacionRepository.save(lugarCaptacionDb));
         }
         return lugarCaptacionOptional;
@@ -269,6 +286,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (condicionPersonaOptional.isPresent()) {
             CondicionPersona condicionPersonaDb = condicionPersonaOptional.orElseThrow();
             condicionPersonaDb.setNombre(condicionpersona.getNombre());
+
+            condicionPersonaDb.setUsuario_modificacion(condicionpersona.getUsuario_modificacion());
+            condicionPersonaDb.setFecha_modificacion(condicionpersona.getFecha_modificacion());
+            condicionPersonaDb.setActivo(condicionpersona.getActivo());
             return Optional.of(condicionPersonaCaptacionRepository.save(condicionPersonaDb));
         }
         return condicionPersonaOptional;
@@ -316,6 +337,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
             PaisOcurrenciaEventoSalud paisOcurrenciaDb = paisocurrenciaeventosaludOptional.orElseThrow();
             paisOcurrenciaDb.setNombre(paisocurrenciaeventosalud.getNombre());
             paisOcurrenciaDb.setCodigo_postal(paisocurrenciaeventosalud.getCodigo_postal());
+
+            paisOcurrenciaDb.setUsuario_modificacion(paisocurrenciaeventosalud.getUsuario_modificacion());
+            paisOcurrenciaDb.setFecha_modificacion(paisocurrenciaeventosalud.getFecha_modificacion());
+            paisOcurrenciaDb.setActivo(paisocurrenciaeventosalud.getActivo());
             return Optional.of(paisOcurrenciaEventoSaludCaptacionRepository.save(paisOcurrenciaDb));
         }
         return paisocurrenciaeventosaludOptional;
@@ -359,6 +384,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (sitioExposicionOptional.isPresent()) {
             SitioExposicion sitioExposicionDb = sitioExposicionOptional.orElseThrow();
             sitioExposicionDb.setNombre(sitioExposicion.getNombre());
+
+            sitioExposicionDb.setUsuario_modificacion(sitioExposicion.getUsuario_modificacion());
+            sitioExposicionDb.setFecha_modificacion(sitioExposicion.getFecha_modificacion());
+            sitioExposicionDb.setActivo(sitioExposicion.getActivo());
             return Optional.of(sitioexposicionCaptacionRepository.save(sitioExposicionDb));
         }
         return sitioExposicionOptional;
@@ -406,6 +435,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (lugaringresopaisOptional.isPresent()) {
             LugarIngresoPais lugaringresopaisDb = lugaringresopaisOptional.orElseThrow();
             lugaringresopaisDb.setNombre(lugaringresopais.getNombre());
+
+            lugaringresopaisDb.setUsuario_modificacion(lugaringresopais.getUsuario_modificacion());
+            lugaringresopaisDb.setFecha_modificacion(lugaringresopais.getFecha_modificacion());
+            lugaringresopaisDb.setActivo(lugaringresopais.getActivo());
             return Optional.of(lugarIngresoPaisCaptacionRepository.save(lugaringresopaisDb));
         }
         return lugaringresopaisOptional;
@@ -450,6 +483,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (puestonotificacionOptional.isPresent()) {
             PuestoNotificacion puestonotificacionDb = puestonotificacionOptional.orElseThrow();
             puestonotificacionDb.setNombre(puestonotificacion.getNombre());
+
+            puestonotificacionDb.setUsuario_modificacion(puestonotificacion.getUsuario_modificacion());
+            puestonotificacionDb.setFecha_modificacion(puestonotificacion.getFecha_modificacion());
+            puestonotificacionDb.setActivo(puestonotificacion.getActivo());
             return Optional.of(puestoonotificacionCaptacionRepository.save(puestonotificacionDb));
         }
         return puestonotificacionOptional;
@@ -495,6 +532,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (diagnosticoOptional.isPresent()) {
             Diagnostico diagnosticoDb = diagnosticoOptional.orElseThrow();
             diagnosticoDb.setNombre(diagnostico.getNombre());
+
+            diagnosticoDb.setUsuario_modificacion(diagnostico.getUsuario_modificacion());
+            diagnosticoDb.setFecha_modificacion(diagnostico.getFecha_modificacion());
+            diagnosticoDb.setActivo(diagnostico.getActivo());
             return Optional.of(diagnosticoCaptacionRepository.save(diagnosticoDb));
         }
         return diagnosticoOptional;
@@ -538,6 +579,10 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         if (resultadiagnosticoOptional.isPresent()) {
             ResultadoDiagnostico resultadiagnosticoDb = resultadiagnosticoOptional.orElseThrow();
             resultadiagnosticoDb.setNombre(resultadiagnostico.getNombre());
+
+            resultadiagnosticoDb.setUsuario_modificacion(resultadiagnostico.getUsuario_modificacion());
+            resultadiagnosticoDb.setFecha_modificacion(resultadiagnostico.getFecha_modificacion());
+            resultadiagnosticoDb.setActivo(resultadiagnostico.getActivo());
             return Optional.of(resultadodiagnosticoCaptacionRepository.save(resultadiagnosticoDb));
         }
         return resultadiagnosticoOptional;
