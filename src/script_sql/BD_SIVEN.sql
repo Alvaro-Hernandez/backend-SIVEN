@@ -4,26 +4,40 @@ USE bd_siven;
 
 -- Tabla Catalogo de SILAIS
 CREATE TABLE SILAIS (
-    id_silais INT AUTO_INCREMENT PRIMARY KEY,
+id_silais INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
     direccion VARCHAR(255),
     latitud DECIMAL(10, 6),
-    longitud DECIMAL(10, 6)
+    longitud DECIMAL(10, 6),
+
+	usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT
+    
 );
 
 -- Tabla Catalogo EstablecimientoSalud
 CREATE TABLE EstablecimientoSalud (
-    id_establecimiento INT AUTO_INCREMENT PRIMARY KEY,
+id_establecimiento INT AUTO_INCREMENT PRIMARY KEY,
     id_silais INT,
     nombre VARCHAR(255),
     direccion VARCHAR(255),
     latitud DECIMAL(10, 6),
-    longitud DECIMAL(10, 6)
+    longitud DECIMAL(10, 6),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
    
 -- Tabla Persona
 CREATE TABLE Persona (
-    id_persona INT AUTO_INCREMENT PRIMARY KEY,
+id_persona INT AUTO_INCREMENT PRIMARY KEY,
     codigo_expediente VARCHAR(255),
     cedula VARCHAR(255) UNIQUE,
     primer_nombre VARCHAR(100),
@@ -42,40 +56,81 @@ CREATE TABLE Persona (
     pais_telefono VARCHAR(100),
     departamento VARCHAR(100),
     municipio VARCHAR(100),
-    direccion_domicilio VARCHAR(255)
+    direccion_domicilio VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );  
 
 
 -- Catalogo Evento de Salud
 CREATE TABLE EventoSalud(
   id_evento_salud INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(255)
-)
+  nombre VARCHAR(255),
+
+	usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+);
 
 -- Tabla Catalogo Maternidad
 CREATE TABLE Maternidad (
     id_maternidad INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 
 -- Tabla Catalogo de Comorbilidades
 CREATE TABLE Comorbilidades (
-    id_comorbilidades INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+     id_comorbilidades INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 
 -- Creación de la tabla Lugar de Captación
 CREATE TABLE LugarCaptacion (
-    id_lugar_captacion INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_lugar_captacion INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Creación de la tabla Condición de la Persona
 CREATE TABLE CondicionPersona (
-    id_condicion_persona INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_condicion_persona INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 
@@ -83,51 +138,98 @@ CREATE TABLE CondicionPersona (
 CREATE TABLE PaisOcurrenciaEventoSalud(
   id_pais_ocurrencia_evento_salud INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(255),
-  codigo_postal VARCHAR(50)
+  codigo_postal VARCHAR(50),
+  
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
 );
 
 
 
 -- Creación de la tabla Sitio de Exposición
 CREATE TABLE SitioExposicion (
-    id_sitio_exposicion INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_sitio_exposicion INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Catálogo de Síntomas
 CREATE TABLE Sintomas (
-    id_sintomas INT AUTO_INCREMENT PRIMARY KEY,
+id_sintomas INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
-    id_evento_salud INT
+    id_evento_salud INT,
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Catálogo de Lugar de Ingreso al Pais
 CREATE TABLE LugarIngresoPais (
-    id_lugar_ingreso_pais INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_lugar_ingreso_pais INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Creación de la tabla Puesto de Notificación
 CREATE TABLE PuestoNotificacion (
-    id_puesto_notificacion INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_puesto_notificacion INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Creación de la tabla Catálogo de Diagnósticos
 CREATE TABLE Diagnostico (
-    id_diagnostico INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_diagnostico INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Creacion de la tabla 
 CREATE TABLE ResultadoDiagnostico(
     id_resultado_diagnostico INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+    nombre VARCHAR(255),
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
 );
 
 -- Creación de la tabla DatosPaciente
 CREATE TABLE Captacion (
-    id_captacion INT AUTO_INCREMENT PRIMARY KEY,
+id_captacion INT AUTO_INCREMENT PRIMARY KEY,
     id_eventoSalud INT,
     id_persona INT,
     id_maternidad INT,
@@ -182,32 +284,66 @@ CREATE TABLE Captacion (
     existencia_reinfeccion BOOLEAN,
     evento_salud_extranjero BOOLEAN,
     id_pais_ocurrencia_evento_salud INT,
-    direccion_ocurrencia VARCHAR(255)
+    direccion_ocurrencia VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Catálogo de Medicamentos
 CREATE TABLE MedicamentosSeguimiento (
-    id_medicamento INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_medicamento INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Catálogo de Unidades de Medida de Dosis
 CREATE TABLE UnidadMedidaDosis (
-    id_unidad_medida_dosis INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_unidad_medida_dosis INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Catálogo de Vías de Administración
 CREATE TABLE ViaAdministracion (
-    id_via_administracion INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_via_administracion INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 
 -- Catalogo de Unidad de Medida de Frecuencia
 CREATE TABLE UnidadMedidaFrecuencia(
     id_unidad_medida_frecuencia INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+    nombre VARCHAR(255),
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
 );
 
 -- Tratamientos de Seguimiento
@@ -223,25 +359,45 @@ CREATE TABLE TratamientosSeguimiento(
     id_unidad_medida_dosis INT,
     frecuencia_diaria_dosis INT,
     id_unidad_medida_frecuencia INT,
-    id_via_administracion INT
+    id_via_administracion INT,
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
 );
 
 
 -- Catálogo de Tipo de Seguimiento
 CREATE TABLE TipoSeguimiento (
-    id_tipo_seguimiento INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_tipo_seguimiento INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Catálogo de Tipos de Alta
 CREATE TABLE TipoDeAlta (
-    id_tipo_de_alta INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_tipo_de_alta INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Tabla de Datos de Seguimiento
 CREATE TABLE DatosSeguimiento (
-    id_seguimiento INT AUTO_INCREMENT PRIMARY KEY,
+id_seguimiento INT AUTO_INCREMENT PRIMARY KEY,
     id_paciente INT,
     id_captacion INT,
     id_tratamiento INT,
@@ -254,7 +410,14 @@ CREATE TABLE DatosSeguimiento (
     fecha_defuncion DATE,
     estado_Paciente BOOLEAN,
     id_sintomas INT,
-    observaciones_del_seguimiento TEXT
+    observaciones_del_seguimiento TEXT,
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 
@@ -421,22 +584,40 @@ FOREIGN KEY (id_sintomas) REFERENCES Sintomas(id_sintomas);
 
 -- CATOLOGO SEGMENTACION
 CREATE TABLE Departamento (
-    id_departamento INT AUTO_INCREMENT PRIMARY KEY,
+id_departamento INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
-    id_pais INT
-)
+    id_pais INT,
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+);
 
 CREATE TABLE Municipio (
     id_municipio INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
-    id_departamento INT
-)
+    id_departamento INT,
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+);
 
 CREATE TABLE Sector (
     id_sector INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
-    id_municipio INT
-)
+    id_municipio INT,
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+);
 
 ALTER TABLE Departamento
 ADD CONSTRAINT FK_Departamento_Pais
@@ -454,26 +635,47 @@ FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio);
 
 -- MODULO DE JORNADAS DE VIGILANCIA
 CREATE TABLE Tipo_Jornada (
-    id_tipo_jornada INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_tipo_jornada INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 CREATE TABLE Recurso (
-    id_recurso INT AUTO_INCREMENT PRIMARY KEY,
+id_recurso INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
     id_tipo_jornada INT,
     tipo VARCHAR(255),
-    cantidad INT
+    cantidad INT,
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 CREATE TABLE Catalogo_Actividad (
-    id_actividad INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+id_actividad INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 
 CREATE TABLE Jornada (
-    id_jornada INT AUTO_INCREMENT PRIMARY KEY,
+id_jornada INT AUTO_INCREMENT PRIMARY KEY,
     id_tipo_jornada INT,
     id_silais INT,
     id_establecimiento INT,
@@ -488,11 +690,18 @@ CREATE TABLE Jornada (
     id_persona INT,
     observaciones TEXT,
     latitud DECIMAL(10, 6),
-    longitud DECIMAL(10, 6)
+    longitud DECIMAL(10, 6),
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 CREATE TABLE Actividad_Jornada (
-    id_actividad_realizada INT AUTO_INCREMENT PRIMARY KEY,
+id_actividad_realizada INT AUTO_INCREMENT PRIMARY KEY,
     id_jornada INT,
     id_actividad INT,
     id_persona INT,
@@ -502,17 +711,30 @@ CREATE TABLE Actividad_Jornada (
     resultados TEXT,
     latitud DECIMAL(10, 6),
     longitud DECIMAL(10, 6),
-    id_recurso INT
+    id_recurso INT,
 
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 CREATE TABLE Monitoreo_Jornada (
-    id_monitoreo INT AUTO_INCREMENT PRIMARY KEY,
+id_monitoreo INT AUTO_INCREMENT PRIMARY KEY,
     id_jornada INT,
     indicadores_exito TEXT,
     evaluaciones TEXT,
     impacto_poblacion TEXT,
-    fecha_monitoreo DATE
+    fecha_monitoreo DATE,
+
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
+    
 );
 
 -- Recurso referencias Tipo_Jornada
@@ -576,7 +798,13 @@ FOREIGN KEY (id_jornada) REFERENCES Jornada(id_jornada);
 CREATE TABLE TipoEscuela(
 	id_tipo_colegio INT AUTO_INCREMENT PRIMARY KEY,
 	nombre VARCHAR(255),
-	esTipEscuela ENUM ('PRIVADA', 'SEMI-PRIVADA', 'PUBLICA')
+	esTipEscuela ENUM ('PRIVADA', 'SEMI-PRIVADA', 'PUBLICA'),
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
 );
 
 CREATE TABLE Colegio(
@@ -586,7 +814,13 @@ CREATE TABLE Colegio(
 	direccion TEXT,
 	numero_telefono VARCHAR(12),
 	latitud DECIMAL(10, 8),
-	longitud DECIMAL(11, 8)
+	longitud DECIMAL(11, 8),
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
 );
 
 CREATE TABLE CaptacionColegio(
@@ -605,7 +839,13 @@ CREATE TABLE CaptacionColegio(
 	id_silais_traslado INT,
 	id_unidad_salud_traslado INT,
 	tipo_urgencia ENUM('URGENTE', 'NO URGENTE', 'NECESITA ESPECIALISTA'),
-	estado_caso ENUM('Reportado', 'Confirmado', 'Descartado')
+	estado_caso ENUM('Reportado', 'Confirmado', 'Descartado'),
+    
+    usuario_creacion VARCHAR(255),
+    fecha_creacion TIMESTAMP,
+    usuario_modificacion VARCHAR(255),
+    fecha_modificacion TIMESTAMP,
+    activo TINYINT 
 );
 
 
