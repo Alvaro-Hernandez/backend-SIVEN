@@ -11,7 +11,7 @@ import com.healthbytes.siven.api.siven_api.entities.Silais;
 import com.healthbytes.siven.api.siven_api.repositories.SilaisRepository;
 
 @Service
-public class SilaisServiceJPA implements SilaisService {
+public class SilaisJPA implements SilaisService {
 
     @Autowired
     private SilaisRepository silaisRepository;
