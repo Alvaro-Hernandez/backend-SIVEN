@@ -3,6 +3,7 @@ package com.healthbytes.siven.api.siven_api.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.healthbytes.siven.api.siven_api.entities.Captacion;
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.Diagnostico;
@@ -13,6 +14,7 @@ import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
 import com.healthbytes.siven.api.siven_api.entities.ResultadoDiagnostico;
+import com.healthbytes.siven.api.siven_api.entities.Sintomas;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 
 public interface CatalogoCaptacionService {
@@ -200,4 +202,39 @@ public interface CatalogoCaptacionService {
 
         // Metodo para borrar un resultado diagnostico
         Optional<ResultadoDiagnostico> deleteResultadoDiagnostico(int id_resultado_diagnostico);
+
+        // SINTOMAS
+
+        // Método para obtener todos los síntomas
+        List<Sintomas> listAllSintomas();
+
+        // Método para buscar un síntoma por ID
+        Optional<Sintomas> getSintomasById(int id_sintomas);
+
+        // Método para crear un síntoma
+        Sintomas saveSintomas(Sintomas sintoma);
+
+        // Método para actualizar un síntoma
+        Optional<Sintomas> updateSintomas(int id_sintomas, Sintomas sintoma);
+
+        // Método para borrar un síntoma
+        Optional<Sintomas> deleteSintomas(int id_sintomas);
+
+        // Métodos para Captación
+
+        // Método para obtener todas las captaciones
+        List<Captacion> listAllCaptaciones();
+
+        // Método para buscar una captación por ID
+        Optional<Captacion> getCaptacionById(int id_captacion);
+
+        // Método para crear una captación
+        Captacion saveCaptacion(Captacion captacion);
+
+        // Método para actualizar una captación
+        Optional<Captacion> updateCaptacion(int id_captacion, Captacion captacion);
+
+        // Método para eliminar una captación
+        Optional<Captacion> deleteCaptacion(int id_captacion);
+
 }
