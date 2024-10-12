@@ -230,7 +230,7 @@ CREATE TABLE ResultadoDiagnostico(
 -- Creación de la tabla DatosPaciente
 CREATE TABLE Captacion (
 id_captacion INT AUTO_INCREMENT PRIMARY KEY,
-    id_eventoSalud INT,
+    id_evento_salud INT,
     id_persona INT,
     id_maternidad INT,
     semana_gestacion INT,
@@ -243,8 +243,8 @@ id_captacion INT AUTO_INCREMENT PRIMARY KEY,
     telefono_referencia VARCHAR(20),
     
     -- Datos Captacion
-    id_lugarCaptacion INT,
-    id_condicionPersona INT,
+    id_lugar_captacion INT,
+    id_condicion_persona INT,
     fecha_captacion DATE,
     semana_epidemiologica INT,
     id_silais_captacion INT,
@@ -267,7 +267,7 @@ id_captacion INT AUTO_INCREMENT PRIMARY KEY,
     no_clave VARCHAR(255),
     no_lamina INT,
     toma_muestra INT,
-    id_tipoBusqueda BOOLEAN,
+    tipobusqueda BOOLEAN,
     id_diagnostico INT,
     fecha_toma_muestra DATE,
     fecha_recepcion_laboratorio DATE,
@@ -433,7 +433,7 @@ FOREIGN KEY (id_evento_salud) REFERENCES EventoSalud(id_evento_salud);
 -- Captacion referencias
 ALTER TABLE Captacion
 ADD CONSTRAINT FK_Captacion_EventoSalud
-FOREIGN KEY (id_eventoSalud) REFERENCES EventoSalud(id_evento_salud);
+FOREIGN KEY (id_evento_salud) REFERENCES EventoSalud(id_evento_salud);
 
 ALTER TABLE Captacion
 ADD CONSTRAINT FK_Captacion_Persona
@@ -457,11 +457,11 @@ FOREIGN KEY (id_comorbilidades) REFERENCES Comorbilidades(id_comorbilidades);
 
 ALTER TABLE Captacion
 ADD CONSTRAINT FK_Captacion_LugarCaptacion
-FOREIGN KEY (id_lugarCaptacion) REFERENCES LugarCaptacion(id_lugar_captacion);
+FOREIGN KEY (id_lugar_captacion) REFERENCES LugarCaptacion(id_lugar_captacion);
 
 ALTER TABLE Captacion
 ADD CONSTRAINT FK_Captacion_CondicionPersona
-FOREIGN KEY (id_condicionPersona) REFERENCES CondicionPersona(id_condicion_persona);
+FOREIGN KEY (id_condicion_persona) REFERENCES CondicionPersona(id_condicion_persona);
 
 ALTER TABLE Captacion
 ADD CONSTRAINT FK_Captacion_SILAIS_Captacion
