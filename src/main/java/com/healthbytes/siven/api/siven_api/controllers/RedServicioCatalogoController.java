@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.healthbytes.siven.api.siven_api.entities.EstablecimientoSalud;
 import com.healthbytes.siven.api.siven_api.entities.Silais;
 import com.healthbytes.siven.api.siven_api.services.SilaisService;
 
@@ -79,6 +80,73 @@ public class RedServicioCatalogoController {
         Optional<Silais> silaisOptional = silaisService.deleteSilais(id_silais);
         if (silaisOptional.isPresent()) {
             return ResponseEntity.ok(silaisOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Listar todos los establecimientos de salud")
+    @GetMapping("/list-establecimientos")
+    public List<EstablecimientoSalud> listAllEstablecimientos() {
+        return silaisService.listAllEstablecimientos();
+    }
+
+    @Operation(summary = "Obtener un establecimiento de salud por ID")
+    @GetMapping("/establecimiento/{id_establecimiento}")
+    public ResponseEntity<?> getEstablecimientoById(@PathVariable int id_establecimiento) {
+        Optional<EstablecimientoSalud> establecimiento = silaisService.getEstablecimientoById(id_establecimiento);
+        if (establecimiento.isPresent()) {
+            return ResponseEntity.ok(establecimiento.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear un establecimiento de salud")
+    @PostMapping("/create-establecimiento")
+    public ResponseEntity<?> createEstablecimiento(@Valid @RequestBody EstablecimientoSalud establecimientoSalud,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return validationBadRequest(result);
+        }
+        try {
+            EstablecimientoSalud nuevoEstablecimiento = silaisService.saveEstablecimiento(establecimientoSalud);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEstablecimiento);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "Actualizar un establecimiento de salud")
+    @PutMapping("/update-establecimiento/{id_establecimiento}")
+    public ResponseEntity<?> updateEstablecimiento(@PathVariable int id_establecimiento,
+            @Valid @RequestBody EstablecimientoSalud establecimientoSalud,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return validationBadRequest(result);
+        }
+        try {
+            Optional<EstablecimientoSalud> establecimientoOptional = silaisService
+                    .updateEstablecimiento(id_establecimiento, establecimientoSalud);
+            if (establecimientoOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(establecimientoOptional.orElseThrow());
+            }
+            return ResponseEntity.notFound().build();
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "Borrar un establecimiento de salud")
+    @DeleteMapping("/delete-establecimiento/{id_establecimiento}")
+    public ResponseEntity<?> deleteEstablecimiento(@PathVariable int id_establecimiento) {
+        Optional<EstablecimientoSalud> establecimientoOptional = silaisService
+                .deleteEstablecimiento(id_establecimiento);
+        if (establecimientoOptional.isPresent()) {
+            return ResponseEntity.ok(establecimientoOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
