@@ -3,6 +3,7 @@ package com.healthbytes.siven.api.siven_api.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.healthbytes.siven.api.siven_api.entities.DatosSeguimiento;
 import com.healthbytes.siven.api.siven_api.entities.TipoDeAlta;
 import com.healthbytes.siven.api.siven_api.entities.TipoSeguimiento;
 
@@ -41,5 +42,22 @@ public interface CatalogoSeguimientoService {
 
     // Metodo para borrar un tipo de alta
     Optional<TipoDeAlta> deleteTipoAlta(int id_tipo_de_alta);
+
+    // PERSISTENCIA DE DATOS DE SEGUIMIENTO
+
+    // Metodo para obtener todos los datos de seguimiento
+    List<DatosSeguimiento> listAllDatosSeguimiento();
+
+    // Metodo para buscar un datos de seguimiento
+    Optional<DatosSeguimiento> getDatosSeguimientoById(int id_seguimiento);
+
+    // Metodo para crear un datos de seguimiento
+    DatosSeguimiento saveDatosSeguimiento(DatosSeguimiento datosSeguimiento);
+
+    // Metodo para actualizar un datos de seguimiento
+    Optional<DatosSeguimiento> updateDatosSeguimiento(int id_seguimiento, DatosSeguimiento datosSeguimiento);
+
+    // Metodo para borrar un datos de seguimiento
+    Optional<DatosSeguimiento> deleteDatosSeguimiento(int id_seguimiento);
 
 }
