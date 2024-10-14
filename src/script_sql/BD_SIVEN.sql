@@ -894,7 +894,7 @@ CREATE TABLE Roles (
 
 CREATE TABLE Usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_usuario VARCHAR(255) UNIQUE,
+    usuario VARCHAR(255) UNIQUE,
     contrasena VARCHAR(255),
     correo_electronico VARCHAR(255) UNIQUE,
 	
