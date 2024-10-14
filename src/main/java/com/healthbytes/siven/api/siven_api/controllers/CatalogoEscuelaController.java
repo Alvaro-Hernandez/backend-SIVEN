@@ -34,7 +34,7 @@ public class CatalogoEscuelaController {
     private CatalogoEscuelaService catalogoEscuelaService;
 
     @Operation(summary = "Listar todos los tipos de escuela")
-    @GetMapping("/list-escuelas")
+    @GetMapping("/list-tipo-escuelas")
     public List<TipoEscuela> listAllEscuelas() {
         return catalogoEscuelaService.listAllTipoEscuela();
     }
