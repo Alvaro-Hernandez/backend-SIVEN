@@ -19,10 +19,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
+import com.healthbytes.siven.api.siven_api.entities.Diagnostico;
 import com.healthbytes.siven.api.siven_api.entities.EventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.LugarCaptacion;
+import com.healthbytes.siven.api.siven_api.entities.LugarIngresoPais;
 import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
+import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
+import com.healthbytes.siven.api.siven_api.entities.ResultadoDiagnostico;
+import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -374,6 +379,288 @@ public class CatalogoCaptacionController {
                 .deletePaisOcurrenciaEventoSalud(id_pais_ocurrencia_evento_salud);
         if (paisocurrenciaeventosalud.isPresent()) {
             return ResponseEntity.ok(paisocurrenciaeventosalud.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE Sitio de Exposicion
+
+    @Operation(summary = "Crear una opcion de Sitio de Exposicion")
+    @PostMapping("/create-sitio-exposicion")
+    public ResponseEntity<?> createSitioExposicion(@Valid @RequestBody SitioExposicion sitioexposicion,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveSitioExposicion(sitioexposicion));
+    }
+
+    @Operation(summary = "Optener una opcion de Sitio de Exposicion")
+    @GetMapping("/sitio-exposicion/{id_sitio_exposicion}")
+    public ResponseEntity<?> getSitioExposicionById(@PathVariable int id_sitio_exposicion) {
+        Optional<SitioExposicion> sitioexposicion = catalogoCaptacionService
+                .getSitioExposicionById(id_sitio_exposicion);
+        if (sitioexposicion.isPresent()) {
+            return ResponseEntity.ok(sitioexposicion.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Sitio de Exposicion")
+    @GetMapping("/list-sitio-exposicion")
+    public List<SitioExposicion> listAllSitioExposicions() {
+        return catalogoCaptacionService.listAllSitioExposicion();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Sitio de Exposicion")
+    @PutMapping("/update-sitio-exposicion/{id_sitio_exposicion}")
+    public ResponseEntity<?> updateSitioExposicion(@PathVariable int id_sitio_exposicion,
+            @Valid @RequestBody SitioExposicion sitioexposicion, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<SitioExposicion> sitioexposicionOptional = catalogoCaptacionService
+                .updateSitioExposicion(id_sitio_exposicion, sitioexposicion);
+        if (sitioexposicionOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(sitioexposicionOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Sitio de Exposicion")
+    @DeleteMapping("/delete-sitio-exposicion/{id_sitio_exposicion}")
+    public ResponseEntity<?> deleteSitioExposicion(@PathVariable int id_sitio_exposicion) {
+        Optional<SitioExposicion> sitioexposicion = catalogoCaptacionService
+                .deleteSitioExposicion(id_sitio_exposicion);
+        if (sitioexposicion.isPresent()) {
+            return ResponseEntity.ok(sitioexposicion.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE Lugar de ingreso pais
+
+    @Operation(summary = "Crear una opcion de Lugar de Ingreso")
+    @PostMapping("/create-lugar-ingreso")
+    public ResponseEntity<?> createLugarIngreso(@Valid @RequestBody LugarIngresoPais lugaringresopais,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveLugarIngresoPais(lugaringresopais));
+    }
+
+    @Operation(summary = "Optener una opcion de Lugar de Ingreso")
+    @GetMapping("/lugar-ingreso/{id_lugar_ingreso_pais}")
+    public ResponseEntity<?> getLugarIngresoPaisById(@PathVariable int id_lugar_ingreso_pais) {
+        Optional<LugarIngresoPais> lugaringresopais = catalogoCaptacionService
+                .getLugarIngresoPaisById(id_lugar_ingreso_pais);
+        if (lugaringresopais.isPresent()) {
+            return ResponseEntity.ok(lugaringresopais.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Lugar de Ingreso")
+    @GetMapping("/list-lugar-ingreso-pais")
+    public List<LugarIngresoPais> listAlllugaringresopais() {
+        return catalogoCaptacionService.listAllLugarIngresoPais();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Lugar de Ingreso")
+    @PutMapping("/update-lugar-ingreso-pais/{id_lugar_ingreso_pais}")
+    public ResponseEntity<?> updateLugarIngresoPais(@PathVariable int id_lugar_ingreso_pais,
+            @Valid @RequestBody LugarIngresoPais lugaringresopais, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<LugarIngresoPais> lugaringresopaisOptional = catalogoCaptacionService
+                .updateLugarIngresoPais(id_lugar_ingreso_pais, lugaringresopais);
+        if (lugaringresopaisOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(lugaringresopaisOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Lugar de Ingreso de Pais")
+    @DeleteMapping("/delete-lugar-ingreso-pais/{id_lugar_ingreso_pais}")
+    public ResponseEntity<?> deleteLugarIngresoPais(@PathVariable int id_lugar_ingreso_pais) {
+        Optional<LugarIngresoPais> lugaringresopais = catalogoCaptacionService
+                .deleteLugarIngresoPais(id_lugar_ingreso_pais);
+        if (lugaringresopais.isPresent()) {
+            return ResponseEntity.ok(lugaringresopais.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE PUESTO DE NOTIFICACION
+
+    @Operation(summary = "Crear una opcion de Puesto de Notificacion")
+    @PostMapping("/create-puesto-notificacion")
+    public ResponseEntity<?> createPuestoNotificacion(@Valid @RequestBody PuestoNotificacion puestonotificacion,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.savePuestoNotificacion(puestonotificacion));
+    }
+
+    @Operation(summary = "Optener una opcion de Puesto de Notificacion")
+    @GetMapping("/puesto-notificacion/{id_puesto_notificacion}")
+    public ResponseEntity<?> getPuestoNotificacionById(@PathVariable int id_puesto_notificacion) {
+        Optional<PuestoNotificacion> puestonotificacion = catalogoCaptacionService
+                .getPuestoNotificacionById(id_puesto_notificacion);
+        if (puestonotificacion.isPresent()) {
+            return ResponseEntity.ok(puestonotificacion.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Puesto de Notificacion")
+    @GetMapping("/list-puesto-notificacion")
+    public List<PuestoNotificacion> listAllPuestonotificacion() {
+        return catalogoCaptacionService.listAllPuestoNotificacion();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Puesto de Notificacion")
+    @PutMapping("/update-puesto-notificacion/{id_puesto_notificacion}")
+    public ResponseEntity<?> updatePuestoNotificacion(@PathVariable int id_puesto_notificacion,
+            @Valid @RequestBody PuestoNotificacion puestonotificacion, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<PuestoNotificacion> puestonotificacionOptional = catalogoCaptacionService
+                .updatePuestoNotificacion(id_puesto_notificacion, puestonotificacion);
+        if (puestonotificacionOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(puestonotificacionOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Puesto de Notificacion")
+    @DeleteMapping("/delete-puesto-notificacion/{id_puesto_notificacion}")
+    public ResponseEntity<?> deletePuestoNotificacion(@PathVariable int id_puesto_notificacion) {
+        Optional<PuestoNotificacion> puestonotificacion = catalogoCaptacionService
+                .deletePuestoNotificacion(id_puesto_notificacion);
+        if (puestonotificacion.isPresent()) {
+            return ResponseEntity.ok(puestonotificacion.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE DIAGNOSTICOS
+
+    @Operation(summary = "Crear una opcion de Diagnostico")
+    @PostMapping("/create-diagnostico")
+    public ResponseEntity<?> createDiagnostico(@Valid @RequestBody Diagnostico diagnostico, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveDiagnostico(diagnostico));
+    }
+
+    @Operation(summary = "Optener una opcion de Diagnostico")
+    @GetMapping("/diagnostico/{id_diagnostico}")
+    public ResponseEntity<?> getDiagnosticoById(@PathVariable int id_diagnostico) {
+        Optional<Diagnostico> diagnostico = catalogoCaptacionService.getDiagnosticoById(id_diagnostico);
+        if (diagnostico.isPresent()) {
+            return ResponseEntity.ok(diagnostico.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Diagnostico")
+    @GetMapping("/list-diagnostico")
+    public List<Diagnostico> listAllDiagnostico() {
+        return catalogoCaptacionService.listAllDiagnostico();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Diagnostico")
+    @PutMapping("/update-diagnostico/{id_diagnostico}")
+    public ResponseEntity<?> updateDiagnostico(@PathVariable int id_diagnostico,
+            @Valid @RequestBody Diagnostico diagnostico, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<Diagnostico> diagnosticoOptional = catalogoCaptacionService
+                .updateDiagnostico(id_diagnostico, diagnostico);
+        if (diagnosticoOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(diagnosticoOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Diagnostico")
+    @DeleteMapping("/delete-diagnostico/{id_diagnostico}")
+    public ResponseEntity<?> deleteDiagnostico(@PathVariable int id_diagnostico) {
+        Optional<Diagnostico> diagnostico = catalogoCaptacionService.deleteDiagnostico(id_diagnostico);
+        if (diagnostico.isPresent()) {
+            return ResponseEntity.ok(diagnostico.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE RESULTADOS DE DIAGNOSTICOS
+
+    @Operation(summary = "Crear una opcion de Resultado de Diagnostico")
+    @PostMapping("/create-resultados-diagnostico")
+    public ResponseEntity<?> createResultadoDiagnostico(@Valid @RequestBody ResultadoDiagnostico resultadoDiagnostico,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoCaptacionService.saveResultadoDiagnostico(resultadoDiagnostico));
+    }
+
+    @Operation(summary = "Optener una opcion de Resultado de Diagnostico")
+    @GetMapping("/resultados-diagnostico/{id_resultado_diagnostico}")
+    public ResponseEntity<?> getResultadoDiagnosticoById(@PathVariable int id_resultado_diagnostico) {
+        Optional<ResultadoDiagnostico> resultadodiagnostico = catalogoCaptacionService
+                .getResultadoDiagnosticoById(id_resultado_diagnostico);
+        if (resultadodiagnostico.isPresent()) {
+            return ResponseEntity.ok(resultadodiagnostico.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Optener todas las operaciones de Resultado de Diagnostico")
+    @GetMapping("/list-resultados-diagnostico")
+    public List<ResultadoDiagnostico> listAllResultadoDiagnostico() {
+        return catalogoCaptacionService.listAllResultadoDiagnostico();
+    }
+
+    @Operation(summary = "Actualizar una opcion de Resultado de Diagnostico")
+    @PutMapping("/update-resultados-diagnostico/{id_resultado_diagnostico}")
+    public ResponseEntity<?> updateResultadoDiagnostico(@PathVariable int id_resultado_diagnostico,
+            @Valid @RequestBody ResultadoDiagnostico resultadodiagnostico, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+        Optional<ResultadoDiagnostico> resultadodiagnosticoOptional = catalogoCaptacionService
+                .updateResultadoDiagnostico(id_resultado_diagnostico, resultadodiagnostico);
+        if (resultadodiagnosticoOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(resultadodiagnosticoOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar una opcion de Resultado de Diagnostico")
+    @DeleteMapping("/delete-resultados-diagnostico/{id_resultado_diagnostico}")
+    public ResponseEntity<?> deleteResultadoDiagnostico(@PathVariable int id_resultado_diagnostico) {
+        Optional<ResultadoDiagnostico> resultadodiagnostico = catalogoCaptacionService
+                .deleteResultadoDiagnostico(id_resultado_diagnostico);
+        if (resultadodiagnostico.isPresent()) {
+            return ResponseEntity.ok(resultadodiagnostico.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }

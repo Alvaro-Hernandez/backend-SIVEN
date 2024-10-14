@@ -58,6 +58,10 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
         if (medicOptional.isPresent()) {
             MedicamentosSeguimiento medicamentosSeguimientoDb = medicOptional.orElseThrow();
             medicamentosSeguimientoDb.setNombre(medicamentosseguimiento.getNombre());
+
+            medicamentosSeguimientoDb.setUsuario_modificacion(medicamentosseguimiento.getUsuario_modificacion());
+            medicamentosSeguimientoDb.setFecha_modificacion(medicamentosseguimiento.getFecha_modificacion());
+            medicamentosSeguimientoDb.setActivo(medicamentosseguimiento.getActivo());
             return Optional.of(medicamentosSeguimientoRepository.save(medicamentosSeguimientoDb));
         }
 
@@ -106,6 +110,10 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
         if (unidadMedidaDosisOptional.isPresent()) {
             UnidadMedidaDosis unidadMedidaDosisDb = unidadMedidaDosisOptional.orElseThrow();
             unidadMedidaDosisDb.setNombre(unidadmedidadosis.getNombre());
+
+            unidadMedidaDosisDb.setUsuario_modificacion(unidadmedidadosis.getUsuario_modificacion());
+            unidadMedidaDosisDb.setFecha_modificacion(unidadmedidadosis.getFecha_modificacion());
+            unidadMedidaDosisDb.setActivo(unidadmedidadosis.getActivo());
             return Optional.of(unidadMedidaDosisRepository.save(unidadMedidaDosisDb));
         }
 
@@ -156,6 +164,10 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
         if (viaAdministracionOptional.isPresent()) {
             ViaAdministracion viaAdministracionDb = viaAdministracionOptional.orElseThrow();
             viaAdministracionDb.setNombre(viaadministracion.getNombre());
+
+            viaAdministracionDb.setUsuario_modificacion(viaadministracion.getUsuario_modificacion());
+            viaAdministracionDb.setFecha_modificacion(viaadministracion.getFecha_modificacion());
+            viaAdministracionDb.setActivo(viaadministracion.getActivo());
             return Optional.of(viaAdministracionRepository.save(viaAdministracionDb));
         }
 
@@ -203,6 +215,10 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
         if (unidadMedidaFrecuenciaOptional.isPresent()) {
             UnidadMedidaFrecuencia unidadMedidaFrecuenciaDb = unidadMedidaFrecuenciaOptional.orElseThrow();
             unidadMedidaFrecuenciaDb.setNombre(unidadmedidafrecuencia.getNombre());
+
+            unidadMedidaFrecuenciaDb.setUsuario_modificacion(unidadmedidafrecuencia.getUsuario_modificacion());
+            unidadMedidaFrecuenciaDb.setFecha_modificacion(unidadmedidafrecuencia.getFecha_modificacion());
+            unidadMedidaFrecuenciaDb.setActivo(unidadmedidafrecuencia.getActivo());
             return Optional.of(unidadMedidaFrecuenciaRepository.save(unidadMedidaFrecuenciaDb));
         }
 

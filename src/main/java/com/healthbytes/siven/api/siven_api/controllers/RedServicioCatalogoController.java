@@ -40,7 +40,7 @@ public class RedServicioCatalogoController {
     }
 
     @Operation(summary = "Obtener un silais por id")
-    @GetMapping("silais/{id_silais}")
+    @GetMapping("/silais/{id_silais}")
     public ResponseEntity<?> getSilaisById(@PathVariable int id_silais) {
         Optional<Silais> silais = silaisService.getSilaisById(id_silais);
         if (silais.isPresent()) {
@@ -60,7 +60,7 @@ public class RedServicioCatalogoController {
     }
 
     @Operation(summary = "Actualizar un silais")
-    @PutMapping("update-silais/{id_silais}")
+    @PutMapping("/update-silais/{id_silais}")
     public ResponseEntity<?> updateSilais(@PathVariable int id_silais, @Valid @RequestBody Silais silais,
             BindingResult result) {
         if (result.hasFieldErrors()) {
@@ -68,13 +68,13 @@ public class RedServicioCatalogoController {
         }
         Optional<Silais> silaisOptional = silaisService.updateSilais(id_silais, silais);
         if (silaisOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(silaisOptional.orElseThrow());
+            return ResponseEntity.status(HttpStatus.OK).body(silaisOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @Operation(summary = "Borrar un silais")
-    @DeleteMapping("delete-silais/{id_silais}")
+    @DeleteMapping("/delete-silais/{id_silais}")
     public ResponseEntity<?> deleteSilais(@PathVariable int id_silais) {
         Optional<Silais> silaisOptional = silaisService.deleteSilais(id_silais);
         if (silaisOptional.isPresent()) {
