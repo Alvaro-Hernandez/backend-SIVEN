@@ -892,8 +892,8 @@ CREATE TABLE Roles (
 
 CREATE TABLE Usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_usuario VARCHAR(255) UNIQUE,
-    contraseña VARCHAR(255),
+    usuario VARCHAR(255) UNIQUE,
+    contrasena VARCHAR(255),
     correo_electronico VARCHAR(255) UNIQUE,
 	
     usuario_creacion VARCHAR(255),
@@ -907,12 +907,6 @@ CREATE TABLE Usuarios_Roles (
     id_usuario INT,
     id_rol INT,
     PRIMARY KEY (id_usuario, id_rol),
-    
-    usuario_creacion VARCHAR(255),
-    fecha_creacion TIMESTAMP,
-    usuario_modificacion VARCHAR(255),
-    fecha_modificacion TIMESTAMP,
-    activo TINYINT
 );
 
 -- Añadir clave foránea para id_usuario
