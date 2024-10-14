@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.healthbytes.siven.api.siven_api.entities.DatosSeguimiento;
 import com.healthbytes.siven.api.siven_api.entities.TipoDeAlta;
 import com.healthbytes.siven.api.siven_api.entities.TipoSeguimiento;
 import com.healthbytes.siven.api.siven_api.services.CatalogoSeguimientoService;
@@ -155,6 +156,81 @@ public class CatalogoTipoSeguimientoController {
             return ResponseEntity.ok(tipodealtaOptional.orElseThrow());
         }
 
+        return ResponseEntity.notFound().build();
+    }
+
+    // Endpoint para CRUD de Dato de Seguimiento
+
+    @Operation(summary = "Listar todos los Datos de Seguimiento")
+    @GetMapping("/list-datos-seguimiento")
+    public List<DatosSeguimiento> listAllDatosSeguimiento() {
+        return catalogoSeguimientoService.listAllDatosSeguimiento();
+    }
+
+    @Operation(summary = "Obtener un Dato de Seguimiento por ID")
+    @GetMapping("/dato-seguimiento/{id_seguimiento}")
+    public ResponseEntity<?> getDatosSeguimientoById(@PathVariable int id_seguimiento) {
+        Optional<DatosSeguimiento> datosSeguimientoOptional = catalogoSeguimientoService
+                .getDatosSeguimientoById(id_seguimiento);
+        if (datosSeguimientoOptional.isPresent()) {
+            return ResponseEntity.ok(datosSeguimientoOptional.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear un nuevo Dato de Seguimiento")
+    @PostMapping("/create-dato-seguimiento")
+    public ResponseEntity<?> createDatosSeguimiento(
+            @Valid @RequestBody DatosSeguimiento datosSeguimiento,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        try {
+            DatosSeguimiento savedDatosSeguimiento = catalogoSeguimientoService.saveDatosSeguimiento(datosSeguimiento);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedDatosSeguimiento);
+        } catch (RuntimeException ex) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
+
+    @Operation(summary = "Actualizar un Dato de Seguimiento existente")
+    @PutMapping("/update-dato-seguimiento/{id_seguimiento}")
+    public ResponseEntity<?> updateDatosSeguimiento(
+            @PathVariable int id_seguimiento,
+            @Valid @RequestBody DatosSeguimiento datosSeguimiento,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        try {
+            Optional<DatosSeguimiento> updatedDatosSeguimientoOptional = catalogoSeguimientoService
+                    .updateDatosSeguimiento(id_seguimiento, datosSeguimiento);
+            if (updatedDatosSeguimientoOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(updatedDatosSeguimientoOptional.orElseThrow());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (RuntimeException ex) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
+
+    @Operation(summary = "Eliminar un Dato de Seguimiento por ID")
+    @DeleteMapping("/delete-dato-seguimiento/{id_seguimiento}")
+    public ResponseEntity<?> deleteDatosSeguimiento(@PathVariable int id_seguimiento) {
+        Optional<DatosSeguimiento> datosSeguimientoOptional = catalogoSeguimientoService
+                .deleteDatosSeguimiento(id_seguimiento);
+        if (datosSeguimientoOptional.isPresent()) {
+            return ResponseEntity.ok(datosSeguimientoOptional.orElseThrow());
+        }
         return ResponseEntity.notFound().build();
     }
 

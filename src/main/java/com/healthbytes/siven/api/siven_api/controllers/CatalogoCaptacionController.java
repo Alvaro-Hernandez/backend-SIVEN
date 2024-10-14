@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.healthbytes.siven.api.siven_api.entities.Captacion;
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.Diagnostico;
@@ -27,6 +28,7 @@ import com.healthbytes.siven.api.siven_api.entities.Maternidad;
 import com.healthbytes.siven.api.siven_api.entities.PaisOcurrenciaEventoSalud;
 import com.healthbytes.siven.api.siven_api.entities.PuestoNotificacion;
 import com.healthbytes.siven.api.siven_api.entities.ResultadoDiagnostico;
+import com.healthbytes.siven.api.siven_api.entities.Sintomas;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -661,6 +663,144 @@ public class CatalogoCaptacionController {
                 .deleteResultadoDiagnostico(id_resultado_diagnostico);
         if (resultadodiagnostico.isPresent()) {
             return ResponseEntity.ok(resultadodiagnostico.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE SINTOMAS
+
+    @Operation(summary = "Obtener todos los síntomas")
+    @GetMapping("/list-sintomas")
+    public List<Sintomas> listAllSintomas() {
+        return catalogoCaptacionService.listAllSintomas();
+    }
+
+    @Operation(summary = "Obtener un síntoma por ID")
+    @GetMapping("/sintomas/{id_sintomas}")
+    public ResponseEntity<?> getSintomasById(@PathVariable int id_sintomas) {
+        Optional<Sintomas> sintoma = catalogoCaptacionService.getSintomasById(id_sintomas);
+        if (sintoma.isPresent()) {
+            return ResponseEntity.ok(sintoma.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear un síntoma")
+    @PostMapping("/create-sintomas")
+    public ResponseEntity<?> createSintomas(@Valid @RequestBody Sintomas sintoma, BindingResult result) {
+        if (result.hasErrors()) {
+            return validationBadRequest(result);
+        }
+        try {
+            Sintomas nuevoSintoma = catalogoCaptacionService.saveSintomas(sintoma);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoSintoma);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "Actualizar un síntoma")
+    @PutMapping("/update-sintomas/{id_sintomas}")
+    public ResponseEntity<?> updateSintomas(@PathVariable int id_sintomas, @Valid @RequestBody Sintomas sintoma,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return validationBadRequest(result);
+        }
+        try {
+            Optional<Sintomas> sintomaOptional = catalogoCaptacionService.updateSintomas(id_sintomas, sintoma);
+            if (sintomaOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(sintomaOptional.orElseThrow());
+            }
+            return ResponseEntity.notFound().build();
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "Borrar un síntoma")
+    @DeleteMapping("/delete-sintomas/{id_sintomas}")
+    public ResponseEntity<?> deleteSintomas(@PathVariable int id_sintomas) {
+        Optional<Sintomas> sintomaOptional = catalogoCaptacionService.deleteSintomas(id_sintomas);
+        if (sintomaOptional.isPresent()) {
+            return ResponseEntity.ok(sintomaOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE CAPTACIONES
+
+    @Operation(summary = "Listar todas las Captaciones")
+    @GetMapping("/list-captacion")
+    public List<Captacion> listAllCaptaciones() {
+        return catalogoCaptacionService.listAllCaptaciones();
+    }
+
+    @Operation(summary = "Obtener una Captación por ID")
+    @GetMapping("/captacion/{id_captacion}")
+    public ResponseEntity<?> getCaptacionById(@PathVariable int id_captacion) {
+        Optional<Captacion> captacionOptional = catalogoCaptacionService.getCaptacionById(id_captacion);
+        if (captacionOptional.isPresent()) {
+            return ResponseEntity.ok(captacionOptional.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear una nueva Captación")
+    @PostMapping("/create-captacion")
+    public ResponseEntity<?> createCaptacion(
+            @Valid @RequestBody Captacion captacion,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        try {
+            Captacion savedCaptacion = catalogoCaptacionService.saveCaptacion(captacion);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedCaptacion);
+        } catch (RuntimeException ex) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
+
+    @Operation(summary = "Actualizar una Captación existente")
+    @PutMapping("/update-captacion/{id_captacion}")
+    public ResponseEntity<?> updateCaptacion(
+            @PathVariable int id_captacion,
+            @Valid @RequestBody Captacion captacion,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        try {
+            Optional<Captacion> updatedCaptacionOptional = catalogoCaptacionService.updateCaptacion(id_captacion,
+                    captacion);
+            if (updatedCaptacionOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(updatedCaptacionOptional.orElseThrow());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (RuntimeException ex) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
+
+    @Operation(summary = "Eliminar una Captación por ID")
+    @DeleteMapping("/delete-captacion/{id_captacion}")
+    public ResponseEntity<?> deleteCaptacion(@PathVariable int id_captacion) {
+        Optional<Captacion> captacionOptional = catalogoCaptacionService.deleteCaptacion(id_captacion);
+        if (captacionOptional.isPresent()) {
+            return ResponseEntity.ok(captacionOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthbytes.siven.api.siven_api.entities.MedicamentosSeguimiento;
+import com.healthbytes.siven.api.siven_api.entities.TratamientosSeguimiento;
 import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaDosis;
 import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaFrecuencia;
 import com.healthbytes.siven.api.siven_api.entities.ViaAdministracion;
@@ -283,6 +284,71 @@ public class CatalogoMedicamentoController {
             return ResponseEntity.ok(unidadMedidaFrecuenciaOptional.orElseThrow());
         }
 
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINT DE TRATAMIENTOS DE SEGUIMIENTO
+
+    @Operation(summary = "Listar todos los Tratamientos de Seguimiento")
+    @GetMapping("/list-tratamientos-seguimiento")
+    public List<TratamientosSeguimiento> listAllTratamientosSeguimiento() {
+        return catalogoMedicamentosService.listAllTratamientosSeguimiento();
+    }
+
+    @Operation(summary = "Obtener un Tratamiento de Seguimiento por ID")
+    @GetMapping("/tratamiento-seguimiento/{id_tratamiento}")
+    public ResponseEntity<?> getTratamientoSeguimientoById(@PathVariable int id_tratamiento) {
+        Optional<TratamientosSeguimiento> tratamientosSeguimientoOptional = catalogoMedicamentosService
+                .getTratamientoSeguimientoById(id_tratamiento);
+        if (tratamientosSeguimientoOptional.isPresent()) {
+            return ResponseEntity.ok(tratamientosSeguimientoOptional.orElseThrow());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Crear un nuevo Tratamiento de Seguimiento")
+    @PostMapping("/create-tratamiento-seguimiento")
+    public ResponseEntity<?> createTratamientoSeguimiento(
+            @Valid @RequestBody TratamientosSeguimiento tratamientosSeguimiento,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(catalogoMedicamentosService.saveTratamientosSeguimiento(tratamientosSeguimiento));
+    }
+
+    @Operation(summary = "Actualizar un Tratamiento de Seguimiento existente")
+    @PutMapping("/update-tratamiento-seguimiento/{id_tratamiento}")
+    public ResponseEntity<?> updateTratamientoSeguimiento(
+            @PathVariable int id_tratamiento,
+            @Valid @RequestBody TratamientosSeguimiento tratamientosSeguimiento,
+            BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return validationBadRequest(result);
+        }
+
+        Optional<TratamientosSeguimiento> updatedTratamientosSeguimientoOptional = catalogoMedicamentosService
+                .updateTratamientosSeguimiento(id_tratamiento, tratamientosSeguimiento);
+
+        if (updatedTratamientosSeguimientoOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(updatedTratamientosSeguimientoOptional.orElseThrow());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar un Tratamiento de Seguimiento por ID")
+    @DeleteMapping("/delete-tratamiento-seguimiento/{id_tratamiento}")
+    public ResponseEntity<?> deleteTratamientoSeguimiento(@PathVariable int id_tratamiento) {
+        Optional<TratamientosSeguimiento> tratamientosSeguimientoOptional = catalogoMedicamentosService
+                .deleteTratamientosSeguimiento(id_tratamiento);
+        if (tratamientosSeguimientoOptional.isPresent()) {
+            return ResponseEntity.ok(tratamientosSeguimientoOptional.orElseThrow());
+        }
         return ResponseEntity.notFound().build();
     }
 

@@ -7,11 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.healthbytes.siven.api.siven_api.entities.Captacion;
 import com.healthbytes.siven.api.siven_api.entities.MedicamentosSeguimiento;
+import com.healthbytes.siven.api.siven_api.entities.Persona;
+import com.healthbytes.siven.api.siven_api.entities.TratamientosSeguimiento;
 import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaDosis;
 import com.healthbytes.siven.api.siven_api.entities.UnidadMedidaFrecuencia;
 import com.healthbytes.siven.api.siven_api.entities.ViaAdministracion;
+import com.healthbytes.siven.api.siven_api.repositories.Persona.PersonaRepository;
+import com.healthbytes.siven.api.siven_api.repositories.captacion.CaptacionRepository;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.MedicamentoSeguimientoRepositoty;
+import com.healthbytes.siven.api.siven_api.repositories.medicacion.TratamientosSeguimientoRepository;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.UnidadMedidaDosisRepository;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.UnidadMedidaFrecuenciaRepository;
 import com.healthbytes.siven.api.siven_api.repositories.medicacion.ViaAdministracionRepository;
@@ -30,6 +36,15 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
 
     @Autowired
     private UnidadMedidaFrecuenciaRepository unidadMedidaFrecuenciaRepository;
+
+    @Autowired
+    private TratamientosSeguimientoRepository tratamientosSeguimientoRepository;
+
+    @Autowired
+    private PersonaRepository personaRepository;
+
+    @Autowired
+    private CaptacionRepository captacionRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -236,6 +251,190 @@ public class CatalogoMedicamentosJPA implements CatalogoMedicamentosService {
         }
 
         return unidadMedidaFrecuenciaOptional;
+    }
+
+    // Metodos para Tratamiento Seguimiento
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<TratamientosSeguimiento> listAllTratamientosSeguimiento() {
+        return (List<TratamientosSeguimiento>) tratamientosSeguimientoRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<TratamientosSeguimiento> getTratamientoSeguimientoById(int id_tratamiento) {
+        return tratamientosSeguimientoRepository.findById(id_tratamiento);
+    }
+
+    @Transactional
+    @Override
+    public TratamientosSeguimiento saveTratamientosSeguimiento(TratamientosSeguimiento tratamientosSeguimiento) {
+        // Verificar que las entidades relacionadas existan
+
+        // Persona
+        Optional<Persona> personaOptional = personaRepository.findById(tratamientosSeguimiento.getId_persona());
+        if (!personaOptional.isPresent()) {
+            throw new RuntimeException("Persona con id " + tratamientosSeguimiento.getId_persona() + " no encontrada.");
+        }
+        tratamientosSeguimiento.setPersona(personaOptional.get());
+
+        // Captacion
+        Optional<Captacion> captacionOptional = captacionRepository.findById(tratamientosSeguimiento.getId_captacion());
+        if (!captacionOptional.isPresent()) {
+            throw new RuntimeException(
+                    "Captacion con id " + tratamientosSeguimiento.getId_captacion() + " no encontrada.");
+        }
+        tratamientosSeguimiento.setCaptacion(captacionOptional.get());
+
+        // MedicamentosSeguimiento
+        Optional<MedicamentosSeguimiento> medicamentoOptional = medicamentosSeguimientoRepository
+                .findById(tratamientosSeguimiento.getId_medicamento());
+        if (!medicamentoOptional.isPresent()) {
+            throw new RuntimeException(
+                    "Medicamento con id " + tratamientosSeguimiento.getId_medicamento() + " no encontrado.");
+        }
+        tratamientosSeguimiento.setMedicamento(medicamentoOptional.get());
+
+        // UnidadMedidaDosis
+        Optional<UnidadMedidaDosis> unidadMedidaDosisOptional = unidadMedidaDosisRepository
+                .findById(tratamientosSeguimiento.getId_unidad_medida_dosis());
+        if (!unidadMedidaDosisOptional.isPresent()) {
+            throw new RuntimeException("UnidadMedidaDosis con id " + tratamientosSeguimiento.getId_unidad_medida_dosis()
+                    + " no encontrada.");
+        }
+        tratamientosSeguimiento.setUnidad_medida_dosis(unidadMedidaDosisOptional.get());
+
+        // UnidadMedidaFrecuencia
+        Optional<UnidadMedidaFrecuencia> unidadMedidaFrecuenciaOptional = unidadMedidaFrecuenciaRepository
+                .findById(tratamientosSeguimiento.getId_unidad_medida_frecuencia());
+        if (!unidadMedidaFrecuenciaOptional.isPresent()) {
+            throw new RuntimeException("UnidadMedidaFrecuencia con id "
+                    + tratamientosSeguimiento.getId_unidad_medida_frecuencia() + " no encontrada.");
+        }
+        tratamientosSeguimiento.setUnidad_medida_frecuencia(unidadMedidaFrecuenciaOptional.get());
+
+        // ViaAdministracion
+        Optional<ViaAdministracion> viaAdministracionOptional = viaAdministracionRepository
+                .findById(tratamientosSeguimiento.getId_via_administracion());
+        if (!viaAdministracionOptional.isPresent()) {
+            throw new RuntimeException("ViaAdministracion con id " + tratamientosSeguimiento.getId_via_administracion()
+                    + " no encontrada.");
+        }
+        tratamientosSeguimiento.setVia_administracion(viaAdministracionOptional.get());
+
+        return tratamientosSeguimientoRepository.save(tratamientosSeguimiento);
+    }
+
+    @Transactional
+    @Override
+    public Optional<TratamientosSeguimiento> updateTratamientosSeguimiento(int id_tratamiento,
+            TratamientosSeguimiento tratamientosSeguimiento) {
+        Optional<TratamientosSeguimiento> tratamientosSeguimientoOptional = tratamientosSeguimientoRepository
+                .findById(id_tratamiento);
+        if (tratamientosSeguimientoOptional.isPresent()) {
+            TratamientosSeguimiento tratamientosSeguimientoDb = tratamientosSeguimientoOptional.orElseThrow();
+
+            // Actualizar campos básicos
+            tratamientosSeguimientoDb.setFecha_prescripcion(tratamientosSeguimiento.getFecha_prescripcion());
+            tratamientosSeguimientoDb.setN_dias_recibidos(tratamientosSeguimiento.getN_dias_recibidos());
+            tratamientosSeguimientoDb
+                    .setTotal_tratamiento_aplicarse(tratamientosSeguimiento.getTotal_tratamiento_aplicarse());
+            tratamientosSeguimientoDb.setDosis_diaria_total(tratamientosSeguimiento.getDosis_diaria_total());
+            tratamientosSeguimientoDb.setFrecuencia_diaria_dosis(tratamientosSeguimiento.getFrecuencia_diaria_dosis());
+            tratamientosSeguimientoDb.setUsuario_creacion(tratamientosSeguimiento.getUsuario_creacion());
+            tratamientosSeguimientoDb.setFecha_creacion(tratamientosSeguimiento.getFecha_creacion());
+            tratamientosSeguimientoDb.setUsuario_modificacion(tratamientosSeguimiento.getUsuario_modificacion());
+            tratamientosSeguimientoDb.setFecha_modificacion(tratamientosSeguimiento.getFecha_modificacion());
+            tratamientosSeguimientoDb.setActivo(tratamientosSeguimiento.getActivo());
+
+            // Actualizar relaciones
+
+            // Persona
+            if (tratamientosSeguimiento.getId_persona() != null) {
+                Optional<Persona> personaOptional = personaRepository.findById(tratamientosSeguimiento.getId_persona());
+                if (personaOptional.isPresent()) {
+                    tratamientosSeguimientoDb.setPersona(personaOptional.get());
+                } else {
+                    throw new RuntimeException(
+                            "Persona con id " + tratamientosSeguimiento.getId_persona() + " no encontrada.");
+                }
+            }
+
+            // Captacion
+            if (tratamientosSeguimiento.getId_captacion() != null) {
+                Optional<Captacion> captacionOptional = captacionRepository
+                        .findById(tratamientosSeguimiento.getId_captacion());
+                if (captacionOptional.isPresent()) {
+                    tratamientosSeguimientoDb.setCaptacion(captacionOptional.get());
+                } else {
+                    throw new RuntimeException(
+                            "Captacion con id " + tratamientosSeguimiento.getId_captacion() + " no encontrada.");
+                }
+            }
+
+            // Medicamento
+            if (tratamientosSeguimiento.getId_medicamento() != null) {
+                Optional<MedicamentosSeguimiento> medicamentoOptional = medicamentosSeguimientoRepository
+                        .findById(tratamientosSeguimiento.getId_medicamento());
+                if (medicamentoOptional.isPresent()) {
+                    tratamientosSeguimientoDb.setMedicamento(medicamentoOptional.get());
+                } else {
+                    throw new RuntimeException(
+                            "Medicamento con id " + tratamientosSeguimiento.getId_medicamento() + " no encontrado.");
+                }
+            }
+
+            // UnidadMedidaDosis
+            if (tratamientosSeguimiento.getId_unidad_medida_dosis() != null) {
+                Optional<UnidadMedidaDosis> unidadMedidaDosisOptional = unidadMedidaDosisRepository
+                        .findById(tratamientosSeguimiento.getId_unidad_medida_dosis());
+                if (unidadMedidaDosisOptional.isPresent()) {
+                    tratamientosSeguimientoDb.setUnidad_medida_dosis(unidadMedidaDosisOptional.get());
+                } else {
+                    throw new RuntimeException("UnidadMedidaDosis con id "
+                            + tratamientosSeguimiento.getId_unidad_medida_dosis() + " no encontrada.");
+                }
+            }
+
+            // UnidadMedidaFrecuencia
+            if (tratamientosSeguimiento.getId_unidad_medida_frecuencia() != null) {
+                Optional<UnidadMedidaFrecuencia> unidadMedidaFrecuenciaOptional = unidadMedidaFrecuenciaRepository
+                        .findById(tratamientosSeguimiento.getId_unidad_medida_frecuencia());
+                if (unidadMedidaFrecuenciaOptional.isPresent()) {
+                    tratamientosSeguimientoDb.setUnidad_medida_frecuencia(unidadMedidaFrecuenciaOptional.get());
+                } else {
+                    throw new RuntimeException("UnidadMedidaFrecuencia con id "
+                            + tratamientosSeguimiento.getId_unidad_medida_frecuencia() + " no encontrada.");
+                }
+            }
+
+            // ViaAdministracion
+            if (tratamientosSeguimiento.getId_via_administracion() != null) {
+                Optional<ViaAdministracion> viaAdministracionOptional = viaAdministracionRepository
+                        .findById(tratamientosSeguimiento.getId_via_administracion());
+                if (viaAdministracionOptional.isPresent()) {
+                    tratamientosSeguimientoDb.setVia_administracion(viaAdministracionOptional.get());
+                } else {
+                    throw new RuntimeException("ViaAdministracion con id "
+                            + tratamientosSeguimiento.getId_via_administracion() + " no encontrada.");
+                }
+            }
+
+            return Optional.of(tratamientosSeguimientoRepository.save(tratamientosSeguimientoDb));
+        }
+        return tratamientosSeguimientoOptional;
+    }
+
+    @Transactional
+    @Override
+    public Optional<TratamientosSeguimiento> deleteTratamientosSeguimiento(int id_tratamiento) {
+        Optional<TratamientosSeguimiento> tratamientosSeguimientoOptional = tratamientosSeguimientoRepository
+                .findById(id_tratamiento);
+        if (tratamientosSeguimientoOptional.isPresent()) {
+            tratamientosSeguimientoRepository.deleteById(id_tratamiento);
+        }
+        return tratamientosSeguimientoOptional;
     }
 
 }

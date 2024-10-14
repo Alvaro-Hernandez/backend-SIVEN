@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.healthbytes.siven.api.siven_api.entities.CaptacionColegio;
+import com.healthbytes.siven.api.siven_api.entities.Colegio;
 import com.healthbytes.siven.api.siven_api.entities.TipoEscuela;
 import com.healthbytes.siven.api.siven_api.services.CatalogoEscuelaService;
 
@@ -92,6 +94,141 @@ public class CatalogoEscuelaController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS DE Colegio
+
+    @Operation(summary = "Obtener todos los colegios")
+    @GetMapping("/list-colegio")
+    public List<Colegio> listAllColegio() {
+        return catalogoEscuelaService.listAllColegio();
+    }
+
+    @Operation(summary = "Obtener un colegio por ID")
+    @GetMapping("/colegio/{id_colegio}")
+    public ResponseEntity<?> getColegioById(@PathVariable int id_colegio) {
+        Optional<Colegio> colegio = catalogoEscuelaService.getColegioById(id_colegio);
+        if (colegio.isPresent()) {
+            return ResponseEntity.ok(colegio.orElseThrow());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colegio no encontrado.");
+        }
+    }
+
+    @Operation(summary = "Crear un nuevo colegio")
+    @PostMapping("/create-colegio")
+    public ResponseEntity<?> createColegio(@Valid @RequestBody Colegio colegio, BindingResult result) {
+        if (result.hasErrors()) {
+            return validationBadRequest(result);
+        }
+        try {
+            Colegio nuevoColegio = catalogoEscuelaService.saveColegio(colegio);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoColegio);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
+
+    @Operation(summary = "Actualizar un colegio existente")
+    @PutMapping("/update-colegio/{id_colegio}")
+    public ResponseEntity<?> updateColegio(@PathVariable int id_colegio, @Valid @RequestBody Colegio colegio,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return validationBadRequest(result);
+        }
+        try {
+            Optional<Colegio> colegioOptional = catalogoEscuelaService.updateColegio(id_colegio, colegio);
+            if (colegioOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(colegioOptional.orElseThrow());
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colegio no encontrado.");
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
+
+    @Operation(summary = "Borrar un colegio por ID")
+    @DeleteMapping("/delete-colegio/{id_colegio}")
+    public ResponseEntity<?> deleteColegio(@PathVariable int id_colegio) {
+        Optional<Colegio> colegioOptional = catalogoEscuelaService.deleteColegio(id_colegio);
+        if (colegioOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body("Colegio eliminado exitosamente.");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colegio no encontrado.");
+    }
+
+    // ENDPOINTS DE CaptacionColegio
+
+    @Operation(summary = "Obtener todas las captaciones de colegios")
+    @GetMapping("/list-captacion-colegio")
+    public List<CaptacionColegio> listAllCaptacionColegio() {
+        return catalogoEscuelaService.listAllCaptacionColegio();
+    }
+
+    @Operation(summary = "Obtener una captación de colegio por ID")
+    @GetMapping("/captacion-colegio/{id_captacion_colegio}")
+    public ResponseEntity<?> getCaptacionColegioById(@PathVariable int id_captacion_colegio) {
+        Optional<CaptacionColegio> captacionColegio = catalogoEscuelaService
+                .getCaptacionColegioById(id_captacion_colegio);
+        if (captacionColegio.isPresent()) {
+            return ResponseEntity.ok(captacionColegio.orElseThrow());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Captación de Colegio no encontrada.");
+        }
+    }
+
+    @Operation(summary = "Crear una nueva CaptacionColegio")
+    @PostMapping("/create-captacion-colegio")
+    public ResponseEntity<?> createCaptacionColegio(@Valid @RequestBody CaptacionColegio captacionColegio,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return validationBadRequest(result);
+        }
+        try {
+            CaptacionColegio nuevaCaptacionColegio = catalogoEscuelaService.saveCaptacionColegio(captacionColegio);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaCaptacionColegio);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
+
+    @Operation(summary = "Actualizar una CaptacionColegio existente")
+    @PutMapping("/update-captacion-colegio/{id_captacion_colegio}")
+    public ResponseEntity<?> updateCaptacionColegio(@PathVariable int id_captacion_colegio,
+            @Valid @RequestBody CaptacionColegio captacionColegio,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return validationBadRequest(result);
+        }
+        try {
+            Optional<CaptacionColegio> captacionColegioOptional = catalogoEscuelaService
+                    .updateCaptacionColegio(id_captacion_colegio, captacionColegio);
+            if (captacionColegioOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(captacionColegioOptional.orElseThrow());
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Captación de Colegio no encontrada.");
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+    }
+
+    @Operation(summary = "Borrar una CaptacionColegio por ID")
+    @DeleteMapping("/delete-captacion-colegio/{id_captacion_colegio}")
+    public ResponseEntity<?> deleteCaptacionColegio(@PathVariable int id_captacion_colegio) {
+        Optional<CaptacionColegio> captacionColegioOptional = catalogoEscuelaService
+                .deleteCaptacionColegio(id_captacion_colegio);
+        if (captacionColegioOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body("Captación de Colegio eliminada exitosamente.");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Captación de Colegio no encontrada.");
     }
 
     private ResponseEntity<?> validationBadRequest(BindingResult result) {
