@@ -151,6 +151,19 @@ public class RedServicioCatalogoController {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation(summary = "Obtener los establecimientos de salud por ID del SILAIS")
+    @GetMapping("/silais/{id_silais}/establecimientos")
+    public ResponseEntity<?> listEstablecimientosBySilais(@PathVariable int id_silais) {
+        try {
+            List<EstablecimientoSalud> establecimientos = silaisService.listEstablecimientosBySilaisId(id_silais);
+            return ResponseEntity.ok(establecimientos);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
     private ResponseEntity<?> validationBadRequest(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
 

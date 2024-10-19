@@ -136,4 +136,15 @@ public class SilaisJPA implements SilaisService {
         return establecimientoOptional;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<EstablecimientoSalud> listEstablecimientosBySilaisId(int id_silais) {
+        Optional<Silais> silaisOptional = silaisRepository.findById(id_silais);
+        if (silaisOptional.isPresent()) {
+            return establecimientoSaludRepository.findBySilais(silaisOptional.get());
+        } else {
+            throw new RuntimeException("Silais con id " + id_silais + " no encontrado.");
+        }
+    }
+
 }
