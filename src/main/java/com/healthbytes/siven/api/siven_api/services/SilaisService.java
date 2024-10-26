@@ -41,4 +41,6 @@ public interface SilaisService {
     // Método para borrar un establecimiento de salud
     Optional<EstablecimientoSalud> deleteEstablecimiento(int id_establecimiento);
 
+    // Método para obtener los establecimientos de salud por ID del SILAIS
+    List<EstablecimientoSalud> listEstablecimientosBySilaisId(int id_silais);
 }
