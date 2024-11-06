@@ -8,11 +8,11 @@ import com.healthbytes.siven.api.siven_api.entities.CaptacionDTO;
 
 public interface CaptacionRepositoryCustom {
 
-    List<CaptacionDTO> buscarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais, Integer idEventoSalud,
-            Integer idEstablecimiento);
+        List<CaptacionDTO> buscarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais, Integer idEventoSalud,
+                        Integer idEstablecimiento);
 
-    List<CaptacionDTO> filtrarPorDatosPersona(String filtro);
+        List<CaptacionDTO> filtrarPorDatosPersona(String filtro);
 
-    AnalisisCaptacionDTO analizarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
-            Integer idEventoSalud, Integer idEstablecimiento);
+        AnalisisCaptacionDTO analizarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
+                        Integer idEventoSalud, Integer idEstablecimiento);
 }

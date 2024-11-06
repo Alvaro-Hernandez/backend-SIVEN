@@ -3,7 +3,7 @@ package com.healthbytes.siven.api.siven_api.controllers;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -818,11 +818,11 @@ public class CatalogoCaptacionController {
             @RequestParam(value = "fechaFin", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
             @RequestParam(value = "idSilais", required = false) Integer idSilais,
             @RequestParam(value = "idEventoSalud", required = false) Integer idEventoSalud,
-            @RequestParam(value = "idEstablecimiento", required = false) Integer idEstablecimiento) { // Añadido
-                                                                                                      // idEstablecimiento
+            @RequestParam(value = "idEstablecimiento", required = false) Integer idEstablecimiento) {
 
-        List<CaptacionDTO> resultados = catalogoCaptacionService.buscarCaptaciones(fechaInicio, fechaFin, idSilais,
-                idEventoSalud, idEstablecimiento); // Pasar idEstablecimiento
+        List<CaptacionDTO> resultados = catalogoCaptacionService.buscarCaptaciones(
+                fechaInicio, fechaFin, idSilais, idEventoSalud, idEstablecimiento);
+
         return ResponseEntity.ok(resultados);
     }
 
@@ -844,11 +844,11 @@ public class CatalogoCaptacionController {
             @RequestParam(value = "fechaFin", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
             @RequestParam(value = "idSilais", required = false) Integer idSilais,
             @RequestParam(value = "idEventoSalud", required = false) Integer idEventoSalud,
-            @RequestParam(value = "idEstablecimiento", required = false) Integer idEstablecimiento) { // Añadido
-                                                                                                      // idEstablecimiento
+            @RequestParam(value = "idEstablecimiento", required = false) Integer idEstablecimiento) {
 
-        AnalisisCaptacionDTO analisis = catalogoCaptacionService.analizarCaptaciones(fechaInicio, fechaFin, idSilais,
-                idEventoSalud, idEstablecimiento); // Pasar idEstablecimiento
+        AnalisisCaptacionDTO analisis = catalogoCaptacionService.analizarCaptaciones(
+                fechaInicio, fechaFin, idSilais, idEventoSalud, idEstablecimiento);
+
         return ResponseEntity.ok(analisis);
     }
 
