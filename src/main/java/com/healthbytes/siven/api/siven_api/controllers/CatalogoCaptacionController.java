@@ -3,8 +3,10 @@ package com.healthbytes.siven.api.siven_api.controllers;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
+import java.util.Date;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,11 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import com.healthbytes.siven.api.siven_api.entities.AnalisisCaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.Captacion;
+import com.healthbytes.siven.api.siven_api.entities.CaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.Diagnostico;
@@ -803,6 +807,49 @@ public class CatalogoCaptacionController {
             return ResponseEntity.ok(captacionOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Endpoint para buscar captaciones.
+     */
+    @GetMapping("/buscar")
+    public ResponseEntity<List<CaptacionDTO>> buscarCaptaciones(
+            @RequestParam(value = "fechaInicio", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
+            @RequestParam(value = "fechaFin", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
+            @RequestParam(value = "idSilais", required = false) Integer idSilais,
+            @RequestParam(value = "idEventoSalud", required = false) Integer idEventoSalud,
+            @RequestParam(value = "idEstablecimiento", required = false) Integer idEstablecimiento) {
+
+        List<CaptacionDTO> resultados = catalogoCaptacionService.buscarCaptaciones(
+                fechaInicio, fechaFin, idSilais, idEventoSalud, idEstablecimiento);
+
+        return ResponseEntity.ok(resultados);
+    }
+
+    /**
+     * Endpoint para filtrar captaciones por datos de la persona.
+     */
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<CaptacionDTO>> filtrarPorDatosPersona(@RequestParam("filtro") String filtro) {
+        List<CaptacionDTO> resultados = catalogoCaptacionService.filtrarPorDatosPersona(filtro);
+        return ResponseEntity.ok(resultados);
+    }
+
+    /**
+     * Endpoint para analizar captaciones.
+     */
+    @GetMapping("/analisis")
+    public ResponseEntity<AnalisisCaptacionDTO> analizarCaptaciones(
+            @RequestParam(value = "fechaInicio", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
+            @RequestParam(value = "fechaFin", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
+            @RequestParam(value = "idSilais", required = false) Integer idSilais,
+            @RequestParam(value = "idEventoSalud", required = false) Integer idEventoSalud,
+            @RequestParam(value = "idEstablecimiento", required = false) Integer idEstablecimiento) {
+
+        AnalisisCaptacionDTO analisis = catalogoCaptacionService.analizarCaptaciones(
+                fechaInicio, fechaFin, idSilais, idEventoSalud, idEstablecimiento);
+
+        return ResponseEntity.ok(analisis);
     }
 
     private ResponseEntity<?> validationBadRequest(BindingResult result) {

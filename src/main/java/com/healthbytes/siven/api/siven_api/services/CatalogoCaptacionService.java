@@ -1,9 +1,12 @@
 package com.healthbytes.siven.api.siven_api.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.healthbytes.siven.api.siven_api.entities.AnalisisCaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.Captacion;
+import com.healthbytes.siven.api.siven_api.entities.CaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.Diagnostico;
@@ -236,5 +239,14 @@ public interface CatalogoCaptacionService {
 
         // Método para eliminar una captación
         Optional<Captacion> deleteCaptacion(int id_captacion);
+
+        // Métodos personalizados
+        List<CaptacionDTO> buscarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais, Integer idEventoSalud,
+                        Integer idEstablecimiento);
+
+        List<CaptacionDTO> filtrarPorDatosPersona(String filtro);
+
+        AnalisisCaptacionDTO analizarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
+                        Integer idEventoSalud, Integer idEstablecimiento);
 
 }

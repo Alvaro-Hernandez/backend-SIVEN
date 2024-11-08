@@ -1,5 +1,7 @@
 package com.healthbytes.siven.api.siven_api.services;
 
+import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.healthbytes.siven.api.siven_api.entities.AnalisisCaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.Captacion;
+import com.healthbytes.siven.api.siven_api.entities.CaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.Comorbilidades;
 import com.healthbytes.siven.api.siven_api.entities.CondicionPersona;
 import com.healthbytes.siven.api.siven_api.entities.Diagnostico;
@@ -90,6 +94,8 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
 
     @Autowired
     private EstablecimientoSaludRepository establecimientoSaludRepository;
+
+    @Autowired
 
     @Transactional(readOnly = true)
     @Override
@@ -1237,4 +1243,22 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         return captacionOptional;
     }
 
+    // Métodos personalizados
+    @Override
+    public List<CaptacionDTO> buscarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
+            Integer idEventoSalud, Integer idEstablecimiento) {
+        return captacionRepository.buscarCaptaciones(fechaInicio, fechaFin, idSilais, idEventoSalud, idEstablecimiento);
+    }
+
+    @Override
+    public List<CaptacionDTO> filtrarPorDatosPersona(String filtro) {
+        return captacionRepository.filtrarPorDatosPersona(filtro);
+    }
+
+    @Override
+    public AnalisisCaptacionDTO analizarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
+            Integer idEventoSalud, Integer idEstablecimiento) {
+        return captacionRepository.analizarCaptaciones(fechaInicio, fechaFin, idSilais, idEventoSalud,
+                idEstablecimiento);
+    }
 }
