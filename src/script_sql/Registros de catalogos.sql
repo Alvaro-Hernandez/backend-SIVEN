@@ -1140,6 +1140,146 @@ INSERT INTO roles VALUES (5, 'ROLE_COLEGIO', 'admin', '2024-10-03 21:32:29', NUL
 
 
 
+--- Registros del Modulo de Jornada de Vigilancia
+
+--- Hay que tener en cuenta en los de Jornada, actividad de Jornada y monitoreo el ID que se les ha asignado de forma automatica
+--- Los registros de estas tablas van con los id que me genero de manera continua el workbench
+--- Para modificar el id de la jornada que es lo que puede dar conflicto usa el query de SELECT id_jornada FROM jornada;
+--- Este te permitira saber cuales son los id y ya luego solo los reemplazas.
+INSERT INTO departamento (id_departamento, nombre, id_pais, usuario_creacion, fecha_creacion, usuario_modificacion, fecha_modificacion, activo)
+VALUES
+(1, 'Boaco', 1, 'admin', NOW(), NULL, NULL, 1),
+(2, 'Carazo', 1, 'admin', NOW(), NULL, NULL, 1),
+(3, 'Chinandega', 1, 'admin', NOW(), NULL, NULL, 1),
+(4, 'Chontales', 1, 'admin', NOW(), NULL, NULL, 1),
+(5, 'Estelí', 1, 'admin', NOW(), NULL, NULL, 1),
+(6, 'Granada', 1, 'admin', NOW(), NULL, NULL, 1),
+(7, 'Jinotega', 1, 'admin', NOW(), NULL, NULL, 1),
+(8, 'León', 1, 'admin', NOW(), NULL, NULL, 1),
+(9, 'Managua', 1, 'admin', NOW(), NULL, NULL, 1),
+(10, 'Madriz', 1, 'admin', NOW(), NULL, NULL, 1),
+(11, 'Matagalpa', 1, 'admin', NOW(), NULL, NULL, 1),
+(12, 'Nueva Segovia', 1, 'admin', NOW(), NULL, NULL, 1);
+
+INSERT INTO municipio (id_municipio, nombre, id_departamento, usuario_creacion, fecha_creacion, usuario_modificacion, fecha_modificacion, activo)
+VALUES
+(1, 'Boaco', 1, 'admin', NOW(), NULL, NULL, 1),
+(2, 'Camoapa', 1, 'admin', NOW(), NULL, NULL, 1),
+(3, 'Diriamba', 2, 'admin', NOW(), NULL, NULL, 1),
+(4, 'Jinotepe', 2, 'admin', NOW(), NULL, NULL, 1),
+(5, 'Chinandega', 3, 'admin', NOW(), NULL, NULL, 1),
+(6, 'El Viejo', 3, 'admin', NOW(), NULL, NULL, 1),
+(7, 'Juigalpa', 4, 'admin', NOW(), NULL, NULL, 1),
+(8, 'Comalapa', 4, 'admin', NOW(), NULL, NULL, 1),
+(9, 'Estelí', 5, 'admin', NOW(), NULL, NULL, 1),
+(10, 'La Trinidad', 5, 'admin', NOW(), NULL, NULL, 1),
+(11, 'Granada', 6, 'admin', NOW(), NULL, NULL, 1),
+(12, 'Nandaime', 6, 'admin', NOW(), NULL, NULL, 1),
+(13, 'Jinotega', 7, 'admin', NOW(), NULL, NULL, 1),
+(14, 'San Rafael del Norte', 7, 'admin', NOW(), NULL, NULL, 1),
+(15, 'León', 8, 'admin', NOW(), NULL, NULL, 1),
+(16, 'La Paz Centro', 8, 'admin', NOW(), NULL, NULL, 1),
+(17, 'Managua', 9, 'admin', NOW(), NULL, NULL, 1),
+(18, 'Tipitapa', 9, 'admin', NOW(), NULL, NULL, 1),
+(19, 'Somoto', 10, 'admin', NOW(), NULL, NULL, 1),
+(20, 'San Lucas', 10, 'admin', NOW(), NULL, NULL, 1),
+(21, 'Matagalpa', 11, 'admin', NOW(), NULL, NULL, 1),
+(22, 'San Ramón', 11, 'admin', NOW(), NULL, NULL, 1),
+(23, 'Ocotal', 12, 'admin', NOW(), NULL, NULL, 1),
+(24, 'Macuelizo', 12, 'admin', NOW(), NULL, NULL, 1);
+
+INSERT INTO sector (id_sector, nombre, id_municipio, usuario_creacion, fecha_creacion, usuario_modificacion, fecha_modificacion, activo)
+VALUES
+(1, 'Zona Urbana', 1, 'admin', NOW(), NULL, NULL, 1),
+(2, 'Zona Rural', 1, 'admin', NOW(), NULL, NULL, 1),
+(3, 'Barrio Central', 3, 'admin', NOW(), NULL, NULL, 1),
+(4, 'Barrio Norte', 3, 'admin', NOW(), NULL, NULL, 1),
+(5, 'Comunidad El Rosario', 7, 'admin', NOW(), NULL, NULL, 1),
+(6, 'Comunidad Las Brisas', 7, 'admin', NOW(), NULL, NULL, 1),
+(7, 'Colonia Libertad', 9, 'admin', NOW(), NULL, NULL, 1),
+(8, 'Colonia del Sol', 9, 'admin', NOW(), NULL, NULL, 1),
+(9, 'Zona Industrial', 17, 'admin', NOW(), NULL, NULL, 1),
+(10, 'Zona Residencial', 17, 'admin', NOW(), NULL, NULL, 1);
 
 
+INSERT INTO tipo_jornada (nombre, usuario_creacion, fecha_creacion, usuario_modificacion, fecha_modificacion, activo)
+VALUES
+('Jornada de Salud', 'abenites', NOW(), NULL, NULL, 1),
+('Jornada de Rociado', 'abenites', NOW(), NULL, NULL, 1),
+('Jornada de Vacunación', 'abenites', NOW(), NULL, NULL, 1),
+('Jornada Educativa', 'abenites', NOW(), NULL, NULL, 1),
+('Jornada Ambiental', 'abenites', NOW(), NULL, NULL, 1),
+('Jornada Deportiva', 'abenites', NOW(), NULL, NULL, 1),
+('Jornada Cultural', 'abenites', NOW(), NULL, NULL, 1),
+('Jornada de Limpieza', 'abenites', NOW(), NULL, NULL, 1),
+('Jornada de Capacitación', 'abenites', NOW(), NULL, NULL, 1),
+('Jornada de Seguridad', 'abenites', NOW(), NULL, NULL, 1);
 
+-- Tabla: recurso
+INSERT INTO recurso (nombre, id_tipo_jornada, tipo, cantidad, usuario_creacion, fecha_creacion, usuario_modificacion, fecha_modificacion, activo)
+VALUES
+('Equipo de Rociado', 2, 'Herramienta', 5, 'abenites', NOW(), NULL, NULL, 1),
+('Vacunas Antigripales', 3, 'Medicamento', 300, 'abenites', NOW(), NULL, NULL, 1),
+('Botas de Campo', 4, 'Indumentaria', 20, 'abenites', NOW(), NULL, NULL, 1),
+('Guantes Desechables', 1, 'Protección', 100, 'abenites', NOW(), NULL, NULL, 1),
+('Folletos Educativos', 4, 'Papelería', 500, 'abenites', NOW(), NULL, NULL, 1),
+('Mochilas', 5, 'Mobiliario', 10, 'abenites', NOW(), NULL, NULL, 1),
+('Carpas Portátiles', 1, 'Equipamiento', 4, 'abenites', NOW(), NULL, NULL, 1),
+('Jeringas Desechables', 3, 'Material Médico', 500, 'abenites', NOW(), NULL, NULL, 1),
+('Trampas para Insectos', 2, 'Herramienta', 20, 'abenites', NOW(), NULL, NULL, 1),
+('Mascarillas', 1, 'Protección', 200, 'abenites', NOW(), NULL, NULL, 1);
+
+-- Tabla: catalogo_actividad
+INSERT INTO catalogo_actividad (nombre, usuario_creacion, fecha_creacion, usuario_modificacion, fecha_modificacion, activo)
+VALUES
+('Rociado contra mosquitos', 'abenites', NOW(), NULL, NULL, 1),
+('Vacunación Infantil', 'abenites', NOW(), NULL, NULL, 1),
+('Distribución de folletos educativos', 'abenites', NOW(), NULL, NULL, 1),
+('Capacitación para líderes comunitarios', 'abenites', NOW(), NULL, NULL, 1),
+('Limpieza de áreas públicas', 'abenites', NOW(), NULL, NULL, 1),
+('Inspección de viviendas', 'abenites', NOW(), NULL, NULL, 1),
+('Monitoreo de pozos y cisternas', 'abenites', NOW(), NULL, NULL, 1),
+('Entrega de kits de higiene', 'abenites', NOW(), NULL, NULL, 1),
+('Evaluación de riesgo ambiental', 'abenites', NOW(), NULL, NULL, 1),
+('Censo de salud comunitaria', 'abenites', NOW(), NULL, NULL, 1);
+
+INSERT INTO jornada (id_tipo_jornada, id_silais, id_establecimiento, nombre, id_departamento, id_municipio, id_sector, objetivos, fecha_inicio, fecha_fin, id_persona, observaciones, latitud, longitud, usuario_creacion, fecha_creacion, usuario_modificacion, fecha_modificacion, activo)
+VALUES
+(1, 1, 1, 'Jornada Médica Boaco', 1, 1, 1, 'Proveer atención médica general.', '2024-11-01', '2024-11-02', 1, 'Buena participación comunitaria.', 12.313300, -85.898300, 'abenites', NOW(), NULL, NULL, 1),
+(2, 1, 2, 'Jornada de Rociado Boaco', 1, 1, 2, 'Control de vectores para prevenir dengue.', '2024-11-03', '2024-11-04', 2, 'Cobertura del 90% del área.', 12.314000, -85.899000, 'abenites', NOW(), NULL, NULL, 1),
+(3, 1, 3, 'Vacunación Infantil Boaco', 1, 1, 2, 'Vacunación a niños menores de 5 años.', '2024-11-05', '2024-11-06', 3, 'Vacunación completa en 150 niños.', 12.315000, -85.900000, 'abenites', NOW(), NULL, NULL, 1),
+(4, 2, 11, 'Jornada Médica Carazo', 2, 3, 3, 'Atención primaria de salud.', '2024-11-07', '2024-11-08', 4, '150 consultas realizadas.', 11.987500, -85.921700, 'abenites', NOW(), NULL, NULL, 1),
+(5, 2, 12, 'Jornada de Rociado Carazo', 2, 3, 4, 'Prevención de enfermedades transmitidas por vectores.', '2024-11-09', '2024-11-10', 5, 'Eliminación de criaderos en 120 viviendas.', 11.990000, -85.920000, 'abenites', NOW(), NULL, NULL, 1),
+(6, 2, 13, 'Vacunación Infantil Carazo', 2, 3, 4, 'Campaña de vacunación masiva.', '2024-11-11', '2024-11-12', 6, 'Se vacunaron 200 niños.', 11.988000, -85.922000, 'abenites', NOW(), NULL, NULL, 1),
+(7, 3, 21, 'Jornada Médica Chinandega', 3, 5, 5, 'Proveer atención médica a comunidades rurales.', '2024-11-13', '2024-11-14', 7, 'Buena recepción de la comunidad.', 12.616700, -87.162500, 'abenites', NOW(), NULL, NULL, 1),
+(8, 3, 22, 'Jornada de Rociado Chinandega', 3, 5, 6, 'Fumigación para control de vectores.', '2024-11-15', '2024-11-16', 8, 'Rociado completo en la zona asignada.', 12.620000, -87.160000, 'abenites', NOW(), NULL, NULL, 1),
+(9, 3, 23, 'Vacunación Infantil Chinandega', 3, 5, 6, 'Campaña de vacunación en escuelas.', '2024-11-17', '2024-11-18', 9, 'Cobertura del 95% en las escuelas visitadas.', 12.617000, -87.163000, 'abenites', NOW(), NULL, NULL, 1),
+(10, 3, 24, 'Jornada Educativa Chinandega', 3, 5, 7, 'Capacitación sobre salud preventiva.', '2024-11-19', '2024-11-20', 10, '25 líderes comunitarios capacitados.', 12.625000, -87.165000, 'abenites', NOW(), NULL, NULL, 1);
+
+
+INSERT INTO actividad_jornada (id_jornada, id_actividad, id_persona, fecha_hora, detalles, resultados, latitud, longitud, id_recurso, usuario_creacion, fecha_creacion, usuario_modificacion, fecha_modificacion, activo)
+VALUES
+(41, 1, 1, '2024-11-01 09:00:00', 'Consulta médica general en el Hospital Regional Boaco.', 'Atendidos 50 pacientes.', 12.313300, -85.898300, 1, 'abenites', NOW(), NULL, NULL, 1),
+(42, 2, 2, '2024-11-03 10:00:00', 'Rociado de viviendas en la zona urbana.', 'Control del 90% de mosquitos.', 12.314000, -85.899000, 2, 'abenites', NOW(), NULL, NULL, 1),
+(43, 3, 3, '2024-11-05 11:00:00', 'Vacunación infantil en el Hospital Materno Infantil Boaco.', '150 niños vacunados.', 12.315000, -85.900000, 3, 'abenites', NOW(), NULL, NULL, 1),
+(44, 4, 4, '2024-11-07 08:30:00', 'Consulta médica comunitaria en el Hospital Regional Carazo.', '100 consultas realizadas.', 11.987500, -85.921700, 4, 'abenites', NOW(), NULL, NULL, 1),
+(45, 5, 5, '2024-11-09 09:00:00', 'Fumigación y eliminación de criaderos en 120 viviendas.', 'Eliminados 150 criaderos.', 11.990000, -85.920000, 5, 'abenites', NOW(), NULL, NULL, 1),
+(46, 6, 6, '2024-11-11 10:00:00', 'Campaña de vacunación masiva en Carazo.', '200 niños vacunados.', 11.988000, -85.922000, 6, 'abenites', NOW(), NULL, NULL, 1),
+(47, 7, 7, '2024-11-13 09:30:00', 'Consulta médica gratuita en Chinandega.', '70 pacientes atendidos.', 12.616700, -87.162500, 7, 'abenites', NOW(), NULL, NULL, 1),
+(48, 8, 8, '2024-11-15 10:00:00', 'Fumigación en zonas urbanas de Chinandega.', 'Cobertura completa en el área asignada.', 12.620000, -87.160000, 8, 'abenites', NOW(), NULL, NULL, 1),
+(49, 9, 9, '2024-11-17 11:00:00', 'Vacunación en escuelas de Chinandega.', '95% de los niños vacunados.', 12.617000, -87.163000, 9, 'abenites', NOW(), NULL, NULL, 1),
+(50, 10, 10, '2024-11-19 14:00:00', 'Taller sobre salud preventiva.', 'Capacitados 25 líderes comunitarios.', 12.625000, -87.165000, 10, 'abenites', NOW(), NULL, NULL, 1);
+
+
+INSERT INTO monitoreo_jornada (id_jornada, indicadores_exito, evaluaciones, impacto_poblacion, fecha_monitoreo, usuario_creacion, fecha_creacion, usuario_modificacion, fecha_modificacion, activo)
+VALUES
+(41, 'Alta participación comunitaria.', 'Muy positivo.', 'Mejor acceso a servicios médicos en la región.', '2024-11-03', 'abenites', NOW(), NULL, NULL, 1),
+(42, 'Control del 90% de criaderos de mosquitos.', 'Efectivo.', 'Menor incidencia de enfermedades transmitidas por vectores.', '2024-11-05', 'abenites', NOW(), NULL, NULL, 1),
+(43, 'Vacunación completa para 150 niños.', 'Excelente.', 'Mayor inmunización contra enfermedades infantiles.', '2024-11-07', 'abenites', NOW(), NULL, NULL, 1),
+(44, '150 consultas realizadas.', 'Satisfactorio.', 'Atención médica para las comunidades más vulnerables.', '2024-11-09', 'abenites', NOW(), NULL, NULL, 1),
+(45, 'Eliminados 150 criaderos de mosquitos.', 'Eficiente.', 'Menor proliferación de vectores en la zona urbana.', '2024-11-11', 'abenites', NOW(), NULL, NULL, 1),
+(46, 'Vacunación masiva para 200 niños.', 'Muy satisfactorio.', 'Reducción significativa de enfermedades prevenibles.', '2024-11-13', 'abenites', NOW(), NULL, NULL, 1),
+(47, '70 pacientes atendidos en consulta médica.', 'Positivo.', 'Incremento en la atención médica comunitaria.', '2024-11-15', 'abenites', NOW(), NULL, NULL, 1),
+(48, 'Fumigación completa en el área asignada.', 'Eficaz.', 'Reducción visible de vectores en zonas urbanas.', '2024-11-17', 'abenites', NOW(), NULL, NULL, 1),
+(49, '95% de niños vacunados en las escuelas.', 'Excelente.', 'Protección masiva en la población infantil escolar.', '2024-11-19', 'abenites', NOW(), NULL, NULL, 1),
+(50, 'Capacitación para 25 líderes comunitarios.', 'Exitoso.', 'Mayor conocimiento y prevención en las comunidades.', '2024-11-21', 'abenites', NOW(), NULL, NULL, 1);
