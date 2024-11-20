@@ -3,6 +3,7 @@ package com.healthbytes.siven.api.siven_api.services;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.Date;
 
 import com.healthbytes.siven.api.siven_api.entities.AnalisisCaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.CaptacionDTO;
