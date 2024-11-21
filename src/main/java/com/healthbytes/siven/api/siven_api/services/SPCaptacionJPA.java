@@ -1,4 +1,4 @@
-eackage com.healthbytes.siven.api.siven_api.services;
+package com.healthbytes.siven.api.siven_api.services;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
