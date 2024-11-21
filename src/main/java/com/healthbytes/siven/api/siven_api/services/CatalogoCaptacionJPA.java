@@ -1242,23 +1242,4 @@ public class CatalogoCaptacionJPA implements CatalogoCaptacionService {
         }
         return captacionOptional;
     }
-
-    // Métodos personalizados
-    @Override
-    public List<CaptacionDTO> buscarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
-            Integer idEventoSalud, Integer idEstablecimiento) {
-        return captacionRepository.buscarCaptaciones(fechaInicio, fechaFin, idSilais, idEventoSalud, idEstablecimiento);
-    }
-
-    @Override
-    public List<CaptacionDTO> filtrarPorDatosPersona(String filtro) {
-        return captacionRepository.filtrarPorDatosPersona(filtro);
-    }
-
-    @Override
-    public AnalisisCaptacionDTO analizarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
-            Integer idEventoSalud, Integer idEstablecimiento) {
-        return captacionRepository.analizarCaptaciones(fechaInicio, fechaFin, idSilais, idEventoSalud,
-                idEstablecimiento);
-    }
 }

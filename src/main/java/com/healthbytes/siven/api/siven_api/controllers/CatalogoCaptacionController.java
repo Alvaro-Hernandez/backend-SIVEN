@@ -35,6 +35,8 @@ import com.healthbytes.siven.api.siven_api.entities.ResultadoDiagnostico;
 import com.healthbytes.siven.api.siven_api.entities.Sintomas;
 import com.healthbytes.siven.api.siven_api.entities.SitioExposicion;
 import com.healthbytes.siven.api.siven_api.services.CatalogoCaptacionService;
+import com.healthbytes.siven.api.siven_api.services.SPCaptacionService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -46,6 +48,9 @@ public class CatalogoCaptacionController {
 
     @Autowired
     private CatalogoCaptacionService catalogoCaptacionService;
+
+    @Autowired
+    private SPCaptacionService spCaptacionService;
 
     @Operation(summary = "Obtener todos los eventos de salud")
     @GetMapping("/list-evento-salud")
@@ -820,7 +825,7 @@ public class CatalogoCaptacionController {
             @RequestParam(value = "idEventoSalud", required = false) Integer idEventoSalud,
             @RequestParam(value = "idEstablecimiento", required = false) Integer idEstablecimiento) {
 
-        List<CaptacionDTO> resultados = catalogoCaptacionService.buscarCaptaciones(
+        List<CaptacionDTO> resultados = spCaptacionService.buscarCaptaciones(
                 fechaInicio, fechaFin, idSilais, idEventoSalud, idEstablecimiento);
 
         return ResponseEntity.ok(resultados);
@@ -830,8 +835,9 @@ public class CatalogoCaptacionController {
      * Endpoint para filtrar captaciones por datos de la persona.
      */
     @GetMapping("/filtrar")
-    public ResponseEntity<List<CaptacionDTO>> filtrarPorDatosPersona(@RequestParam("filtro") String filtro) {
-        List<CaptacionDTO> resultados = catalogoCaptacionService.filtrarPorDatosPersona(filtro);
+    public ResponseEntity<List<CaptacionDTO>> filtrarPorDatosPersona(
+            @RequestParam(value = "filtro", required = false) String filtro) {
+        List<CaptacionDTO> resultados = spCaptacionService.filtrarPorDatosPersona(filtro);
         return ResponseEntity.ok(resultados);
     }
 
@@ -846,7 +852,7 @@ public class CatalogoCaptacionController {
             @RequestParam(value = "idEventoSalud", required = false) Integer idEventoSalud,
             @RequestParam(value = "idEstablecimiento", required = false) Integer idEstablecimiento) {
 
-        AnalisisCaptacionDTO analisis = catalogoCaptacionService.analizarCaptaciones(
+        AnalisisCaptacionDTO analisis = spCaptacionService.analizarCaptaciones(
                 fechaInicio, fechaFin, idSilais, idEventoSalud, idEstablecimiento);
 
         return ResponseEntity.ok(analisis);
