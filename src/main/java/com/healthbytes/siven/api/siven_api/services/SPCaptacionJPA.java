@@ -1,11 +1,8 @@
-package com.healthbytes.siven.api.siven_api.services;
+eackage com.healthbytes.siven.api.siven_api.services;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.healthbytes.siven.api.siven_api.entities.AnalisisCaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.CaptacionDTO;
@@ -48,16 +45,15 @@ public class SPCaptacionJPA implements SPCaptacionService {
 
     @Override
     public AnalisisCaptacionDTO analizarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
-            Integer idEventoSalud, Integer idEstablecimiento) { // Añadido idEstablecimiento
-        String sql = "{CALL analizar_captaciones(:fechaInicio, :fechaFin, :idSilais, :idEventoSalud, :idEstablecimiento)}"; // Añadido
-                                                                                                                            // idEstablecimiento
+            Integer idEventoSalud, Integer idEstablecimiento) {
+        String sql = "{CALL analizar_captaciones(:fechaInicio, :fechaFin, :idSilais, :idEventoSalud, :idEstablecimiento)}";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("fechaInicio", fechaInicio)
                 .addValue("fechaFin", fechaFin)
                 .addValue("idSilais", idSilais)
                 .addValue("idEventoSalud", idEventoSalud)
-                .addValue("idEstablecimiento", idEstablecimiento); // Añadido idEstablecimiento
+                .addValue("idEstablecimiento", idEstablecimiento);
 
         return namedParameterJdbcTemplate.query(sql, parameters, rs -> {
             AnalisisCaptacionDTO analisis = new AnalisisCaptacionDTO();
@@ -67,42 +63,50 @@ public class SPCaptacionJPA implements SPCaptacionService {
                 analisis.setCasosRegistrados(rs.getInt("casos_registrados"));
             }
 
-            // Segundo ResultSet: Casos Activos
-            if (rs.next()) {
-                analisis.setCasosActivos(rs.getInt("casos_activos"));
-                analisis.setCasosFinalizados(analisis.getCasosRegistrados() - analisis.getCasosActivos());
+            // Mover al siguiente ResultSet
+            if (rs.getStatement().getMoreResults()) {
+                rs = rs.getStatement().getResultSet();
+
+                // Segundo ResultSet: Casos Activos
+                if (rs.next()) {
+                    analisis.setCasosActivos(rs.getInt("casos_activos"));
+                    analisis.setCasosFinalizados(analisis.getCasosRegistrados() - analisis.getCasosActivos());
+                }
             }
 
-            // Tercer ResultSet: Distribución por Localidad
-            if (rs.next()) {
+            // Mover al siguiente ResultSet
+            if (rs.getStatement().getMoreResults()) {
+                rs = rs.getStatement().getResultSet();
+
+                // Tercer ResultSet: Distribución por Localidad
                 Map<String, Long> distribucionLocalidad = new HashMap<>();
-                do {
-                    String municipio = rs.getString("municipio");
-                    Long cantidad = rs.getLong("cantidad");
-                    distribucionLocalidad.put(municipio, cantidad);
-                } while (rs.next());
+                while (rs.next()) {
+                    distribucionLocalidad.put(rs.getString("municipio"), rs.getLong("cantidad"));
+                }
                 analisis.setDistribucionLocalidad(distribucionLocalidad);
             }
 
-            // Cuarto ResultSet: Distribución por Género
-            if (rs.next()) {
+            // Mover al siguiente ResultSet
+            if (rs.getStatement().getMoreResults()) {
+                rs = rs.getStatement().getResultSet();
+
+                // Cuarto ResultSet: Distribución por Género
                 Map<String, Long> distribucionGenero = new HashMap<>();
-                do {
-                    String sexo = rs.getString("sexo");
-                    Long cantidad = rs.getLong("cantidad");
-                    distribucionGenero.put(sexo, cantidad);
-                } while (rs.next());
+                while (rs.next()) {
+                    distribucionGenero.put(rs.getString("sexo"), rs.getLong("cantidad"));
+                }
                 analisis.setDistribucionGenero(distribucionGenero);
             }
 
-            // Quinto ResultSet: Máximos de Incidencia
-            if (rs.next()) {
+            // Mover al siguiente ResultSet
+            if (rs.getStatement().getMoreResults()) {
+                rs = rs.getStatement().getResultSet();
+
+                // Quinto ResultSet: Máximos de Incidencia
                 Map<String, Long> maximosIncidencia = new HashMap<>();
-                do {
-                    Date fecha = rs.getDate("fecha_captacion");
-                    Long cantidad = rs.getLong("cantidad");
-                    maximosIncidencia.put(fecha.toString(), cantidad);
-                } while (rs.next());
+                while (rs.next()) {
+                    maximosIncidencia.put(rs.getDate("fecha_captacion").toString(), rs.getLong("cantidad"));
+                }
                 analisis.setMaximosIncidencia(maximosIncidencia);
             }
 

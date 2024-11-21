@@ -226,7 +226,7 @@ public class CatalogoCaptacionController {
     }
 
     @Operation(summary = "Optener todas las operaciones de Lugar de Captacion")
-    @GetMapping("/list-comorbilidades")
+    @GetMapping("/list-lugar-captacion")
     public List<LugarCaptacion> listAllLugarCaptacions() {
         return catalogoCaptacionService.listAllLugarCaptacion();
     }
