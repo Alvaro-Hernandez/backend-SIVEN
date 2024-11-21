@@ -2,8 +2,10 @@ package com.healthbytes.siven.api.siven_api.services;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
 import java.util.Date;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.healthbytes.siven.api.siven_api.entities.AnalisisCaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.CaptacionDTO;
@@ -15,7 +17,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CaptacionRepositoryCustomImpl implements CaptacionRepositoryCustom {
+public class SPCaptacionJPA implements SPCaptacionService {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

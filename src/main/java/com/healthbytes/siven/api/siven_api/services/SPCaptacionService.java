@@ -6,7 +6,7 @@ import java.util.List;
 import com.healthbytes.siven.api.siven_api.entities.AnalisisCaptacionDTO;
 import com.healthbytes.siven.api.siven_api.entities.CaptacionDTO;
 
-public interface CaptacionRepositoryCustom {
+public interface SPCaptacionService {
 
         List<CaptacionDTO> buscarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais, Integer idEventoSalud,
                         Integer idEstablecimiento);
@@ -15,4 +15,5 @@ public interface CaptacionRepositoryCustom {
 
         AnalisisCaptacionDTO analizarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
                         Integer idEventoSalud, Integer idEstablecimiento);
+
 }
