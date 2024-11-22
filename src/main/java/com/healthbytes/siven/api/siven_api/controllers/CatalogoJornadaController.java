@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import java.util.Map;
+import java.sql.Date;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,18 +15,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthbytes.siven.api.siven_api.entities.ActividadJornada;
 import com.healthbytes.siven.api.siven_api.entities.Catalogo_Actividad;
 import com.healthbytes.siven.api.siven_api.entities.Departamento;
 import com.healthbytes.siven.api.siven_api.entities.Jornada;
+import com.healthbytes.siven.api.siven_api.entities.JornadaDTO;
 import com.healthbytes.siven.api.siven_api.entities.MonitoreoJornada;
 import com.healthbytes.siven.api.siven_api.entities.Municipio;
 import com.healthbytes.siven.api.siven_api.entities.Recurso;
 import com.healthbytes.siven.api.siven_api.entities.Sector;
 import com.healthbytes.siven.api.siven_api.entities.TipoJornada;
 import com.healthbytes.siven.api.siven_api.services.CatalogoJornadaService;
+import com.healthbytes.siven.api.siven_api.services.SPJornadaService;
 
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +45,9 @@ public class CatalogoJornadaController {
 
     @Autowired
     CatalogoJornadaService catalogoJornadaService;
+
+    @Autowired
+    SPJornadaService spJornadaService;
 
     @Operation(summary = "Listar todos los tipos de jornadas")
     @GetMapping("/list-tipos-jornadas")
@@ -632,6 +639,21 @@ public class CatalogoJornadaController {
             return ResponseEntity.status(HttpStatus.OK).body("MonitoreoJornada eliminada exitosamente.");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("MonitoreoJornada no encontrada.");
+    }
+
+    @Operation(summary = "Filtras Jornadas por fecha de inicio")
+    @GetMapping("/filter-jornadas")
+    public ResponseEntity<?> filtrarJornadas(
+            @RequestParam(required = false) Date fechaInicio,
+            @RequestParam(defaultValue = "false") Boolean mostrarTodo) {
+        try {
+            List<JornadaDTO> jornadas = spJornadaService.filtraJornadasPorFecha(fechaInicio, mostrarTodo);
+            return ResponseEntity.ok(jornadas);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Ocurrió un error al filtrar jornadas: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
     }
 
     private ResponseEntity<?> validationBadRequest(BindingResult result) {

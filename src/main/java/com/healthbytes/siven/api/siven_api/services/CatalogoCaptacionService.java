@@ -240,13 +240,4 @@ public interface CatalogoCaptacionService {
         // Método para eliminar una captación
         Optional<Captacion> deleteCaptacion(int id_captacion);
 
-        // Métodos personalizados
-        List<CaptacionDTO> buscarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais, Integer idEventoSalud,
-                        Integer idEstablecimiento);
-
-        List<CaptacionDTO> filtrarPorDatosPersona(String filtro);
-
-        AnalisisCaptacionDTO analizarCaptaciones(Date fechaInicio, Date fechaFin, Integer idSilais,
-                        Integer idEventoSalud, Integer idEstablecimiento);
-
 }

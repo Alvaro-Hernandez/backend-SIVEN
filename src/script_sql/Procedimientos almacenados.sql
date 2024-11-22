@@ -217,4 +217,60 @@ DELIMITER ;
 CALL filtrar_por_datos_persona('Juan');
 
 
+DELIMITER $$
 
+CREATE PROCEDURE FiltrarJornada(
+    IN p_fecha_inicio DATE,
+    IN p_mostrar_todo BOOLEAN
+)
+BEGIN
+    IF p_mostrar_todo THEN
+        -- Mostrar todos los registros activos con los campos requeridos
+        SELECT 
+            tj.nombre AS Tipo_Jornada,
+            s.nombre AS Nombre_Silais,
+            es.nombre AS Nombre_Establecimiento_Salud,
+            j.nombre AS Nombre_Jornada,
+            d.nombre AS Nombre_Departamento,
+            m.nombre AS Nombre_Municipio,
+            sec.nombre AS Nombre_Sector,
+            j.objetivos AS Objetivos_Jornada,
+            CONCAT(p.primer_nombre, ' ', p.segundo_nombre, ' ', p.primer_apellido, ' ', p.segundo_apellido) AS Nombre_Persona_Encargada
+        FROM jornada j
+        LEFT JOIN tipo_jornada tj ON j.id_tipo_jornada = tj.id_tipo_jornada
+        LEFT JOIN silais s ON j.id_silais = s.id_silais
+        LEFT JOIN establecimientosalud es ON j.id_establecimiento = es.id_establecimiento
+        LEFT JOIN departamento d ON j.id_departamento = d.id_departamento
+        LEFT JOIN municipio m ON j.id_municipio = m.id_municipio
+        LEFT JOIN sector sec ON j.id_sector = sec.id_sector
+        LEFT JOIN persona p ON j.id_persona = p.id_persona
+        WHERE j.activo = 1;
+    ELSE
+        -- Filtrar registros activos por fecha_inicio y mostrar los campos requeridos
+        SELECT 
+            tj.nombre AS Tipo_Jornada,
+            s.nombre AS Nombre_Silais,
+            es.nombre AS Nombre_Establecimiento_Salud,
+            j.nombre AS Nombre_Jornada,
+            d.nombre AS Nombre_Departamento,
+            m.nombre AS Nombre_Municipio,
+            sec.nombre AS Nombre_Sector,
+            j.objetivos AS Objetivos_Jornada,
+            CONCAT(p.primer_nombre, ' ', p.segundo_nombre, ' ', p.primer_apellido, ' ', p.segundo_apellido) AS Nombre_Persona_Encargada
+        FROM jornada j
+        LEFT JOIN tipo_jornada tj ON j.id_tipo_jornada = tj.id_tipo_jornada
+        LEFT JOIN silais s ON j.id_silais = s.id_silais
+        LEFT JOIN establecimientosalud es ON j.id_establecimiento = es.id_establecimiento
+        LEFT JOIN departamento d ON j.id_departamento = d.id_departamento
+        LEFT JOIN municipio m ON j.id_municipio = m.id_municipio
+        LEFT JOIN sector sec ON j.id_sector = sec.id_sector
+        LEFT JOIN persona p ON j.id_persona = p.id_persona
+        WHERE j.activo = 1 AND j.fecha_inicio = p_fecha_inicio;
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+CALL FiltrarJornada('2024-11-01', FALSE);
+CALL FiltrarJornada(NULL, TRUE);

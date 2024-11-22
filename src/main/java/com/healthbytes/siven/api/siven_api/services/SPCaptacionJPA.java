@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CaptacionRepositoryCustomImpl implements CaptacionRepositoryCustom {
+public class SPCaptacionJPA implements SPCaptacionService {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
